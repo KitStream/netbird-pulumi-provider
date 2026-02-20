@@ -32,7 +32,8 @@ func Provider() tfbridge.ProviderInfo {
 		License:     "Apache-2.0",
 		Homepage:    "https://netbird.io",
 		Repository:  "https://github.com/KitStream/pulumi-netbird",
-		Config:      map[string]*tfbridge.SchemaInfo{
+		Publisher:   "KitStream",
+		Config: map[string]*tfbridge.SchemaInfo{
 			// Add any custom config mapping here
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
