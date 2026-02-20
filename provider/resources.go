@@ -31,8 +31,8 @@ func Provider() tfbridge.ProviderInfo {
 		Keywords:    []string{"pulumi", "netbird"},
 		License:     "Apache-2.0",
 		Homepage:    "https://netbird.io",
-		Repository:  "https://github.com/netbirdio/pulumi-netbird",
-		Config: map[string]*tfbridge.SchemaInfo{
+		Repository:  "https://github.com/KitStream/pulumi-netbird",
+		Config:      map[string]*tfbridge.SchemaInfo{
 			// Add any custom config mapping here
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
@@ -84,7 +84,7 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		Golang: &tfbridge.GolangInfo{
 			ImportBasePath: filepath.Join(
-				fmt.Sprintf("github.com/netbirdio/pulumi-%[1]s/sdk/", mainPkg),
+				fmt.Sprintf("github.com/KitStream/pulumi-%[1]s/sdk/", mainPkg),
 				"go",
 				mainMod,
 			),

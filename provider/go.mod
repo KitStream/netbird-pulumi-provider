@@ -1,4 +1,4 @@
-module github.com/netbirdio/pulumi-netbird/provider
+module github.com/KitStream/pulumi-netbird/provider
 
 go 1.24.7
 
