@@ -1,0 +1,3650 @@
+{
+    "name": "netbird",
+    "description": "A Pulumi package for creating and managing netbird cloud resources.",
+    "keywords": [
+        "pulumi",
+        "netbird"
+    ],
+    "homepage": "https://netbird.io",
+    "license": "Apache-2.0",
+    "attribution": "This Pulumi package is based on the [`netbird` Terraform Provider](https://github.com/netbirdio/terraform-provider-netbird).",
+    "repository": "https://github.com/netbirdio/pulumi-netbird",
+    "meta": {
+        "moduleFormat": "(.*)(?:/[^/]*)"
+    },
+    "language": {
+        "csharp": {
+            "packageReferences": {
+                "Pulumi": "3.*"
+            },
+            "compatibility": "tfbridge20"
+        },
+        "go": {
+            "importBasePath": "github.com/netbirdio/pulumi-netbird/sdk/go/index",
+            "generateResourceContainerTypes": true,
+            "generateExtraInputTypes": true
+        },
+        "java": {
+            "basePackage": "com.netbird",
+            "buildFiles": "",
+            "gradleNexusPublishPluginVersion": "",
+            "gradleTest": ""
+        },
+        "nodejs": {
+            "packageDescription": "A Pulumi package for creating and managing netbird cloud resources.",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/netbirdio/terraform-provider-netbird)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-netbird` repo](https://github.com/netbirdio/pulumi-netbird/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-netbird` repo](https://github.com/netbirdio/terraform-provider-netbird/issues).",
+            "dependencies": {
+                "@pulumi/pulumi": "^3.0.0"
+            },
+            "devDependencies": {
+                "@types/mime": "^2.0.0",
+                "@types/node": "^10.0.0"
+            },
+            "compatibility": "tfbridge20",
+            "disableUnionOutputTypes": true
+        },
+        "python": {
+            "requires": {
+                "pulumi": "\u003e=3.0.0,\u003c4.0.0"
+            },
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/netbirdio/terraform-provider-netbird)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-netbird` repo](https://github.com/netbirdio/pulumi-netbird/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-netbird` repo](https://github.com/netbirdio/terraform-provider-netbird/issues).",
+            "compatibility": "tfbridge20",
+            "pyproject": {}
+        }
+    },
+    "config": {
+        "variables": {
+            "managementUrl": {
+                "type": "string",
+                "description": "NetBird Management API URL, can be also set through NB_MANAGEMENT_URL Environment Variable, value defined in Terraform files takes precedence"
+            },
+            "tenantAccount": {
+                "type": "string",
+                "description": "Account ID to impersonate, can be also set through NB_ACCOUNT Environment Variable, value defined in Terraform files takes precedence"
+            },
+            "token": {
+                "type": "string",
+                "description": "Admin PAT for NetBird Management Server, can be also set through NB_PAT Environment Variable, value defined in Terraform files takes precedence",
+                "secret": true
+            }
+        }
+    },
+    "types": {
+        "netbird:index/NameserverGroupNameserver:NameserverGroupNameserver": {
+            "properties": {
+                "ip": {
+                    "type": "string",
+                    "description": "Nameserver IP\n"
+                },
+                "nsType": {
+                    "type": "string",
+                    "description": "Nameserver Type\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Nameserver Port\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "ip"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "ip",
+                        "nsType",
+                        "port"
+                    ]
+                }
+            }
+        },
+        "netbird:index/PolicyRule:PolicyRule": {
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "description": "Policy Rule Action (accept|drop)\n"
+                },
+                "bidirectional": {
+                    "type": "boolean",
+                    "description": "Policy Rule Bidirectional\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Policy description\n"
+                },
+                "destinationResource": {
+                    "$ref": "#/types/netbird:index/PolicyRuleDestinationResource:PolicyRuleDestinationResource",
+                    "description": "Policy Rule Destination Resource (mutually exclusive with destinations)\n"
+                },
+                "destinations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Policy Rule Destination Groups (mutually exclusive with destination_resource)\n"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Policy Rule Enabled\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Policy ID\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Policy Name\n"
+                },
+                "portRanges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/PolicyRulePortRange:PolicyRulePortRange"
+                    },
+                    "description": "Policy Rule Port Ranges (mutually exclusive with ports)\n"
+                },
+                "ports": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Policy Rule Ports (mutually exclusive with port_ranges)\n"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Policy Rule Protocol (tcp|udp|icmp|all)\n"
+                },
+                "sourceResource": {
+                    "$ref": "#/types/netbird:index/PolicyRuleSourceResource:PolicyRuleSourceResource",
+                    "description": "Policy Rule Source Resource (mutually exclusive with sources)\n"
+                },
+                "sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Policy Rule Source Groups (mutually exclusive with source_resource)\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "action",
+                        "bidirectional",
+                        "destinationResource",
+                        "destinations",
+                        "enabled",
+                        "id",
+                        "name",
+                        "portRanges",
+                        "ports",
+                        "protocol",
+                        "sourceResource",
+                        "sources"
+                    ]
+                }
+            }
+        },
+        "netbird:index/PolicyRuleDestinationResource:PolicyRuleDestinationResource": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "id",
+                "type"
+            ]
+        },
+        "netbird:index/PolicyRulePortRange:PolicyRulePortRange": {
+            "properties": {
+                "end": {
+                    "type": "integer"
+                },
+                "start": {
+                    "type": "integer"
+                }
+            },
+            "type": "object",
+            "required": [
+                "end",
+                "start"
+            ]
+        },
+        "netbird:index/PolicyRuleSourceResource:PolicyRuleSourceResource": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "id",
+                "type"
+            ]
+        },
+        "netbird:index/PostureCheckGeoLocationCheck:PostureCheckGeoLocationCheck": {
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/PostureCheckGeoLocationCheckLocation:PostureCheckGeoLocationCheckLocation"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "netbird:index/PostureCheckGeoLocationCheckLocation:PostureCheckGeoLocationCheckLocation": {
+            "properties": {
+                "cityName": {
+                    "type": "string"
+                },
+                "countryCode": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "countryCode"
+            ]
+        },
+        "netbird:index/PostureCheckNetbirdVersionCheck:PostureCheckNetbirdVersionCheck": {
+            "properties": {
+                "minVersion": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "netbird:index/PostureCheckOsVersionCheck:PostureCheckOsVersionCheck": {
+            "properties": {
+                "androidMinVersion": {
+                    "type": "string"
+                },
+                "darwinMinVersion": {
+                    "type": "string"
+                },
+                "iosMinVersion": {
+                    "type": "string"
+                },
+                "linuxMinKernelVersion": {
+                    "type": "string"
+                },
+                "windowsMinKernelVersion": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "netbird:index/PostureCheckPeerNetworkRangeCheck:PostureCheckPeerNetworkRangeCheck": {
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "ranges": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "netbird:index/PostureCheckProcessCheck:PostureCheckProcessCheck": {
+            "properties": {
+                "linuxPath": {
+                    "type": "string"
+                },
+                "macPath": {
+                    "type": "string"
+                },
+                "windowsPath": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "netbird:index/getNameserverGroupNameserver:getNameserverGroupNameserver": {
+            "properties": {
+                "ip": {
+                    "type": "string",
+                    "description": "Nameserver IP\n"
+                },
+                "nsType": {
+                    "type": "string",
+                    "description": "Nameserver Type\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Nameserver Port\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "ip",
+                "nsType",
+                "port"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPolicyRule:getPolicyRule": {
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "description": "Policy Rule Action (accept|drop)\n"
+                },
+                "bidirectional": {
+                    "type": "boolean",
+                    "description": "Policy Rule Bidirectional\n"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Policy description\n"
+                },
+                "destinationResource": {
+                    "$ref": "#/types/netbird:index/getPolicyRuleDestinationResource:getPolicyRuleDestinationResource",
+                    "description": "Policy Rule Destination Resource (mutually exclusive with destinations)\n"
+                },
+                "destinations": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Policy Rule Destination Groups (mutually exclusive with destination_resource)\n"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Policy Rule Enabled\n"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Policy ID\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Policy Name\n"
+                },
+                "portRanges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/getPolicyRulePortRange:getPolicyRulePortRange"
+                    },
+                    "description": "Policy Rule Port Ranges (mutually exclusive with ports)\n"
+                },
+                "ports": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Policy Rule Ports (mutually exclusive with port_ranges)\n"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Policy Rule Protocol (tcp|udp|icmp|all)\n"
+                },
+                "sourceResource": {
+                    "$ref": "#/types/netbird:index/getPolicyRuleSourceResource:getPolicyRuleSourceResource",
+                    "description": "Policy Rule Source Resource (mutually exclusive with sources)\n"
+                },
+                "sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Policy Rule Source Groups (mutually exclusive with source_resource)\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "action",
+                "bidirectional",
+                "description",
+                "destinationResource",
+                "destinations",
+                "enabled",
+                "id",
+                "name",
+                "portRanges",
+                "ports",
+                "protocol",
+                "sourceResource",
+                "sources"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPolicyRuleDestinationResource:getPolicyRuleDestinationResource": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "id",
+                "type"
+            ]
+        },
+        "netbird:index/getPolicyRulePortRange:getPolicyRulePortRange": {
+            "properties": {
+                "end": {
+                    "type": "integer"
+                },
+                "start": {
+                    "type": "integer"
+                }
+            },
+            "type": "object",
+            "required": [
+                "end",
+                "start"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPolicyRuleSourceResource:getPolicyRuleSourceResource": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "id",
+                "type"
+            ]
+        },
+        "netbird:index/getPostureCheckGeoLocationCheck:getPostureCheckGeoLocationCheck": {
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/getPostureCheckGeoLocationCheckLocation:getPostureCheckGeoLocationCheckLocation"
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "action",
+                "locations"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPostureCheckGeoLocationCheckLocation:getPostureCheckGeoLocationCheckLocation": {
+            "properties": {
+                "cityName": {
+                    "type": "string"
+                },
+                "countryCode": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "cityName",
+                "countryCode"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPostureCheckNetbirdVersionCheck:getPostureCheckNetbirdVersionCheck": {
+            "properties": {
+                "minVersion": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "minVersion"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPostureCheckOsVersionCheck:getPostureCheckOsVersionCheck": {
+            "properties": {
+                "androidMinVersion": {
+                    "type": "string"
+                },
+                "darwinMinVersion": {
+                    "type": "string"
+                },
+                "iosMinVersion": {
+                    "type": "string"
+                },
+                "linuxMinKernelVersion": {
+                    "type": "string"
+                },
+                "windowsMinKernelVersion": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "androidMinVersion",
+                "darwinMinVersion",
+                "iosMinVersion",
+                "linuxMinKernelVersion",
+                "windowsMinKernelVersion"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPostureCheckPeerNetworkRangeCheck:getPostureCheckPeerNetworkRangeCheck": {
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "ranges": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type": "object",
+            "required": [
+                "action",
+                "ranges"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getPostureCheckProcessCheck:getPostureCheckProcessCheck": {
+            "properties": {
+                "linuxPath": {
+                    "type": "string"
+                },
+                "macPath": {
+                    "type": "string"
+                },
+                "windowsPath": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "linuxPath",
+                "macPath",
+                "windowsPath"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        }
+    },
+    "provider": {
+        "description": "The provider type for the netbird package. By default, resources use package-wide configuration\nsettings, however an explicit `Provider` instance may be created and passed during resource\nconstruction to achieve fine-grained programmatic control over provider settings. See the\n[documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.\n",
+        "properties": {
+            "managementUrl": {
+                "type": "string",
+                "description": "NetBird Management API URL, can be also set through NB_MANAGEMENT_URL Environment Variable, value defined in Terraform files takes precedence"
+            },
+            "tenantAccount": {
+                "type": "string",
+                "description": "Account ID to impersonate, can be also set through NB_ACCOUNT Environment Variable, value defined in Terraform files takes precedence"
+            },
+            "token": {
+                "type": "string",
+                "description": "Admin PAT for NetBird Management Server, can be also set through NB_PAT Environment Variable, value defined in Terraform files takes precedence",
+                "secret": true
+            }
+        },
+        "inputProperties": {
+            "managementUrl": {
+                "type": "string",
+                "description": "NetBird Management API URL, can be also set through NB_MANAGEMENT_URL Environment Variable, value defined in Terraform files takes precedence"
+            },
+            "tenantAccount": {
+                "type": "string",
+                "description": "Account ID to impersonate, can be also set through NB_ACCOUNT Environment Variable, value defined in Terraform files takes precedence"
+            },
+            "token": {
+                "type": "string",
+                "description": "Admin PAT for NetBird Management Server, can be also set through NB_PAT Environment Variable, value defined in Terraform files takes precedence",
+                "secret": true
+            }
+        },
+        "methods": {
+            "terraformConfig": "pulumi:providers:netbird/terraformConfig"
+        }
+    },
+    "resources": {
+        "netbird:index/accountSettings:AccountSettings": {
+            "properties": {
+                "groupsPropagationEnabled": {
+                    "type": "boolean",
+                    "description": "Allows propagate the new user auto groups to peers that belongs to the user"
+                },
+                "jwtAllowGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of groups to which users are allowed access"
+                },
+                "jwtGroupsClaimName": {
+                    "type": "string",
+                    "description": "Name of the claim from which we extract groups names to add it to account groups."
+                },
+                "jwtGroupsEnabled": {
+                    "type": "boolean",
+                    "description": "Allows extract groups from JWT claim and add it to account groups."
+                },
+                "networkTrafficLogsEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored."
+                },
+                "networkTrafficPacketCounterEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)"
+                },
+                "peerApprovalEnabled": {
+                    "type": "boolean",
+                    "description": "(Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin."
+                },
+                "peerInactivityExpiration": {
+                    "type": "integer",
+                    "description": "Period of time of inactivity after which peer session expires (seconds)."
+                },
+                "peerInactivityExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login)."
+                },
+                "peerLoginExpiration": {
+                    "type": "integer",
+                    "description": "Period of time after which peer login expires (seconds)."
+                },
+                "peerLoginExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables peer login expiration globally. After peer's login has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login)."
+                },
+                "regularUsersViewBlocked": {
+                    "type": "boolean",
+                    "description": "Allows blocking regular users from viewing parts of the system."
+                },
+                "routingPeerDnsResolutionEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables DNS resolution on the routing peers"
+                }
+            },
+            "required": [
+                "groupsPropagationEnabled",
+                "jwtAllowGroups",
+                "jwtGroupsClaimName",
+                "jwtGroupsEnabled",
+                "networkTrafficLogsEnabled",
+                "networkTrafficPacketCounterEnabled",
+                "peerApprovalEnabled",
+                "peerInactivityExpiration",
+                "peerInactivityExpirationEnabled",
+                "peerLoginExpiration",
+                "peerLoginExpirationEnabled",
+                "regularUsersViewBlocked",
+                "routingPeerDnsResolutionEnabled"
+            ],
+            "inputProperties": {
+                "groupsPropagationEnabled": {
+                    "type": "boolean",
+                    "description": "Allows propagate the new user auto groups to peers that belongs to the user"
+                },
+                "jwtAllowGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of groups to which users are allowed access"
+                },
+                "jwtGroupsClaimName": {
+                    "type": "string",
+                    "description": "Name of the claim from which we extract groups names to add it to account groups."
+                },
+                "jwtGroupsEnabled": {
+                    "type": "boolean",
+                    "description": "Allows extract groups from JWT claim and add it to account groups."
+                },
+                "networkTrafficLogsEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored."
+                },
+                "networkTrafficPacketCounterEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)"
+                },
+                "peerApprovalEnabled": {
+                    "type": "boolean",
+                    "description": "(Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin."
+                },
+                "peerInactivityExpiration": {
+                    "type": "integer",
+                    "description": "Period of time of inactivity after which peer session expires (seconds)."
+                },
+                "peerInactivityExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login)."
+                },
+                "peerLoginExpiration": {
+                    "type": "integer",
+                    "description": "Period of time after which peer login expires (seconds)."
+                },
+                "peerLoginExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables peer login expiration globally. After peer's login has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login)."
+                },
+                "regularUsersViewBlocked": {
+                    "type": "boolean",
+                    "description": "Allows blocking regular users from viewing parts of the system."
+                },
+                "routingPeerDnsResolutionEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables DNS resolution on the routing peers"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering AccountSettings resources.\n",
+                "properties": {
+                    "groupsPropagationEnabled": {
+                        "type": "boolean",
+                        "description": "Allows propagate the new user auto groups to peers that belongs to the user"
+                    },
+                    "jwtAllowGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of groups to which users are allowed access"
+                    },
+                    "jwtGroupsClaimName": {
+                        "type": "string",
+                        "description": "Name of the claim from which we extract groups names to add it to account groups."
+                    },
+                    "jwtGroupsEnabled": {
+                        "type": "boolean",
+                        "description": "Allows extract groups from JWT claim and add it to account groups."
+                    },
+                    "networkTrafficLogsEnabled": {
+                        "type": "boolean",
+                        "description": "Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored."
+                    },
+                    "networkTrafficPacketCounterEnabled": {
+                        "type": "boolean",
+                        "description": "Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)"
+                    },
+                    "peerApprovalEnabled": {
+                        "type": "boolean",
+                        "description": "(Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin."
+                    },
+                    "peerInactivityExpiration": {
+                        "type": "integer",
+                        "description": "Period of time of inactivity after which peer session expires (seconds)."
+                    },
+                    "peerInactivityExpirationEnabled": {
+                        "type": "boolean",
+                        "description": "Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login)."
+                    },
+                    "peerLoginExpiration": {
+                        "type": "integer",
+                        "description": "Period of time after which peer login expires (seconds)."
+                    },
+                    "peerLoginExpirationEnabled": {
+                        "type": "boolean",
+                        "description": "Enables or disables peer login expiration globally. After peer's login has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login)."
+                    },
+                    "regularUsersViewBlocked": {
+                        "type": "boolean",
+                        "description": "Allows blocking regular users from viewing parts of the system."
+                    },
+                    "routingPeerDnsResolutionEnabled": {
+                        "type": "boolean",
+                        "description": "Enables or disables DNS resolution on the routing peers"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/dnsSettings:DnsSettings": {
+            "properties": {
+                "disabledManagementGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Groups whose DNS management is disabled"
+                }
+            },
+            "required": [
+                "disabledManagementGroups"
+            ],
+            "inputProperties": {
+                "disabledManagementGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Groups whose DNS management is disabled"
+                }
+            },
+            "requiredInputs": [
+                "disabledManagementGroups"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering DnsSettings resources.\n",
+                "properties": {
+                    "disabledManagementGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Groups whose DNS management is disabled"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/group:Group": {
+            "properties": {
+                "issued": {
+                    "type": "string",
+                    "description": "Group issued by"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Group name identifier"
+                },
+                "peers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of peers ids"
+                },
+                "resources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of network resource ids"
+                }
+            },
+            "required": [
+                "issued",
+                "name",
+                "peers",
+                "resources"
+            ],
+            "inputProperties": {
+                "name": {
+                    "type": "string",
+                    "description": "Group name identifier"
+                },
+                "peers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of peers ids"
+                },
+                "resources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of network resource ids"
+                }
+            },
+            "requiredInputs": [
+                "name"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Group resources.\n",
+                "properties": {
+                    "issued": {
+                        "type": "string",
+                        "description": "Group issued by"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Group name identifier"
+                    },
+                    "peers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of peers ids"
+                    },
+                    "resources": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of network resource ids"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/nameserverGroup:NameserverGroup": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Description of the nameserver group"
+                },
+                "domains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Match domain list. It should be empty only if primary is true."
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Nameserver group status"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Distribution group IDs that defines group of peers that will use this nameserver group"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of nameserver group"
+                },
+                "nameservers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/NameserverGroupNameserver:NameserverGroupNameserver"
+                    },
+                    "description": "Nameserver list"
+                },
+                "primary": {
+                    "type": "boolean",
+                    "description": "Defines if a nameserver group is primary that resolves all domains. It should be true only if domains list is empty."
+                },
+                "searchDomainsEnabled": {
+                    "type": "boolean",
+                    "description": "Search domain status for match domains. It should be true only if domains list is not empty."
+                }
+            },
+            "required": [
+                "description",
+                "domains",
+                "enabled",
+                "groups",
+                "name",
+                "nameservers",
+                "primary",
+                "searchDomainsEnabled"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string",
+                    "description": "Description of the nameserver group"
+                },
+                "domains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Match domain list. It should be empty only if primary is true."
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Nameserver group status"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Distribution group IDs that defines group of peers that will use this nameserver group"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of nameserver group"
+                },
+                "nameservers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/NameserverGroupNameserver:NameserverGroupNameserver"
+                    },
+                    "description": "Nameserver list"
+                },
+                "primary": {
+                    "type": "boolean",
+                    "description": "Defines if a nameserver group is primary that resolves all domains. It should be true only if domains list is empty."
+                },
+                "searchDomainsEnabled": {
+                    "type": "boolean",
+                    "description": "Search domain status for match domains. It should be true only if domains list is not empty."
+                }
+            },
+            "requiredInputs": [
+                "groups",
+                "name",
+                "nameservers"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering NameserverGroup resources.\n",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the nameserver group"
+                    },
+                    "domains": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Match domain list. It should be empty only if primary is true."
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Nameserver group status"
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Distribution group IDs that defines group of peers that will use this nameserver group"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of nameserver group"
+                    },
+                    "nameservers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/netbird:index/NameserverGroupNameserver:NameserverGroupNameserver"
+                        },
+                        "description": "Nameserver list"
+                    },
+                    "primary": {
+                        "type": "boolean",
+                        "description": "Defines if a nameserver group is primary that resolves all domains. It should be true only if domains list is empty."
+                    },
+                    "searchDomainsEnabled": {
+                        "type": "boolean",
+                        "description": "Search domain status for match domains. It should be true only if domains list is not empty."
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/network:Network": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Network Description"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Network Name"
+                },
+                "policies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Policy IDs associated with resources inside this Network"
+                },
+                "resources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Network Resource IDs"
+                },
+                "routers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Network Router IDs"
+                }
+            },
+            "required": [
+                "description",
+                "name",
+                "policies",
+                "resources",
+                "routers"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string",
+                    "description": "Network Description"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Network Name"
+                }
+            },
+            "requiredInputs": [
+                "name"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Network resources.\n",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Network Description"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Network Name"
+                    },
+                    "policies": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Policy IDs associated with resources inside this Network"
+                    },
+                    "resources": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Network Resource IDs"
+                    },
+                    "routers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Network Router IDs"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/networkResource:NetworkResource": {
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "Network resource address (either a direct host like 1.1.1.1 or 1.1.1.1/32, or a subnet like 192.168.178.0/24, or domains like example.com and *.example.com)"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "NetworkResource Description"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "NetworkResource status"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs containing the resource"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "NetworkResource Name"
+                },
+                "networkId": {
+                    "type": "string",
+                    "description": "The unique identifier of a network"
+                }
+            },
+            "required": [
+                "address",
+                "description",
+                "enabled",
+                "groups",
+                "name",
+                "networkId"
+            ],
+            "inputProperties": {
+                "address": {
+                    "type": "string",
+                    "description": "Network resource address (either a direct host like 1.1.1.1 or 1.1.1.1/32, or a subnet like 192.168.178.0/24, or domains like example.com and *.example.com)"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "NetworkResource Description"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "NetworkResource status"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs containing the resource"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "NetworkResource Name"
+                },
+                "networkId": {
+                    "type": "string",
+                    "description": "The unique identifier of a network"
+                }
+            },
+            "requiredInputs": [
+                "address",
+                "groups",
+                "name",
+                "networkId"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering NetworkResource resources.\n",
+                "properties": {
+                    "address": {
+                        "type": "string",
+                        "description": "Network resource address (either a direct host like 1.1.1.1 or 1.1.1.1/32, or a subnet like 192.168.178.0/24, or domains like example.com and *.example.com)"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "NetworkResource Description"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "NetworkResource status"
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Group IDs containing the resource"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "NetworkResource Name"
+                    },
+                    "networkId": {
+                        "type": "string",
+                        "description": "The unique identifier of a network"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/networkRouter:NetworkRouter": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Network router status"
+                },
+                "masquerade": {
+                    "type": "boolean",
+                    "description": "Indicate if peer should masquerade traffic to this route's prefix"
+                },
+                "metric": {
+                    "type": "integer",
+                    "description": "Route metric number. Lowest number has higher priority"
+                },
+                "networkId": {
+                    "type": "string",
+                    "description": "The unique identifier of a network"
+                },
+                "peer": {
+                    "type": "string",
+                    "description": "Peer Identifier associated with route. This property can not be set together with peer_groups"
+                },
+                "peerGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                }
+            },
+            "required": [
+                "enabled",
+                "masquerade",
+                "metric",
+                "networkId"
+            ],
+            "inputProperties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Network router status"
+                },
+                "masquerade": {
+                    "type": "boolean",
+                    "description": "Indicate if peer should masquerade traffic to this route's prefix"
+                },
+                "metric": {
+                    "type": "integer",
+                    "description": "Route metric number. Lowest number has higher priority"
+                },
+                "networkId": {
+                    "type": "string",
+                    "description": "The unique identifier of a network"
+                },
+                "peer": {
+                    "type": "string",
+                    "description": "Peer Identifier associated with route. This property can not be set together with peer_groups"
+                },
+                "peerGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                }
+            },
+            "requiredInputs": [
+                "networkId"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering NetworkRouter resources.\n",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Network router status"
+                    },
+                    "masquerade": {
+                        "type": "boolean",
+                        "description": "Indicate if peer should masquerade traffic to this route's prefix"
+                    },
+                    "metric": {
+                        "type": "integer",
+                        "description": "Route metric number. Lowest number has higher priority"
+                    },
+                    "networkId": {
+                        "type": "string",
+                        "description": "The unique identifier of a network"
+                    },
+                    "peer": {
+                        "type": "string",
+                        "description": "Peer Identifier associated with route. This property can not be set together with peer_groups"
+                    },
+                    "peerGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/peer:Peer": {
+            "properties": {
+                "approvalRequired": {
+                    "type": "boolean",
+                    "description": "Indicates whether peer needs approval"
+                },
+                "cityName": {
+                    "type": "string",
+                    "description": "Peer city name"
+                },
+                "connected": {
+                    "type": "boolean",
+                    "description": "Peer Connection Status"
+                },
+                "connectionIp": {
+                    "type": "string",
+                    "description": "Peer Public IP"
+                },
+                "countryCode": {
+                    "type": "string",
+                    "description": "Peer country code"
+                },
+                "dnsLabel": {
+                    "type": "string",
+                    "description": "Peer DNS Label"
+                },
+                "extraDnsLabels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Peer extra DNS Labels"
+                },
+                "geonameId": {
+                    "type": "integer",
+                    "description": "Peer Location ID"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Peer groups"
+                },
+                "hostname": {
+                    "type": "string",
+                    "description": "Peer's HOSTNAME"
+                },
+                "inactivityExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Enable inactivity expiration for peer"
+                },
+                "ip": {
+                    "type": "string",
+                    "description": "Peer  IP"
+                },
+                "kernelVersion": {
+                    "type": "string",
+                    "description": "Peer Kernel Version"
+                },
+                "lastLogin": {
+                    "type": "string",
+                    "description": "Time of peer last login"
+                },
+                "lastSeen": {
+                    "type": "string",
+                    "description": "Peer Last Seen timedate"
+                },
+                "loginExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Indicates whether login expiration is enabled for peer"
+                },
+                "loginExpired": {
+                    "type": "boolean",
+                    "description": "Indicates whether peer login is expired"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Peer Name"
+                },
+                "os": {
+                    "type": "string",
+                    "description": "Peer OS"
+                },
+                "serialNumber": {
+                    "type": "string",
+                    "description": "Peer device serial number"
+                },
+                "sshEnabled": {
+                    "type": "boolean",
+                    "description": "Enable SSH to Peer"
+                },
+                "uiVersion": {
+                    "type": "string",
+                    "description": "Peer  UI Version"
+                },
+                "userId": {
+                    "type": "string",
+                    "description": "User ID of peer"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Peer  Version"
+                }
+            },
+            "required": [
+                "approvalRequired",
+                "cityName",
+                "connected",
+                "connectionIp",
+                "countryCode",
+                "dnsLabel",
+                "extraDnsLabels",
+                "geonameId",
+                "groups",
+                "hostname",
+                "inactivityExpirationEnabled",
+                "ip",
+                "kernelVersion",
+                "lastLogin",
+                "lastSeen",
+                "loginExpirationEnabled",
+                "loginExpired",
+                "name",
+                "os",
+                "serialNumber",
+                "sshEnabled",
+                "uiVersion",
+                "userId",
+                "version"
+            ],
+            "inputProperties": {
+                "approvalRequired": {
+                    "type": "boolean",
+                    "description": "Indicates whether peer needs approval"
+                },
+                "inactivityExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Enable inactivity expiration for peer"
+                },
+                "loginExpirationEnabled": {
+                    "type": "boolean",
+                    "description": "Indicates whether login expiration is enabled for peer"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Peer Name"
+                },
+                "sshEnabled": {
+                    "type": "boolean",
+                    "description": "Enable SSH to Peer"
+                }
+            },
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Peer resources.\n",
+                "properties": {
+                    "approvalRequired": {
+                        "type": "boolean",
+                        "description": "Indicates whether peer needs approval"
+                    },
+                    "cityName": {
+                        "type": "string",
+                        "description": "Peer city name"
+                    },
+                    "connected": {
+                        "type": "boolean",
+                        "description": "Peer Connection Status"
+                    },
+                    "connectionIp": {
+                        "type": "string",
+                        "description": "Peer Public IP"
+                    },
+                    "countryCode": {
+                        "type": "string",
+                        "description": "Peer country code"
+                    },
+                    "dnsLabel": {
+                        "type": "string",
+                        "description": "Peer DNS Label"
+                    },
+                    "extraDnsLabels": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Peer extra DNS Labels"
+                    },
+                    "geonameId": {
+                        "type": "integer",
+                        "description": "Peer Location ID"
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Peer groups"
+                    },
+                    "hostname": {
+                        "type": "string",
+                        "description": "Peer's HOSTNAME"
+                    },
+                    "inactivityExpirationEnabled": {
+                        "type": "boolean",
+                        "description": "Enable inactivity expiration for peer"
+                    },
+                    "ip": {
+                        "type": "string",
+                        "description": "Peer  IP"
+                    },
+                    "kernelVersion": {
+                        "type": "string",
+                        "description": "Peer Kernel Version"
+                    },
+                    "lastLogin": {
+                        "type": "string",
+                        "description": "Time of peer last login"
+                    },
+                    "lastSeen": {
+                        "type": "string",
+                        "description": "Peer Last Seen timedate"
+                    },
+                    "loginExpirationEnabled": {
+                        "type": "boolean",
+                        "description": "Indicates whether login expiration is enabled for peer"
+                    },
+                    "loginExpired": {
+                        "type": "boolean",
+                        "description": "Indicates whether peer login is expired"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Peer Name"
+                    },
+                    "os": {
+                        "type": "string",
+                        "description": "Peer OS"
+                    },
+                    "serialNumber": {
+                        "type": "string",
+                        "description": "Peer device serial number"
+                    },
+                    "sshEnabled": {
+                        "type": "boolean",
+                        "description": "Enable SSH to Peer"
+                    },
+                    "uiVersion": {
+                        "type": "string",
+                        "description": "Peer  UI Version"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "description": "User ID of peer"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Peer  Version"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/policy:Policy": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Policy Description"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Policy enabled"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Policy Name"
+                },
+                "rule": {
+                    "$ref": "#/types/netbird:index/PolicyRule:PolicyRule"
+                },
+                "sourcePostureChecks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Posture checks associated with policy"
+                }
+            },
+            "required": [
+                "description",
+                "enabled",
+                "name",
+                "sourcePostureChecks"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string",
+                    "description": "Policy Description"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Policy enabled"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Policy Name"
+                },
+                "rule": {
+                    "$ref": "#/types/netbird:index/PolicyRule:PolicyRule"
+                },
+                "sourcePostureChecks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Posture checks associated with policy"
+                }
+            },
+            "requiredInputs": [
+                "name"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Policy resources.\n",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Policy Description"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Policy enabled"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Policy Name"
+                    },
+                    "rule": {
+                        "$ref": "#/types/netbird:index/PolicyRule:PolicyRule"
+                    },
+                    "sourcePostureChecks": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Posture checks associated with policy"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/postureCheck:PostureCheck": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "PostureCheck description"
+                },
+                "geoLocationCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckGeoLocationCheck:PostureCheckGeoLocationCheck"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "PostureCheck Name"
+                },
+                "netbirdVersionCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckNetbirdVersionCheck:PostureCheckNetbirdVersionCheck"
+                },
+                "osVersionCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckOsVersionCheck:PostureCheckOsVersionCheck"
+                },
+                "peerNetworkRangeCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckPeerNetworkRangeCheck:PostureCheckPeerNetworkRangeCheck"
+                },
+                "processChecks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/PostureCheckProcessCheck:PostureCheckProcessCheck"
+                    }
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string",
+                    "description": "PostureCheck description"
+                },
+                "geoLocationCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckGeoLocationCheck:PostureCheckGeoLocationCheck"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "PostureCheck Name"
+                },
+                "netbirdVersionCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckNetbirdVersionCheck:PostureCheckNetbirdVersionCheck"
+                },
+                "osVersionCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckOsVersionCheck:PostureCheckOsVersionCheck"
+                },
+                "peerNetworkRangeCheck": {
+                    "$ref": "#/types/netbird:index/PostureCheckPeerNetworkRangeCheck:PostureCheckPeerNetworkRangeCheck"
+                },
+                "processChecks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/PostureCheckProcessCheck:PostureCheckProcessCheck"
+                    }
+                }
+            },
+            "requiredInputs": [
+                "name"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering PostureCheck resources.\n",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "PostureCheck description"
+                    },
+                    "geoLocationCheck": {
+                        "$ref": "#/types/netbird:index/PostureCheckGeoLocationCheck:PostureCheckGeoLocationCheck"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "PostureCheck Name"
+                    },
+                    "netbirdVersionCheck": {
+                        "$ref": "#/types/netbird:index/PostureCheckNetbirdVersionCheck:PostureCheckNetbirdVersionCheck"
+                    },
+                    "osVersionCheck": {
+                        "$ref": "#/types/netbird:index/PostureCheckOsVersionCheck:PostureCheckOsVersionCheck"
+                    },
+                    "peerNetworkRangeCheck": {
+                        "$ref": "#/types/netbird:index/PostureCheckPeerNetworkRangeCheck:PostureCheckPeerNetworkRangeCheck"
+                    },
+                    "processChecks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/netbird:index/PostureCheckProcessCheck:PostureCheckProcessCheck"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/route:Route": {
+            "properties": {
+                "accessControlGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Access control group identifier associated with route."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Route description"
+                },
+                "domains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Domain list to be dynamically resolved. Max of 32 domains can be added per route configuration. Conflicts with network"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Route status"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs containing routing peers"
+                },
+                "keepRoute": {
+                    "type": "boolean",
+                    "description": "Indicate if the route should be kept after a domain doesn't resolve that IP anymore"
+                },
+                "masquerade": {
+                    "type": "boolean",
+                    "description": "Indicate if peer should masquerade traffic to this route's prefix"
+                },
+                "metric": {
+                    "type": "integer",
+                    "description": "Route metric number. Lowest number has higher priority"
+                },
+                "network": {
+                    "type": "string",
+                    "description": "Network range in CIDR format, Conflicts with domains"
+                },
+                "networkId": {
+                    "type": "string",
+                    "description": "Route network identifier, to group HA routes"
+                },
+                "networkType": {
+                    "type": "string",
+                    "description": "Domain or IPv4"
+                },
+                "peer": {
+                    "type": "string",
+                    "description": "Peer Identifier associated with route. This property can not be set together with peer_groups"
+                },
+                "peerGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                }
+            },
+            "required": [
+                "description",
+                "enabled",
+                "groups",
+                "keepRoute",
+                "masquerade",
+                "metric",
+                "networkId",
+                "networkType"
+            ],
+            "inputProperties": {
+                "accessControlGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Access control group identifier associated with route."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Route description"
+                },
+                "domains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Domain list to be dynamically resolved. Max of 32 domains can be added per route configuration. Conflicts with network"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Route status"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs containing routing peers"
+                },
+                "keepRoute": {
+                    "type": "boolean",
+                    "description": "Indicate if the route should be kept after a domain doesn't resolve that IP anymore"
+                },
+                "masquerade": {
+                    "type": "boolean",
+                    "description": "Indicate if peer should masquerade traffic to this route's prefix"
+                },
+                "metric": {
+                    "type": "integer",
+                    "description": "Route metric number. Lowest number has higher priority"
+                },
+                "network": {
+                    "type": "string",
+                    "description": "Network range in CIDR format, Conflicts with domains"
+                },
+                "networkId": {
+                    "type": "string",
+                    "description": "Route network identifier, to group HA routes"
+                },
+                "peer": {
+                    "type": "string",
+                    "description": "Peer Identifier associated with route. This property can not be set together with peer_groups"
+                },
+                "peerGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                }
+            },
+            "requiredInputs": [
+                "groups",
+                "networkId"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Route resources.\n",
+                "properties": {
+                    "accessControlGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Access control group identifier associated with route."
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Route description"
+                    },
+                    "domains": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Domain list to be dynamically resolved. Max of 32 domains can be added per route configuration. Conflicts with network"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Route status"
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Group IDs containing routing peers"
+                    },
+                    "keepRoute": {
+                        "type": "boolean",
+                        "description": "Indicate if the route should be kept after a domain doesn't resolve that IP anymore"
+                    },
+                    "masquerade": {
+                        "type": "boolean",
+                        "description": "Indicate if peer should masquerade traffic to this route's prefix"
+                    },
+                    "metric": {
+                        "type": "integer",
+                        "description": "Route metric number. Lowest number has higher priority"
+                    },
+                    "network": {
+                        "type": "string",
+                        "description": "Network range in CIDR format, Conflicts with domains"
+                    },
+                    "networkId": {
+                        "type": "string",
+                        "description": "Route network identifier, to group HA routes"
+                    },
+                    "networkType": {
+                        "type": "string",
+                        "description": "Domain or IPv4"
+                    },
+                    "peer": {
+                        "type": "string",
+                        "description": "Peer Identifier associated with route. This property can not be set together with peer_groups"
+                    },
+                    "peerGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/setupKey:SetupKey": {
+            "properties": {
+                "allowExtraDnsLabels": {
+                    "type": "boolean",
+                    "description": "Allow extra DNS labels to be added to the peer"
+                },
+                "autoGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of groups to automatically assign to peers created through this setup key"
+                },
+                "ephemeral": {
+                    "type": "boolean",
+                    "description": "Indicate that the peer will be ephemeral or not, ephemeral peers are deleted after 10 minutes of inactivity"
+                },
+                "expires": {
+                    "type": "string",
+                    "description": "SetupKey Expiration Date"
+                },
+                "expirySeconds": {
+                    "type": "integer",
+                    "description": "Expiry time in seconds (0 is unlimited)"
+                },
+                "key": {
+                    "type": "string",
+                    "description": "Plaintext setup key",
+                    "secret": true
+                },
+                "lastUsed": {
+                    "type": "string",
+                    "description": "Last usage time"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "SetupKey Name"
+                },
+                "revoked": {
+                    "type": "boolean",
+                    "description": "Set to true to revoke setup key"
+                },
+                "state": {
+                    "type": "string",
+                    "description": "Setup key state (valid or expired)"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Setup Key type (one-off or reusable)"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "description": "Creation timestamp"
+                },
+                "usageLimit": {
+                    "type": "integer",
+                    "description": "Maximum number of times SetupKey can be used (0 for unlimited)"
+                },
+                "usedTimes": {
+                    "type": "integer",
+                    "description": "Number of times Setup Key was used"
+                },
+                "valid": {
+                    "type": "boolean",
+                    "description": "True if setup key can be used to create more Peers"
+                }
+            },
+            "required": [
+                "allowExtraDnsLabels",
+                "autoGroups",
+                "ephemeral",
+                "expires",
+                "expirySeconds",
+                "key",
+                "lastUsed",
+                "name",
+                "revoked",
+                "state",
+                "type",
+                "updatedAt",
+                "usageLimit",
+                "usedTimes",
+                "valid"
+            ],
+            "inputProperties": {
+                "allowExtraDnsLabels": {
+                    "type": "boolean",
+                    "description": "Allow extra DNS labels to be added to the peer"
+                },
+                "autoGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of groups to automatically assign to peers created through this setup key"
+                },
+                "ephemeral": {
+                    "type": "boolean",
+                    "description": "Indicate that the peer will be ephemeral or not, ephemeral peers are deleted after 10 minutes of inactivity"
+                },
+                "expirySeconds": {
+                    "type": "integer",
+                    "description": "Expiry time in seconds (0 is unlimited)"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "SetupKey Name"
+                },
+                "revoked": {
+                    "type": "boolean",
+                    "description": "Set to true to revoke setup key"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Setup Key type (one-off or reusable)"
+                },
+                "usageLimit": {
+                    "type": "integer",
+                    "description": "Maximum number of times SetupKey can be used (0 for unlimited)"
+                }
+            },
+            "requiredInputs": [
+                "name"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering SetupKey resources.\n",
+                "properties": {
+                    "allowExtraDnsLabels": {
+                        "type": "boolean",
+                        "description": "Allow extra DNS labels to be added to the peer"
+                    },
+                    "autoGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of groups to automatically assign to peers created through this setup key"
+                    },
+                    "ephemeral": {
+                        "type": "boolean",
+                        "description": "Indicate that the peer will be ephemeral or not, ephemeral peers are deleted after 10 minutes of inactivity"
+                    },
+                    "expires": {
+                        "type": "string",
+                        "description": "SetupKey Expiration Date"
+                    },
+                    "expirySeconds": {
+                        "type": "integer",
+                        "description": "Expiry time in seconds (0 is unlimited)"
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": "Plaintext setup key",
+                        "secret": true
+                    },
+                    "lastUsed": {
+                        "type": "string",
+                        "description": "Last usage time"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "SetupKey Name"
+                    },
+                    "revoked": {
+                        "type": "boolean",
+                        "description": "Set to true to revoke setup key"
+                    },
+                    "state": {
+                        "type": "string",
+                        "description": "Setup key state (valid or expired)"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Setup Key type (one-off or reusable)"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "description": "Creation timestamp"
+                    },
+                    "usageLimit": {
+                        "type": "integer",
+                        "description": "Maximum number of times SetupKey can be used (0 for unlimited)"
+                    },
+                    "usedTimes": {
+                        "type": "integer",
+                        "description": "Number of times Setup Key was used"
+                    },
+                    "valid": {
+                        "type": "boolean",
+                        "description": "True if setup key can be used to create more Peers"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/token:Token": {
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "description": "Creation timestamp"
+                },
+                "expirationDate": {
+                    "type": "string",
+                    "description": "Token Expiration Date"
+                },
+                "expirationDays": {
+                    "type": "integer"
+                },
+                "lastUsed": {
+                    "type": "string",
+                    "description": "Last usage time"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Token Name"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "Plaintext token",
+                    "secret": true
+                },
+                "userId": {
+                    "type": "string",
+                    "description": "User ID"
+                }
+            },
+            "required": [
+                "createdAt",
+                "expirationDate",
+                "expirationDays",
+                "lastUsed",
+                "name",
+                "token",
+                "userId"
+            ],
+            "inputProperties": {
+                "expirationDays": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Token Name"
+                },
+                "userId": {
+                    "type": "string",
+                    "description": "User ID"
+                }
+            },
+            "requiredInputs": [
+                "expirationDays",
+                "name",
+                "userId"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Token resources.\n",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "description": "Creation timestamp"
+                    },
+                    "expirationDate": {
+                        "type": "string",
+                        "description": "Token Expiration Date"
+                    },
+                    "expirationDays": {
+                        "type": "integer"
+                    },
+                    "lastUsed": {
+                        "type": "string",
+                        "description": "Last usage time"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Token Name"
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "Plaintext token",
+                        "secret": true
+                    },
+                    "userId": {
+                        "type": "string",
+                        "description": "User ID"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/user:User": {
+            "properties": {
+                "autoGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs to auto-assign to peers registered by this user"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User Email"
+                },
+                "isBlocked": {
+                    "type": "boolean",
+                    "description": "If set to true then user is blocked and can't use the system"
+                },
+                "isCurrent": {
+                    "type": "boolean",
+                    "description": "Set to true if the caller user is the same as the resource user"
+                },
+                "isServiceUser": {
+                    "type": "boolean",
+                    "description": "If set to true, creates a Service Account User"
+                },
+                "issued": {
+                    "type": "string",
+                    "description": "User issue method"
+                },
+                "lastLogin": {
+                    "type": "string",
+                    "description": "User Last Login timedate"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User Name"
+                },
+                "role": {
+                    "type": "string",
+                    "description": "User's NetBird account role (owner|admin|user|billing_admin|auditor|network_admin)."
+                },
+                "status": {
+                    "type": "string",
+                    "description": "User status (active or invited)"
+                }
+            },
+            "required": [
+                "autoGroups",
+                "email",
+                "isBlocked",
+                "isCurrent",
+                "isServiceUser",
+                "issued",
+                "lastLogin",
+                "name",
+                "role",
+                "status"
+            ],
+            "inputProperties": {
+                "autoGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs to auto-assign to peers registered by this user"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User Email"
+                },
+                "isBlocked": {
+                    "type": "boolean",
+                    "description": "If set to true then user is blocked and can't use the system"
+                },
+                "isServiceUser": {
+                    "type": "boolean",
+                    "description": "If set to true, creates a Service Account User"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User Name"
+                },
+                "role": {
+                    "type": "string",
+                    "description": "User's NetBird account role (owner|admin|user|billing_admin|auditor|network_admin)."
+                }
+            },
+            "requiredInputs": [
+                "isServiceUser"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering User resources.\n",
+                "properties": {
+                    "autoGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Group IDs to auto-assign to peers registered by this user"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "User Email"
+                    },
+                    "isBlocked": {
+                        "type": "boolean",
+                        "description": "If set to true then user is blocked and can't use the system"
+                    },
+                    "isCurrent": {
+                        "type": "boolean",
+                        "description": "Set to true if the caller user is the same as the resource user"
+                    },
+                    "isServiceUser": {
+                        "type": "boolean",
+                        "description": "If set to true, creates a Service Account User"
+                    },
+                    "issued": {
+                        "type": "string",
+                        "description": "User issue method"
+                    },
+                    "lastLogin": {
+                        "type": "string",
+                        "description": "User Last Login timedate"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "User Name"
+                    },
+                    "role": {
+                        "type": "string",
+                        "description": "User's NetBird account role (owner|admin|user|billing_admin|auditor|network_admin)."
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "User status (active or invited)"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "functions": {
+        "netbird:index/getAccountSettings:getAccountSettings": {
+            "outputs": {
+                "description": "A collection of values returned by getAccountSettings.\n",
+                "properties": {
+                    "groupsPropagationEnabled": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "jwtAllowGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "jwtGroupsClaimName": {
+                        "type": "string"
+                    },
+                    "jwtGroupsEnabled": {
+                        "type": "boolean"
+                    },
+                    "networkTrafficLogsEnabled": {
+                        "type": "boolean"
+                    },
+                    "networkTrafficPacketCounterEnabled": {
+                        "type": "boolean"
+                    },
+                    "peerApprovalEnabled": {
+                        "type": "boolean"
+                    },
+                    "peerInactivityExpiration": {
+                        "type": "integer"
+                    },
+                    "peerInactivityExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "peerLoginExpiration": {
+                        "type": "integer"
+                    },
+                    "peerLoginExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "regularUsersViewBlocked": {
+                        "type": "boolean"
+                    },
+                    "routingPeerDnsResolutionEnabled": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "groupsPropagationEnabled",
+                    "id",
+                    "jwtAllowGroups",
+                    "jwtGroupsClaimName",
+                    "jwtGroupsEnabled",
+                    "networkTrafficLogsEnabled",
+                    "networkTrafficPacketCounterEnabled",
+                    "peerApprovalEnabled",
+                    "peerInactivityExpiration",
+                    "peerInactivityExpirationEnabled",
+                    "peerLoginExpiration",
+                    "peerLoginExpirationEnabled",
+                    "regularUsersViewBlocked",
+                    "routingPeerDnsResolutionEnabled"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getDnsSettings:getDnsSettings": {
+            "outputs": {
+                "description": "A collection of values returned by getDnsSettings.\n",
+                "properties": {
+                    "disabledManagementGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "description": "The provider-assigned unique ID for this managed resource.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "disabledManagementGroups",
+                    "id"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getGroup:getGroup": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getGroup.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getGroup.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "issued": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "peers": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "resources": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "id",
+                    "issued",
+                    "name",
+                    "peers",
+                    "resources"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getNameserverGroup:getNameserverGroup": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getNameserverGroup.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getNameserverGroup.\n",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "domains": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "groups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nameservers": {
+                        "items": {
+                            "$ref": "#/types/netbird:index/getNameserverGroupNameserver:getNameserverGroupNameserver"
+                        },
+                        "type": "array"
+                    },
+                    "primary": {
+                        "type": "boolean"
+                    },
+                    "searchDomainsEnabled": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "description",
+                    "domains",
+                    "enabled",
+                    "groups",
+                    "id",
+                    "name",
+                    "nameservers",
+                    "primary",
+                    "searchDomainsEnabled"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getNetwork:getNetwork": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getNetwork.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getNetwork.\n",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "policies": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "resources": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "routers": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "description",
+                    "id",
+                    "name",
+                    "policies",
+                    "resources",
+                    "routers"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getNetworkResource:getNetworkResource": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getNetworkResource.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "networkId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "networkId"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getNetworkResource.\n",
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "groups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "networkId": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "address",
+                    "description",
+                    "enabled",
+                    "groups",
+                    "id",
+                    "name",
+                    "networkId"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getNetworkRouter:getNetworkRouter": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getNetworkRouter.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "networkId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "networkId"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getNetworkRouter.\n",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "masquerade": {
+                        "type": "boolean"
+                    },
+                    "metric": {
+                        "type": "integer"
+                    },
+                    "networkId": {
+                        "type": "string"
+                    },
+                    "peer": {
+                        "type": "string"
+                    },
+                    "peerGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "enabled",
+                    "id",
+                    "masquerade",
+                    "metric",
+                    "networkId",
+                    "peer",
+                    "peerGroups"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getPeer:getPeer": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getPeer.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "ip": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getPeer.\n",
+                "properties": {
+                    "approvalRequired": {
+                        "type": "boolean"
+                    },
+                    "cityName": {
+                        "type": "string"
+                    },
+                    "connected": {
+                        "type": "boolean"
+                    },
+                    "connectionIp": {
+                        "type": "string"
+                    },
+                    "countryCode": {
+                        "type": "string"
+                    },
+                    "dnsLabel": {
+                        "type": "string"
+                    },
+                    "extraDnsLabels": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "geonameId": {
+                        "type": "integer"
+                    },
+                    "groups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "inactivityExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "ip": {
+                        "type": "string"
+                    },
+                    "kernelVersion": {
+                        "type": "string"
+                    },
+                    "lastLogin": {
+                        "type": "string"
+                    },
+                    "lastSeen": {
+                        "type": "string"
+                    },
+                    "loginExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "loginExpired": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "os": {
+                        "type": "string"
+                    },
+                    "serialNumber": {
+                        "type": "string"
+                    },
+                    "sshEnabled": {
+                        "type": "boolean"
+                    },
+                    "uiVersion": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "approvalRequired",
+                    "cityName",
+                    "connected",
+                    "connectionIp",
+                    "countryCode",
+                    "dnsLabel",
+                    "extraDnsLabels",
+                    "geonameId",
+                    "groups",
+                    "hostname",
+                    "id",
+                    "inactivityExpirationEnabled",
+                    "ip",
+                    "kernelVersion",
+                    "lastLogin",
+                    "lastSeen",
+                    "loginExpirationEnabled",
+                    "loginExpired",
+                    "name",
+                    "os",
+                    "serialNumber",
+                    "sshEnabled",
+                    "uiVersion",
+                    "userId",
+                    "version"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getPeers:getPeers": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getPeers.\n",
+                "properties": {
+                    "approvalRequired": {
+                        "type": "boolean"
+                    },
+                    "cityName": {
+                        "type": "string"
+                    },
+                    "connected": {
+                        "type": "boolean"
+                    },
+                    "connectionIp": {
+                        "type": "string"
+                    },
+                    "countryCode": {
+                        "type": "string"
+                    },
+                    "dnsLabel": {
+                        "type": "string"
+                    },
+                    "extraDnsLabels": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "geonameId": {
+                        "type": "integer"
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "inactivityExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "ip": {
+                        "type": "string"
+                    },
+                    "loginExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "loginExpired": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "os": {
+                        "type": "string"
+                    },
+                    "sshEnabled": {
+                        "type": "boolean"
+                    },
+                    "userId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getPeers.\n",
+                "properties": {
+                    "approvalRequired": {
+                        "type": "boolean"
+                    },
+                    "cityName": {
+                        "type": "string"
+                    },
+                    "connected": {
+                        "type": "boolean"
+                    },
+                    "connectionIp": {
+                        "type": "string"
+                    },
+                    "countryCode": {
+                        "type": "string"
+                    },
+                    "dnsLabel": {
+                        "type": "string"
+                    },
+                    "extraDnsLabels": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "geonameId": {
+                        "type": "integer"
+                    },
+                    "groups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "The provider-assigned unique ID for this managed resource.",
+                        "type": "string"
+                    },
+                    "ids": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "inactivityExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "ip": {
+                        "type": "string"
+                    },
+                    "kernelVersion": {
+                        "type": "string"
+                    },
+                    "lastLogin": {
+                        "type": "string"
+                    },
+                    "lastSeen": {
+                        "type": "string"
+                    },
+                    "loginExpirationEnabled": {
+                        "type": "boolean"
+                    },
+                    "loginExpired": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "os": {
+                        "type": "string"
+                    },
+                    "serialNumber": {
+                        "type": "string"
+                    },
+                    "sshEnabled": {
+                        "type": "boolean"
+                    },
+                    "uiVersion": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "approvalRequired",
+                    "cityName",
+                    "connected",
+                    "connectionIp",
+                    "countryCode",
+                    "dnsLabel",
+                    "extraDnsLabels",
+                    "geonameId",
+                    "groups",
+                    "hostname",
+                    "ids",
+                    "inactivityExpirationEnabled",
+                    "ip",
+                    "kernelVersion",
+                    "lastLogin",
+                    "lastSeen",
+                    "loginExpirationEnabled",
+                    "loginExpired",
+                    "name",
+                    "os",
+                    "serialNumber",
+                    "sshEnabled",
+                    "uiVersion",
+                    "userId",
+                    "version",
+                    "id"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getPolicy:getPolicy": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getPolicy.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "rules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/netbird:index/getPolicyRule:getPolicyRule"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getPolicy.\n",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "rules": {
+                        "items": {
+                            "$ref": "#/types/netbird:index/getPolicyRule:getPolicyRule"
+                        },
+                        "type": "array"
+                    },
+                    "sourcePostureChecks": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "description",
+                    "enabled",
+                    "id",
+                    "name",
+                    "sourcePostureChecks"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getPostureCheck:getPostureCheck": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getPostureCheck.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getPostureCheck.\n",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "geoLocationCheck": {
+                        "$ref": "#/types/netbird:index/getPostureCheckGeoLocationCheck:getPostureCheckGeoLocationCheck"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "netbirdVersionCheck": {
+                        "$ref": "#/types/netbird:index/getPostureCheckNetbirdVersionCheck:getPostureCheckNetbirdVersionCheck"
+                    },
+                    "osVersionCheck": {
+                        "$ref": "#/types/netbird:index/getPostureCheckOsVersionCheck:getPostureCheckOsVersionCheck"
+                    },
+                    "peerNetworkRangeCheck": {
+                        "$ref": "#/types/netbird:index/getPostureCheckPeerNetworkRangeCheck:getPostureCheckPeerNetworkRangeCheck"
+                    },
+                    "processChecks": {
+                        "items": {
+                            "$ref": "#/types/netbird:index/getPostureCheckProcessCheck:getPostureCheckProcessCheck"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "description",
+                    "geoLocationCheck",
+                    "id",
+                    "name",
+                    "netbirdVersionCheck",
+                    "osVersionCheck",
+                    "peerNetworkRangeCheck",
+                    "processChecks"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getRoute:getRoute": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getRoute.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "networkId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getRoute.\n",
+                "properties": {
+                    "accessControlGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "domains": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "groups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "keepRoute": {
+                        "type": "boolean"
+                    },
+                    "masquerade": {
+                        "type": "boolean"
+                    },
+                    "metric": {
+                        "type": "integer"
+                    },
+                    "network": {
+                        "type": "string"
+                    },
+                    "networkId": {
+                        "type": "string"
+                    },
+                    "networkType": {
+                        "type": "string"
+                    },
+                    "peer": {
+                        "type": "string"
+                    },
+                    "peerGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "accessControlGroups",
+                    "description",
+                    "domains",
+                    "enabled",
+                    "groups",
+                    "id",
+                    "keepRoute",
+                    "masquerade",
+                    "metric",
+                    "network",
+                    "networkId",
+                    "networkType",
+                    "peer",
+                    "peerGroups"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getSetupKey:getSetupKey": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getSetupKey.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getSetupKey.\n",
+                "properties": {
+                    "allowExtraDnsLabels": {
+                        "type": "boolean"
+                    },
+                    "autoGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "ephemeral": {
+                        "type": "boolean"
+                    },
+                    "expires": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "lastUsed": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "revoked": {
+                        "type": "boolean"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "type": "string"
+                    },
+                    "usageLimit": {
+                        "type": "integer"
+                    },
+                    "usedTimes": {
+                        "type": "integer"
+                    },
+                    "valid": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "allowExtraDnsLabels",
+                    "autoGroups",
+                    "ephemeral",
+                    "expires",
+                    "id",
+                    "lastUsed",
+                    "name",
+                    "revoked",
+                    "state",
+                    "type",
+                    "updatedAt",
+                    "usageLimit",
+                    "usedTimes",
+                    "valid"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getToken:getToken": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getToken.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "userId"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getToken.\n",
+                "properties": {
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "expirationDate": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "lastUsed": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "createdAt",
+                    "expirationDate",
+                    "id",
+                    "lastUsed",
+                    "name",
+                    "userId"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getUser:getUser": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getUser.\n",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getUser.\n",
+                "properties": {
+                    "autoGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "isBlocked": {
+                        "type": "boolean"
+                    },
+                    "isCurrent": {
+                        "type": "boolean"
+                    },
+                    "isServiceUser": {
+                        "type": "boolean"
+                    },
+                    "issued": {
+                        "type": "string"
+                    },
+                    "lastLogin": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "autoGroups",
+                    "email",
+                    "id",
+                    "isBlocked",
+                    "isCurrent",
+                    "isServiceUser",
+                    "issued",
+                    "lastLogin",
+                    "name",
+                    "role",
+                    "status"
+                ],
+                "type": "object"
+            }
+        },
+        "pulumi:providers:netbird/terraformConfig": {
+            "description": "This function returns a Terraform config object with terraform-namecased keys,to be used with the Terraform Module Provider.",
+            "inputs": {
+                "properties": {
+                    "__self__": {
+                        "type": "ref",
+                        "$ref": "#/provider"
+                    }
+                },
+                "type": "pulumi:providers:netbird/terraformConfig",
+                "required": [
+                    "__self__"
+                ]
+            },
+            "outputs": {
+                "properties": {
+                    "result": {
+                        "additionalProperties": {
+                            "$ref": "pulumi.json#/Any"
+                        },
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "result"
+                ],
+                "type": "object"
+            }
+        }
+    }
+}
