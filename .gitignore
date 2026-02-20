@@ -1,0 +1,45 @@
+# Binaries and build artifacts
+bin/
+
+# Pulumi and Terraform state
+.pulumi/
+.terraform/
+
+# Common OS files
+.DS_Store
+
+# Common IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Go
+sdk/go/bin/
+sdk/go/vendor/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Python
+sdk/python/__pycache__/
+sdk/python/*.egg-info/
+sdk/python/*.dist-info/
+sdk/python/build/
+sdk/python/dist/
+
+# .NET
+sdk/dotnet/bin/
+sdk/dotnet/obj/
+
+# Java
+sdk/java/.gradle/
+sdk/java/build/
+sdk/java/bin/
+sdk/java/out/
+
+# Temporary files
+.output.txt
