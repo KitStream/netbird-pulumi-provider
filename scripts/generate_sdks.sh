@@ -18,7 +18,17 @@ echo "Generating SDKs with version: $VERSION"
 # Ensure version.txt exists for .NET SDK
 echo "$VERSION" > sdk/dotnet/version.txt
 
-# Post-process package.json for Node.js if needed (though tfgen usually handles some parts)
-# sed -i "s/\${VERSION}/$VERSION/g" sdk/nodejs/package.json 2>/dev/null || true
+# Post-process Java SDK to fix Gradle issues
+echo "Post-processing Java SDK..."
+# 1. Fix Java version to 17 (tfgen defaults to 11)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' 's/languageVersion = JavaLanguageVersion.of(11)/languageVersion = JavaLanguageVersion.of(17)/' sdk/java/build.gradle
+  # 2. Fix non-existent lib project in settings.gradle
+  sed -i '' 's/include("lib")/\/\/ include("lib")/' sdk/java/settings.gradle
+else
+  sed -i 's/languageVersion = JavaLanguageVersion.of(11)/languageVersion = JavaLanguageVersion.of(17)/' sdk/java/build.gradle
+  # 2. Fix non-existent lib project in settings.gradle
+  sed -i 's/include("lib")/\/\/ include("lib")/' sdk/java/settings.gradle
+fi
 
 echo "SDK generation complete."
