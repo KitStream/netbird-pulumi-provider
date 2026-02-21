@@ -8,5 +8,5 @@ import (
 var version string
 
 func main() {
-	tfgen.Main("netbird", version, netbird.Provider())
+	tfgen.Main("netbird", version, netbird.Provider(version))
 }

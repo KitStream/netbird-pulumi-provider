@@ -18,7 +18,7 @@ const (
 )
 
 // Provider returns additional overlaid control over the Terraform provider
-func Provider() tfbridge.ProviderInfo {
+func Provider(version string) tfbridge.ProviderInfo {
 	// Instantiate the Terraform provider
 	p := pftfbridge.ShimProvider(provider.New("0.0.7")())
 
@@ -33,6 +33,7 @@ func Provider() tfbridge.ProviderInfo {
 		Homepage:    "https://netbird.io",
 		Repository:  "https://github.com/KitStream/pulumi-netbird",
 		Publisher:   "KitStream",
+		Version:     version,
 		Config:      map[string]*tfbridge.SchemaInfo{
 			// Add any custom config mapping here
 		},

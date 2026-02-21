@@ -34,6 +34,7 @@ sdk/python/dist/
 # .NET
 sdk/dotnet/bin/
 sdk/dotnet/obj/
+sdk/dotnet/version.txt
 
 # Java
 sdk/java/.gradle/

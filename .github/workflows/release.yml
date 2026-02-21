@@ -61,12 +61,7 @@ jobs:
           go build -ldflags "-X main.version=${{ steps.get_version.outputs.VERSION }}" -o ../bin/pulumi-resource-netbird ./cmd/pulumi-resource-netbird
 
       - name: Generate SDKs
-        run: |
-          ./bin/pulumi-tfgen-netbird go --out sdk/go
-          ./bin/pulumi-tfgen-netbird nodejs --out sdk/nodejs
-          ./bin/pulumi-tfgen-netbird python --out sdk/python
-          ./bin/pulumi-tfgen-netbird dotnet --out sdk/dotnet
-          ./bin/pulumi-tfgen-netbird java --out sdk/java
+        run: ./scripts/generate_sdks.sh ${{ steps.get_version.outputs.VERSION }}
 
       - name: Publish Node.js SDK
         run: |
