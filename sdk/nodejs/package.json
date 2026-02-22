@@ -1,6 +1,6 @@
 {
     "name": "@pulumi/netbird",
-    "version": "0.0.1",
+    "version": "${VERSION}",
     "description": "A Pulumi package for creating and managing netbird cloud resources.",
     "keywords": [
         "pulumi",
@@ -9,10 +9,8 @@
     "homepage": "https://netbird.io",
     "repository": "https://github.com/KitStream/netbird-pulumi-provider",
     "license": "Apache-2.0",
-    "main": "bin/index.js",
-    "types": "bin/index.d.ts",
     "scripts": {
-        "build": "tsc && cp package.json bin/"
+        "build": "tsc"
     },
     "dependencies": {
         "@pulumi/pulumi": "^3.0.0"
@@ -24,6 +22,7 @@
     },
     "pulumi": {
         "resource": true,
-        "name": "netbird"
+        "name": "netbird",
+        "server": "github://api.github.com/KitStream/netbird-pulumi-provider"
     }
 }

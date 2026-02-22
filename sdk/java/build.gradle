@@ -70,6 +70,7 @@ def genPulumiResources = tasks.register('genPulumiResources') {
         builder {
             resource true
             name "netbird"
+            server "github://api.github.com/KitStream/netbird-pulumi-provider"
             version resolvedVersion
         }
         def infoJson = builder.toPrettyString()

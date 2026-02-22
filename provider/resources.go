@@ -28,18 +28,19 @@ func Provider(version string) tfbridge.ProviderInfo {
 
 	// Create a Pulumi provider control struct
 	prov := tfbridge.ProviderInfo{
-		P:            p,
-		Name:         "netbird",
-		GitHubOrg:    "netbirdio",
-		Description:  "A Pulumi package for creating and managing netbird cloud resources.",
-		Keywords:     []string{"pulumi", "netbird"},
-		License:      "Apache-2.0",
-		Homepage:     "https://netbird.io",
-		Repository:   "https://github.com/KitStream/netbird-pulumi-provider",
-		Publisher:    "KitStream",
-		Version:      version,
-		MetadataInfo: tfbridge.NewProviderMetadata([]byte("{}")),
-		Config:       map[string]*tfbridge.SchemaInfo{
+		P:                 p,
+		Name:              "netbird",
+		GitHubOrg:         "netbirdio",
+		Description:       "A Pulumi package for creating and managing netbird cloud resources.",
+		Keywords:          []string{"pulumi", "netbird"},
+		License:           "Apache-2.0",
+		Homepage:          "https://netbird.io",
+		Repository:        "https://github.com/KitStream/netbird-pulumi-provider",
+		Publisher:         "KitStream",
+		PluginDownloadURL: "github://api.github.com/KitStream/netbird-pulumi-provider",
+		Version:           version,
+		MetadataInfo:      tfbridge.NewProviderMetadata([]byte("{}")),
+		Config:            map[string]*tfbridge.SchemaInfo{
 			// Add any custom config mapping here
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
@@ -111,6 +112,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 			PackageReferences: map[string]string{
 				"Pulumi": "3.*",
 			},
+			RootNamespace: "Pulumi.KitStream",
 		},
 		Java: &tfbridge.JavaInfo{
 			BasePackage: "com.netbird",

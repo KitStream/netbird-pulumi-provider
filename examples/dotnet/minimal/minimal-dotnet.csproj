@@ -7,6 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="Pulumi" Version="3.*" />
-    <ProjectReference Include="../../../sdk/dotnet/Pulumi.Netbird.csproj" />
+    <ProjectReference Include="../../../sdk/dotnet/Pulumi.KitStream.Netbird.csproj" />
   </ItemGroup>
 </Project>

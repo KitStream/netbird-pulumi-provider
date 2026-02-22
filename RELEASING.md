@@ -58,7 +58,7 @@ npm supports **Trusted Publishing** via GitHub Actions, which is more secure tha
     *   **Key Name**: `netbird-pulumi-release`.
     *   **Key Owner**: Select the **KitStream** organization (not your personal account).
     *   **Scopes**: Ensure **"Push"** is selected.
-    *   **Glob Pattern**: Use `*` (or `Pulumi.Netbird`).
+    *   **Glob Pattern**: Use `*` (or `Pulumi.KitStream.Netbird`).
     *   **Copy the key** for the `NUGET_PUBLISH_KEY` secret.
 
 ### Java (Maven Central / OSSRH)

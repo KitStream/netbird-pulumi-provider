@@ -30,6 +30,8 @@ sdk/python/*.egg-info/
 sdk/python/*.dist-info/
 sdk/python/build/
 sdk/python/dist/
+venv/
+.venv/
 
 # .NET
 sdk/dotnet/bin/

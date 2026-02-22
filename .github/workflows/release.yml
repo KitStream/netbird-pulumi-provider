@@ -8,6 +8,9 @@ jobs:
   publish_sdk:
     name: Publish SDKs
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     strategy:
       matrix:
         go-version: [1.24.x]
@@ -69,7 +72,7 @@ jobs:
           npm install
           npm run build
           npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version
-          npm publish --access public
+          npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

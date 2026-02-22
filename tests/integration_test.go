@@ -297,7 +297,7 @@ func TestDotNet_Minimal_LocalStack(t *testing.T) {
 	opts := baseOptions(t)
 	opts.Dir = filepath.Join("..", "examples", "dotnet", "minimal")
 	opts.PrePrepareProject = func(proj *engine.Projinfo) error {
-		absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "dotnet", "Pulumi.Netbird.csproj"))
+		absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "dotnet", "Pulumi.KitStream.Netbird.csproj"))
 		if err != nil {
 			return err
 		}
@@ -306,7 +306,7 @@ func TestDotNet_Minimal_LocalStack(t *testing.T) {
 		if err != nil {
 			return err
 		}
-		newContent := strings.Replace(string(content), "../../../sdk/dotnet/Pulumi.Netbird.csproj", absSdkPath, 1)
+		newContent := strings.Replace(string(content), "../../../sdk/dotnet/Pulumi.KitStream.Netbird.csproj", absSdkPath, 1)
 		return os.WriteFile(csprojPath, []byte(newContent), 0644)
 	}
 	opts.ExtraRuntimeValidation = validateGroupName("Pulumi DotNet Test Group")

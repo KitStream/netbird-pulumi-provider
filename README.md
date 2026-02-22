@@ -11,7 +11,7 @@ The following SDKs are available and automatically updated:
 - **NodeJS** (`@pulumi/netbird` on npm)
 - **Python** (`pulumi_netbird` on PyPI)
 - **Go** (`github.com/KitStream/netbird-pulumi-provider/sdk/go/index`)
-- **.NET** (`Pulumi.Netbird` on NuGet)
+- **.NET** (`Pulumi.KitStream.Netbird` on NuGet)
 - **Java** (`com.netbird:netbird` on Maven Central)
 
 ## Installation
@@ -49,6 +49,19 @@ You can set these using `pulumi config set`:
 pulumi config set netbird:token YOUR_PAT --secret
 pulumi config set netbird:managementUrl https://api.netbird.io
 ```
+
+## Local Development
+
+If you are developing or testing the provider locally, you can use the provided Python virtual environment to avoid conflicts with your system Python (e.g., Homebrew).
+
+### Python Setup
+A virtual environment is configured in the root directory. To activate it:
+
+```bash
+source .venv/bin/activate
+```
+
+This environment has the local Python SDK installed in editable mode, along with all necessary dependencies for running the examples.
 
 ## Documentation
 
