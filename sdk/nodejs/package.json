@@ -1,5 +1,5 @@
 {
-    "name": "@pulumi/netbird",
+    "name": "@kitstream/netbird",
     "version": "${VERSION}",
     "description": "A Pulumi package for creating and managing netbird cloud resources.",
     "keywords": [
