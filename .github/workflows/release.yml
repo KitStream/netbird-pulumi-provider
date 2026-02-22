@@ -33,7 +33,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -68,10 +69,9 @@ jobs:
       - name: Publish Node.js SDK
         run: |
           cd sdk/nodejs
-          npm install
-          npm run build
+          npm ci
+          npm run build --if-present
           npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version
-          mkdir -p bin && cp package.json bin/
           npm publish --access public --provenance
 
       - name: Build Python SDK
