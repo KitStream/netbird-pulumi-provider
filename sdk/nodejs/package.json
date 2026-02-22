@@ -11,7 +11,8 @@
     "homepage": "https://netbird.io",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/KitStream/netbird-pulumi-provider.git"
+        "url": "git+https://github.com/KitStream/netbird-pulumi-provider.git",
+        "directory": "sdk/nodejs"
     },
     "license": "Apache-2.0",
     "scripts": {
