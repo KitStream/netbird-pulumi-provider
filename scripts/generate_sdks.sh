@@ -25,10 +25,20 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   sed -i '' 's/languageVersion = JavaLanguageVersion.of(11)/languageVersion = JavaLanguageVersion.of(17)/' sdk/java/build.gradle
   # 2. Fix non-existent lib project in settings.gradle
   sed -i '' 's/include("lib")/\/\/ include("lib")/' sdk/java/settings.gradle
+  # 3. Fix Gradle group and publication
+  sed -i '' 's/group = "com.netbird"/group = "io.github.kitstream"/' sdk/java/build.gradle
+  sed -i '' 's/groupId = "com.netbird"/groupId = project.group/' sdk/java/build.gradle
+  sed -i '' 's/publishRepoUsername = System.getenv("PUBLISH_REPO_USERNAME")/publishRepoUsername = System.getenv("MAVEN_USERNAME")/' sdk/java/build.gradle
+  sed -i '' 's/publishRepoPassword = System.getenv("PUBLISH_REPO_PASSWORD")/publishRepoPassword = System.getenv("MAVEN_PASSWORD")/' sdk/java/build.gradle
 else
   sed -i 's/languageVersion = JavaLanguageVersion.of(11)/languageVersion = JavaLanguageVersion.of(17)/' sdk/java/build.gradle
   # 2. Fix non-existent lib project in settings.gradle
   sed -i 's/include("lib")/\/\/ include("lib")/' sdk/java/settings.gradle
+  # 3. Fix Gradle group and publication
+  sed -i 's/group = "com.netbird"/group = "io.github.kitstream"/' sdk/java/build.gradle
+  sed -i 's/groupId = "com.netbird"/groupId = project.group/' sdk/java/build.gradle
+  sed -i 's/publishRepoUsername = System.getenv("PUBLISH_REPO_USERNAME")/publishRepoUsername = System.getenv("MAVEN_USERNAME")/' sdk/java/build.gradle
+  sed -i 's/publishRepoPassword = System.getenv("PUBLISH_REPO_PASSWORD")/publishRepoPassword = System.getenv("MAVEN_PASSWORD")/' sdk/java/build.gradle
 fi
 
 echo "SDK generation complete."
