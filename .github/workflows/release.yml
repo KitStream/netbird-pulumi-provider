@@ -107,7 +107,7 @@ jobs:
   publish_provider:
     name: Publish Provider
     runs-on: ubuntu-latest
-    needs: publish_sdk
+    #needs: publish_sdk
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
