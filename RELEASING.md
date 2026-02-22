@@ -38,28 +38,36 @@ npm supports **Trusted Publishing** via GitHub Actions, which is more secure tha
 6.  **Done**: Once configured, npm will trust the GitHub Actions workflow to publish without a static `NPM_TOKEN`.
 
 ### Python (PyPI)
-*   **Sign up**: [https://pypi.org/account/register/](https://pypi.org/account/register/)
-*   **Enable 2FA**: Go to [https://pypi.org/manage/account/#two-factor-authentication](https://pypi.org/manage/account/#two-factor-authentication). PyPI requires 2FA to generate API tokens.
-*   **Generate Token**: [https://pypi.org/manage/account/token/](https://pypi.org/manage/account/token/)
+1.  **Sign up**: [https://pypi.org/account/register/](https://pypi.org/account/register/)
+2.  **Organization Setup**:
+    *   Ensure you have an organization named `KitStream`: [https://pypi.org/org/kitstream/](https://pypi.org/org/kitstream/)
+    *   You must be an **Owner/Admin** to manage the organization's projects.
+3.  **Enable 2FA**: Go to [https://pypi.org/manage/account/#two-factor-authentication](https://pypi.org/manage/account/#two-factor-authentication). PyPI requires 2FA to generate API tokens.
+4.  **Generate Token**: [https://pypi.org/manage/account/token/](https://pypi.org/manage/account/token/)
     *   **Name**: `netbird-pulumi-release`.
     *   **Scope**: Initially set to **"Entire account"**. (Once the project is published once, you can change it to just this project).
     *   **Copy the token** (starts with `pypi-`) for the `PYPI_TOKEN` secret.
+5.  **Assign Project to Organization**: After the initial publish, go to the project's **Settings** -> **Ownership** and transfer it to the `KitStream` organization.
 
 ### .NET (NuGet)
-*   **Login**: [https://www.nuget.org/users/account/LogOn](https://www.nuget.org/users/account/LogOn) (via Microsoft account).
-*   **Generate API Key**: [https://www.nuget.org/account/apikeys/create](https://www.nuget.org/account/apikeys/create)
+1.  **Login**: [https://www.nuget.org/users/account/LogOn](https://www.nuget.org/users/account/LogOn) (via Microsoft account).
+2.  **Organization Setup**:
+    *   Ensure the `KitStream` organization exists on NuGet: [https://www.nuget.org/organizations/KitStream](https://www.nuget.org/organizations/KitStream)
+    *   Ensure you are a member of the organization with **Owner** or **Admin** privileges.
+3.  **Generate API Key**: [https://www.nuget.org/account/apikeys/create](https://www.nuget.org/account/apikeys/create)
     *   **Key Name**: `netbird-pulumi-release`.
+    *   **Key Owner**: Select the **KitStream** organization (not your personal account).
     *   **Scopes**: Ensure **"Push"** is selected.
     *   **Glob Pattern**: Use `*` (or `Pulumi.Netbird`).
     *   **Copy the key** for the `NUGET_PUBLISH_KEY` secret.
 
 ### Java (Maven Central / OSSRH)
 Maven Central publishing now uses the new Central Portal.
-*   **Sign up**: [https://central.sonatype.com/signup](https://central.sonatype.com/signup)
-*   **Verify Namespace**: [https://central.sonatype.com/publishing/namespaces](https://central.sonatype.com/publishing/namespaces)
-    *   Add namespace: `io.github.kitstream`.
+1.  **Sign up**: [https://central.sonatype.com/signup](https://central.sonatype.com/signup)
+2.  **Verify Namespace (Organization Identifier)**: [https://central.sonatype.com/publishing/namespaces](https://central.sonatype.com/publishing/namespaces)
+    *   Add namespace: `io.github.kitstream`. This represents the **KitStream** organization on Maven Central.
     *   Follow instructions to verify ownership via a temporary repository.
-*   **Generate User Token**: [https://central.sonatype.com/account](https://central.sonatype.com/account)
+3.  **Generate User Token**: [https://central.sonatype.com/account](https://central.sonatype.com/account)
     *   Click **"Generate User Token"**.
     *   The generated **Username** and **Password** are used for `OSSRH_USERNAME` and `OSSRH_TOKEN` respectively.
 
