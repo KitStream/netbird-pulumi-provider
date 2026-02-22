@@ -7,12 +7,19 @@ This project is configured for automated multi-language releases via GitHub Acti
 Follow these steps to create the necessary accounts and generate API tokens for each package manager.
 
 ### NodeJS (npm)
-*   **Sign up**: [https://www.npmjs.com/signup](https://www.npmjs.com/signup)
-*   **Generate Token**: [https://www.npmjs.com/settings/tokens/new](https://www.npmjs.com/settings/tokens/new)
-    *   **Type**: Select **"Classic Token"**.
-    *   **Level**: Select **"Automation"** (this allows CI/CD to publish without 2FA prompts).
-    *   **Name**: `netbird-pulumi-release`.
-    *   **Copy the token** for the `NPM_TOKEN` secret.
+npm supports **Trusted Publishing** via GitHub Actions, which is more secure than using static tokens.
+
+1.  **Sign up**: [https://www.npmjs.com/signup](https://www.npmjs.com/signup)
+2.  **Configure Trusted Publishing**:
+    *   **For Personal Accounts**: Log in -> **Settings** -> **Trusted Publishers**.
+    *   **For Organizations**: Log in -> Select your **Organization** -> **Settings** -> **Publishing** -> **"Add a new Trusted Publisher"**.
+    *   **If the package is already published**: Navigate to the package -> **Settings** -> **Publishing** -> **"Add a new Trusted Publisher"**.
+3.  **Fill in details**:
+    *   **GitHub Organization/User**: `KitStream`.
+    *   **GitHub Repository**: `netbird-pulumi-provider`.
+    *   **Workflow Name**: `release.yml`.
+    *   **Environment**: (Optional, leave blank if not using GitHub Environments).
+4.  Once configured, npm will trust the GitHub Actions workflow to publish without a static `NPM_TOKEN`.
 
 ### Python (PyPI)
 *   **Sign up**: [https://pypi.org/account/register/](https://pypi.org/account/register/)
@@ -60,7 +67,7 @@ Add all the collected tokens and keys as secrets in your GitHub repository setti
 
 | Name | Description |
 | :--- | :--- |
-| `NPM_TOKEN` | npm Automation Token |
+| `NPM_TOKEN` | (Optional) npm Automation Token (Only if not using Trusted Publishing) |
 | `PYPI_TOKEN` | PyPI API Token (starts with `pypi-`) |
 | `NUGET_PUBLISH_KEY` | NuGet API Key |
 | `OSSRH_USERNAME` | Sonatype User Token Username |
