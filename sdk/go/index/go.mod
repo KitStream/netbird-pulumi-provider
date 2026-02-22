@@ -1,4 +1,4 @@
-module github.com/KitStream/pulumi-netbird/sdk/go/index
+module github.com/KitStream/netbird-pulumi-provider/sdk/go/index
 
 go 1.24.7
 

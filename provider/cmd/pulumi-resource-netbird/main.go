@@ -4,7 +4,7 @@ import (
 	"context"
 	_ "embed"
 
-	netbird "github.com/KitStream/pulumi-netbird/provider"
+	netbird "github.com/KitStream/netbird-pulumi-provider/provider"
 	"github.com/pulumi/pulumi-terraform-bridge/pf/tfbridge"
 )
 

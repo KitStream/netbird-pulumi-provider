@@ -35,7 +35,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 		Keywords:     []string{"pulumi", "netbird"},
 		License:      "Apache-2.0",
 		Homepage:     "https://netbird.io",
-		Repository:   "https://github.com/KitStream/pulumi-netbird",
+		Repository:   "https://github.com/KitStream/netbird-pulumi-provider",
 		Publisher:    "KitStream",
 		Version:      version,
 		MetadataInfo: tfbridge.NewProviderMetadata([]byte("{}")),
@@ -57,7 +57,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 						Name: "peerId",
 					},
 				},
-				ComputeID: tfbridge.DelegateIDField(resource.PropertyKey("peerId"), "netbird", "https://github.com/KitStream/pulumi-netbird"),
+				ComputeID: tfbridge.DelegateIDField(resource.PropertyKey("peerId"), "netbird", "https://github.com/KitStream/netbird-pulumi-provider"),
 			},
 			"netbird_policy":        {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Policy")},
 			"netbird_posture_check": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "PostureCheck")},
@@ -101,7 +101,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 		},
 		Golang: &tfbridge.GolangInfo{
 			ImportBasePath: filepath.Join(
-				fmt.Sprintf("github.com/KitStream/pulumi-%[1]s/sdk/", mainPkg),
+				fmt.Sprintf("github.com/KitStream/%[1]s-pulumi-provider/sdk/", mainPkg),
 				"go",
 				mainMod,
 			),

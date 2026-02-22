@@ -7,7 +7,7 @@
         "netbird"
     ],
     "homepage": "https://netbird.io",
-    "repository": "https://github.com/KitStream/pulumi-netbird",
+    "repository": "https://github.com/KitStream/netbird-pulumi-provider",
     "license": "Apache-2.0",
     "main": "bin/index.js",
     "types": "bin/index.d.ts",

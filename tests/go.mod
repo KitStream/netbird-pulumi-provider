@@ -1,4 +1,4 @@
-module github.com/KitStream/pulumi-netbird/tests
+module github.com/KitStream/netbird-pulumi-provider/tests
 
 go 1.24.7
 

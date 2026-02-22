@@ -1,4 +1,4 @@
-module github.com/KitStream/pulumi-netbird/provider
+module github.com/KitStream/netbird-pulumi-provider/provider
 
 go 1.24.7
 
@@ -8,6 +8,7 @@ require (
 	github.com/netbirdio/terraform-provider-netbird v0.0.7
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.49.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.121.0
+	github.com/pulumi/pulumi/sdk/v3 v3.220.0
 )
 
 require (
@@ -143,7 +144,6 @@ require (
 	github.com/pulumi/pulumi-java/pkg v1.12.0 // indirect
 	github.com/pulumi/pulumi-yaml v1.19.1 // indirect
 	github.com/pulumi/pulumi/pkg/v3 v3.220.0 // indirect
-	github.com/pulumi/pulumi/sdk/v3 v3.220.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect

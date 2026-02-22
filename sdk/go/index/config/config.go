@@ -4,7 +4,7 @@
 package config
 
 import (
-	"github.com/KitStream/pulumi-netbird/sdk/go/index/internal"
+	"github.com/KitStream/netbird-pulumi-provider/sdk/go/index/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )

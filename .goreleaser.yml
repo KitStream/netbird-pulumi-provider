@@ -48,5 +48,5 @@ changelog:
 release:
   github:
     owner: KitStream
-    name: pulumi-netbird
+    name: netbird-pulumi-provider
   prerelease: auto

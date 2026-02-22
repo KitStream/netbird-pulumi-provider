@@ -27,7 +27,7 @@ setup(name='pulumi_netbird',
       keywords='pulumi netbird',
       url='https://netbird.io',
       project_urls={
-          'Repository': 'https://github.com/KitStream/pulumi-netbird'
+          'Repository': 'https://github.com/KitStream/netbird-pulumi-provider'
       },
       license='Apache-2.0',
       packages=find_packages(),

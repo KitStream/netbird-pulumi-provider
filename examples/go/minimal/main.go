@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/KitStream/pulumi-netbird/sdk/go/index"
+	"github.com/KitStream/netbird-pulumi-provider/sdk/go/index"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

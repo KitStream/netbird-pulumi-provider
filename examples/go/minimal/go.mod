@@ -1,11 +1,11 @@
-module github.com/KitStream/pulumi-netbird/examples/go/minimal
+module github.com/KitStream/netbird-pulumi-provider/examples/go/minimal
 
 go 1.24.7
 
-replace github.com/KitStream/pulumi-netbird/sdk/go/index => ../../../sdk/go/index
+replace github.com/KitStream/netbird-pulumi-provider/sdk/go/index => ../../../sdk/go/index
 
 require (
-	github.com/KitStream/pulumi-netbird/sdk/go/index v0.0.0-00010101000000-000000000000
+	github.com/KitStream/netbird-pulumi-provider/sdk/go/index v0.0.0-00010101000000-000000000000
 	github.com/pulumi/pulumi/sdk/v3 v3.223.0
 )
 

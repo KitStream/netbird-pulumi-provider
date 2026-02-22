@@ -97,12 +97,12 @@ publishing {
                 packaging = "jar"
                 description = "A Pulumi package for creating and managing netbird cloud resources."
 
-                url = "https://github.com/KitStream/pulumi-netbird"
+                url = "https://github.com/KitStream/netbird-pulumi-provider"
 
                 scm {
-                    connection = "git@github.com/KitStream/pulumi-netbird.git"
-                    developerConnection = "git@github.com/KitStream/pulumi-netbird.git"
-                    url = "https://github.com/KitStream/pulumi-netbird"
+                    connection = "git@github.com/KitStream/netbird-pulumi-provider.git"
+                    developerConnection = "git@github.com/KitStream/netbird-pulumi-provider.git"
+                    url = "https://github.com/KitStream/netbird-pulumi-provider"
                 }
 
                 licenses {
