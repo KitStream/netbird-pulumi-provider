@@ -15,6 +15,13 @@ echo "Generating SDKs with version: $VERSION"
 ./bin/pulumi-tfgen-netbird dotnet --out sdk/dotnet
 ./bin/pulumi-tfgen-netbird java --out sdk/java
 
+# Update npm package name
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' 's/"name": "@pulumi\/netbird"/"name": "@kitstream\/netbird"/' sdk/nodejs/package.json
+else
+  sed -i 's/"name": "@pulumi\/netbird"/"name": "@kitstream\/netbird"/' sdk/nodejs/package.json
+fi
+
 # Ensure version.txt exists for .NET SDK
 echo "$VERSION" > sdk/dotnet/version.txt
 
