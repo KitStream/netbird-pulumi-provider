@@ -9,63 +9,58 @@ permissions:
   id-token: write
 
 jobs:
-  publish_sdk:
-    name: Publish SDKs
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: [1.24.x]
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Get Tag Version
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ matrix.go-version }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Setup DotNet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          server-id: ossrh
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
-
-      - name: Install Pulumi CLI
-        uses: pulumi/actions@v6
-
-#      - name: Build Provider
-#        run: |
-#          cd provider
-#          go build -ldflags "-X main.version=${{ steps.get_version.outputs.VERSION }}" -o ../bin/pulumi-resource-netbird ./cmd/pulumi-resource-netbird
-
-      - name: Generate version.txt for .NET SDK
-        run: echo "${{ steps.get_version.outputs.VERSION }}" > sdk/dotnet/version.txt
-
+#  publish_sdk:
+#    name: Publish SDKs
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        go-version: [1.24.x]
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v4
+#        with:
+#          submodules: true
+#
+#      - name: Get Tag Version
+#        id: get_version
+#        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+#
+#      - name: Setup Go
+#        uses: actions/setup-go@v5
+#        with:
+#          go-version: ${{ matrix.go-version }}
+#
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '24'
+#          registry-url: 'https://registry.npmjs.org'
+#
+#      - name: Setup Python
+#        uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.11'
+#
+#      - name: Setup DotNet
+#        uses: actions/setup-dotnet@v4
+#        with:
+#          dotnet-version: '9.0.x'
+#
+#      - name: Setup Java
+#        uses: actions/setup-java@v4
+#        with:
+#          distribution: 'temurin'
+#          java-version: '17'
+#          server-id: ossrh
+#          server-username: MAVEN_USERNAME
+#          server-password: MAVEN_PASSWORD
+#
+#      - name: Install Pulumi CLI
+#        uses: pulumi/actions@v6
+#
+#      - name: Generate version.txt for .NET SDK
+#        run: echo "${{ steps.get_version.outputs.VERSION }}" > sdk/dotnet/version.txt
+#
 #      - name: Publish Node.js SDK
 #        run: |
 #          cd sdk/nodejs
@@ -73,41 +68,41 @@ jobs:
 #          npm run build --if-present
 #          npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version
 #          npm publish --access public --provenance
-
-      - name: Build Python SDK
-        run: |
-          cd sdk/python
-          python3 -m pip install --upgrade pip build
-          sed -i "s/VERSION = \"0.0.0\"/VERSION = \"${{ steps.get_version.outputs.VERSION }}\"/" setup.py
-          python3 -m build
-
+#
+#      - name: Build Python SDK
+#        run: |
+#          cd sdk/python
+#          python3 -m pip install --upgrade pip build
+#          sed -i "s/VERSION = \"0.0.0\"/VERSION = \"${{ steps.get_version.outputs.VERSION }}\"/" setup.py
+#          python3 -m build
+#
 #      - name: Publish Python SDK
 #        uses: pypa/gh-action-pypi-publish@release/v1
 #        with:
 #          packages-dir: sdk/python/dist/
-
-      - name: NuGet login (OIDC → temp API key)
-        uses: NuGet/login@v1
-        id: login
-        with:
-          user: ${{ secrets.NUGET_USERNAME }}
-
-      - name: Publish DotNet SDK
-        run: |
-          cd sdk/dotnet
-          dotnet build -c Release -p:Version=${{ steps.get_version.outputs.VERSION }}
-          dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{steps.login.outputs.NUGET_API_KEY}}
-
-      - name: Publish Java SDK
-        run: |
-          cd sdk/java
-          gradle publish
-        env:
-          PACKAGE_VERSION: ${{ steps.get_version.outputs.VERSION }}
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          SIGNING_KEY: ${{ secrets.JAVA_SIGNING_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
+#
+#      - name: NuGet login (OIDC → temp API key)
+#        uses: NuGet/login@v1
+#        id: login
+#        with:
+#          user: ${{ secrets.NUGET_USERNAME }}
+#
+#      - name: Publish DotNet SDK
+#        run: |
+#          cd sdk/dotnet
+#          dotnet build -c Release -p:Version=${{ steps.get_version.outputs.VERSION }}
+#          dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ steps.login.outputs.NUGET_API_KEY }}
+#
+#      - name: Publish Java SDK
+#        run: |
+#          cd sdk/java
+#          gradle publish
+#        env:
+#          PACKAGE_VERSION: ${{ steps.get_version.outputs.VERSION }}
+#          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+#          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+#          SIGNING_KEY: ${{ secrets.JAVA_SIGNING_KEY }}
+#          SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
 
   publish_provider:
     name: Publish Provider
@@ -134,5 +129,6 @@ jobs:
           distribution: goreleaser
           version: latest
           args: release --clean
+          workdir: provider
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

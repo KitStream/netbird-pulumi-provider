@@ -10,7 +10,7 @@ before:
 
 builds:
   - id: pulumi-resource-netbird
-    main: ./provider/cmd/pulumi-resource-netbird
+    main: ./cmd/pulumi-resource-netbird
     binary: pulumi-resource-netbird
     env:
       - CGO_ENABLED=0
