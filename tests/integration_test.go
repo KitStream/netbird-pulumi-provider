@@ -67,7 +67,7 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	// 3. Pre-build some SDKs if needed (e.g. Java needs to be in mavenLocal)
+	// 3. Pre-build some SDKs if needed (e.g., Java needs to be in mavenLocal)
 	fmt.Println("Preparing SDKs for tests...")
 	// Java
 	javaSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "java"))
@@ -103,6 +103,21 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
+	// DotNet
+	dotNetSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "dotnet"))
+	if err != nil {
+		fmt.Printf("failed to get absolute path for DotNet SDK: %v\n", err)
+		os.Exit(1)
+	}
+	versionFile := filepath.Join(dotNetSdkPath, "version.txt")
+	if _, err := os.Stat(versionFile); os.IsNotExist(err) {
+		fmt.Printf("Generating missing version.txt for DotNet SDK in %s...\n", dotNetSdkPath)
+		if err := os.WriteFile(versionFile, []byte("0.0.1"), 0644); err != nil {
+			fmt.Printf("failed to generate version.txt for DotNet SDK: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
 	// NodeJS Example
 	nodeExamplePath, err := filepath.Abs(filepath.Join("..", "examples", "nodejs", "minimal"))
 	if err != nil {
@@ -114,7 +129,7 @@ func TestMain(m *testing.M) {
 	npmInstallExampleCmd.Dir = nodeExamplePath
 	if out, err := npmInstallExampleCmd.CombinedOutput(); err != nil {
 		fmt.Printf("failed to run npm install in NodeJS example: %v\n%s\n", err, string(out))
-		// We don't exit here as it's not strictly necessary for the test to pass (Pulumi will re-install in temp dir)
+		// We don't exit here as it's not strictly necessary for the test to pass (Pulumi will re-install in temp dir),
 		// but it's good for clearing IDE warnings.
 	}
 
