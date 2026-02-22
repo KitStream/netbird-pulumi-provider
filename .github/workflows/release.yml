@@ -81,16 +81,22 @@ jobs:
           sed -i "s/VERSION = \"0.0.0\"/VERSION = \"${{ steps.get_version.outputs.VERSION }}\"/" setup.py
           python3 -m build
 
-      - name: Publish Python SDK
-        uses: pypa/gh-action-pypi-publish@release/v1
+#      - name: Publish Python SDK
+#        uses: pypa/gh-action-pypi-publish@release/v1
+#        with:
+#          packages-dir: sdk/python/dist/
+
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
         with:
-          packages-dir: sdk/python/dist/
+          user: kitstream-bot
 
       - name: Publish DotNet SDK
         run: |
           cd sdk/dotnet
           dotnet build -c Release -p:Version=${{ steps.get_version.outputs.VERSION }}
-          dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_PUBLISH_KEY }}
+          dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{steps.login.outputs.NUGET_API_KEY}}
 
       - name: Publish Java SDK
         run: |
