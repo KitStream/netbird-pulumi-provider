@@ -8,11 +8,11 @@ This provider is built on top of the [NetBird Terraform Provider](https://github
 
 The following SDKs are available and automatically updated:
 
-- **NodeJS** (`@pulumi/netbird` on npm)
+- **NodeJS** (`@kitstream/netbird-pulumi` on npm)
 - **Python** (`pulumi_netbird` on PyPI)
 - **Go** (`github.com/KitStream/netbird-pulumi-provider/sdk/go/index`)
 - **.NET** (`KitStream.Pulumi.Netbird` on NuGet)
-- **Java** (`com.netbird:netbird` on Maven Central)
+- **Java** (`io.github.kitstream:netbird` on Maven Central)
 
 ## Installation
 
@@ -20,7 +20,7 @@ To use this provider, install the appropriate SDK for your language. For example
 
 ### NodeJS
 ```bash
-npm install @pulumi/netbird
+npm install @kitstream/netbird-pulumi
 ```
 
 ### Python

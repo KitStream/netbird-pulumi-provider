@@ -87,6 +87,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 			"netbird_user":             {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getUser")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
+			PackageName: "@kitstream/netbird-pulumi",
 			Dependencies: map[string]string{
 				"@pulumi/pulumi": "^3.0.0",
 			},
@@ -115,7 +116,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 			RootNamespace: "KitStream.Pulumi",
 		},
 		Java: &tfbridge.JavaInfo{
-			BasePackage: "com.netbird",
+			BasePackage: "io.github.kitstream",
 		},
 	}
 

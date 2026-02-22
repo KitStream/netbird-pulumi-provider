@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation("com.pulumi:pulumi:1.0.0")
-    implementation("com.netbird:netbird:0.0.1")
+    implementation("io.github.kitstream:netbird:0.0.1")
 }
 
 application {

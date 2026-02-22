@@ -1,6 +1,8 @@
 {
-    "name": "@kitstream/netbird",
-    "version": "${VERSION}",
+    "name": "@kitstream/netbird-pulumi",
+    "main": "bin/index.js",
+    "types": "bin/index.d.ts",
+    "version": "0.0.1",
     "description": "A Pulumi package for creating and managing netbird cloud resources.",
     "keywords": [
         "pulumi",

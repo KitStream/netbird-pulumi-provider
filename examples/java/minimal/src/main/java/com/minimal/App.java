@@ -1,8 +1,8 @@
 package com.minimal;
 
 import com.pulumi.Pulumi;
-import com.netbird.netbird.Group;
-import com.netbird.netbird.GroupArgs;
+import io.github.kitstream.netbird.Group;
+import io.github.kitstream.netbird.GroupArgs;
 import java.util.Map;
 
 public class App {

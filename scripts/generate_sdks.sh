@@ -15,11 +15,22 @@ echo "Generating SDKs with version: $VERSION"
 ./bin/pulumi-tfgen-netbird dotnet --out sdk/dotnet
 ./bin/pulumi-tfgen-netbird java --out sdk/java
 
-# Update npm package name
+# Update npm package name and version
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  sed -i '' 's/"name": "@pulumi\/netbird"/"name": "@kitstream\/netbird"/' sdk/nodejs/package.json
+  sed -i '' 's/"name": "@pulumi\/netbird"/"name": "@kitstream\/netbird-pulumi"/' sdk/nodejs/package.json
+  sed -i '' "s/\"\${VERSION}\"/\"$VERSION\"/" sdk/nodejs/package.json
+  # Ensure main and types are present (sometimes tfgen misses them or we want to be sure)
+  if ! grep -q "\"main\":" sdk/nodejs/package.json; then
+    sed -i '' '/"@kitstream\/netbird-pulumi"/a \
+    "main": "bin/index.js",\
+    "types": "bin/index.d.ts",' sdk/nodejs/package.json
+  fi
 else
-  sed -i 's/"name": "@pulumi\/netbird"/"name": "@kitstream\/netbird"/' sdk/nodejs/package.json
+  sed -i 's/"name": "@pulumi\/netbird"/"name": "@kitstream\/netbird-pulumi"/' sdk/nodejs/package.json
+  sed -i "s/\"\${VERSION}\"/\"$VERSION\"/" sdk/nodejs/package.json
+  if ! grep -q "\"main\":" sdk/nodejs/package.json; then
+    sed -i '/"@kitstream\/netbird-pulumi"/a \    "main": "bin/index.js",\n    "types": "bin/index.d.ts",' sdk/nodejs/package.json
+  fi
 fi
 
 # Ensure version.txt exists for .NET SDK
@@ -37,6 +48,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   sed -i '' 's/groupId = "com.netbird"/groupId = project.group/' sdk/java/build.gradle
   sed -i '' 's/publishRepoUsername = System.getenv("PUBLISH_REPO_USERNAME")/publishRepoUsername = System.getenv("MAVEN_USERNAME")/' sdk/java/build.gradle
   sed -i '' 's/publishRepoPassword = System.getenv("PUBLISH_REPO_PASSWORD")/publishRepoPassword = System.getenv("MAVEN_PASSWORD")/' sdk/java/build.gradle
+  # 4. Fix package names in Java source files
+  find sdk/java/src/main/java -name "*.java" -exec sed -i '' 's/com\.netbird/io\.github\.kitstream/g' {} +
+  # 5. Move files to correct package directory
+  if [ -d "sdk/java/src/main/java/com/netbird/netbird" ]; then
+    mkdir -p sdk/java/src/main/java/io/github/kitstream/netbird
+    mv sdk/java/src/main/java/com/netbird/netbird/* sdk/java/src/main/java/io/github/kitstream/netbird/
+    rm -rf sdk/java/src/main/java/com/netbird
+  fi
 else
   sed -i 's/languageVersion = JavaLanguageVersion.of(11)/languageVersion = JavaLanguageVersion.of(17)/' sdk/java/build.gradle
   # 2. Fix non-existent lib project in settings.gradle
@@ -46,6 +65,14 @@ else
   sed -i 's/groupId = "com.netbird"/groupId = project.group/' sdk/java/build.gradle
   sed -i 's/publishRepoUsername = System.getenv("PUBLISH_REPO_USERNAME")/publishRepoUsername = System.getenv("MAVEN_USERNAME")/' sdk/java/build.gradle
   sed -i 's/publishRepoPassword = System.getenv("PUBLISH_REPO_PASSWORD")/publishRepoPassword = System.getenv("MAVEN_PASSWORD")/' sdk/java/build.gradle
+  # 4. Fix package names in Java source files
+  find sdk/java/src/main/java -name "*.java" -exec sed -i 's/com\.netbird/io\.github\.kitstream/g' {} +
+  # 5. Move files to correct package directory
+  if [ -d "sdk/java/src/main/java/com/netbird/netbird" ]; then
+    mkdir -p sdk/java/src/main/java/io/github/kitstream/netbird
+    mv sdk/java/src/main/java/com/netbird/netbird/* sdk/java/src/main/java/io/github/kitstream/netbird/
+    rm -rf sdk/java/src/main/java/com/netbird
+  fi
 fi
 
 echo "SDK generation complete."

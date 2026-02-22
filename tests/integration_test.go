@@ -103,7 +103,24 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	// DotNet
+	// 3.5. Copy package.json to bin/ so utilities.js can find it for versioning
+	packageJsonPath := filepath.Join(nodeSdkPath, "package.json")
+	binPackageJsonPath := filepath.Join(nodeSdkPath, "bin", "package.json")
+	if err := os.MkdirAll(filepath.Dir(binPackageJsonPath), 0755); err != nil {
+		fmt.Printf("failed to create bin directory: %v\n", err)
+		os.Exit(1)
+	}
+	packageJsonContent, err := os.ReadFile(packageJsonPath)
+	if err != nil {
+		fmt.Printf("failed to read package.json: %v\n", err)
+		os.Exit(1)
+	}
+	if err := os.WriteFile(binPackageJsonPath, packageJsonContent, 0644); err != nil {
+		fmt.Printf("failed to copy package.json to bin/: %v\n", err)
+		os.Exit(1)
+	}
+
+	// 3.6. DotNet
 	dotNetSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "dotnet"))
 	if err != nil {
 		fmt.Printf("failed to get absolute path for DotNet SDK: %v\n", err)

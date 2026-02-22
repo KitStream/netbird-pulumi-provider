@@ -10,5 +10,5 @@ pluginManagement {
   }
 }
 
-rootProject.name = "com.netbird.netbird"
+rootProject.name = "io.github.kitstream.netbird"
 // include("lib")

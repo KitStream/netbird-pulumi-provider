@@ -85,7 +85,7 @@ jar.configure {
 publishing {
     publications {
         mainPublication(MavenPublication) {
-            groupId = project.group
+            groupId = "io.github.kitstream"
             artifactId = "netbird"
             version = resolvedVersion
             from components.java

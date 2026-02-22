@@ -28,8 +28,8 @@ npm supports **Trusted Publishing** via GitHub Actions, which is more secure tha
         1. Create an **Automation Token** at [npmjs.com/settings/tokens/new](https://www.npmjs.com/settings/tokens/new).
         2. Add it to GitHub Secrets as `NPM_TOKEN`.
         3. Trigger the first release (see [Triggering a Release](#3-triggering-a-release)).
-        4. Once the package exists (e.g., `@kitstream/netbird`), go to the package page on npm -> **Settings** -> **Publishing** to configure Trusted Publishing.
-4.  **Verify Package Scope**: Ensure the `name` in `sdk/nodejs/package.json` matches your organization (e.g., `@kitstream/netbird` if your org is `kitstream`).
+        4. Once the package exists (e.g., `@kitstream/netbird-pulumi`), go to the package page on npm -> **Settings** -> **Publishing** to configure Trusted Publishing.
+4.  **Verify Package Scope**: Ensure the `name` in `sdk/nodejs/package.json` matches your organization (e.g., `@kitstream/netbird-pulumi` if your org is `kitstream`).
 5.  **Fill in details**:
     *   **GitHub Organization/User**: `KitStream`.
     *   **GitHub Repository**: `netbird-pulumi-provider`.
