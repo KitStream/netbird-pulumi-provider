@@ -24,14 +24,6 @@ builds:
     ldflags:
       - -X main.version={{.Version}}
 
-archives:
-  - format: tar.gz
-    name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-    # Use gzip for all except windows
-    format_overrides:
-      - goos: windows
-        format: zip
-
 checksum:
   name_template: 'checksums.txt'
 
