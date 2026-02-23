@@ -29,10 +29,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
-          cache-dependency-path: |
-            sdk/nodejs/package-lock.json
-            examples/nodejs/minimal/package-lock.json
+
+      - name: Cache Yarn packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('sdk/nodejs/package.json') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      - name: Pre-warm Yarn cache
+        run: cd sdk/nodejs && yarn install
 
       - name: Setup Python
         uses: actions/setup-python@v5
