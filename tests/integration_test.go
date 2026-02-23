@@ -28,6 +28,20 @@ func TestMain(m *testing.M) {
 		os.Exit(0)
 	}
 
+	// 0. Prepare the upstream submodule (shim + test patches)
+	setupScript, err := filepath.Abs(filepath.Join("..", "setup_upstream.sh"))
+	if err != nil {
+		fmt.Printf("failed to resolve setup_upstream.sh path: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println("Preparing upstream submodule...")
+	setupCmd := exec.Command("bash", setupScript)
+	setupCmd.Stdout, setupCmd.Stderr = os.Stdout, os.Stderr
+	if err := setupCmd.Run(); err != nil {
+		fmt.Printf("failed to set up upstream submodule: %v\n", err)
+		os.Exit(1)
+	}
+
 	composeFile, err := filepath.Abs(filepath.Join("..", "upstream", "test", "compose.yml"))
 	if err != nil {
 		fmt.Printf("failed to get absolute path for compose file: %v\n", err)

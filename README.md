@@ -52,6 +52,28 @@ pulumi config set netbird:managementUrl https://api.netbird.io
 
 ## Local Development
 
+The `upstream/` directory is a git submodule pointing at the
+[NetBird Terraform Provider](https://github.com/netbirdio/terraform-provider-netbird).
+After cloning the repo, initialise it and apply local patches:
+
+```bash
+git submodule update --init
+./setup_upstream.sh
+```
+
+`setup_upstream.sh` does two things that are needed for the Pulumi bridge:
+
+1. Generates a thin shim file at `upstream/shim/provider/shim.go` that
+   re-exports `internal/provider.New`. Go's `internal` visibility rule
+   prevents the bridge from importing the package directly, so the shim
+   **must** live inside `upstream/`.
+2. Applies test-data patches (`upstream.patch`) required by the integration
+   tests. Without these the management server fails to start (wrong
+   encryption key format, duplicate peer keys, etc.).
+
+The submodule is configured with `ignore = dirty` in `.gitmodules`, so these
+working-tree modifications will never make the parent repo appear dirty.
+
 If you are developing or testing the provider locally, you can use the provided Python virtual environment to avoid conflicts with your system Python (e.g., Homebrew).
 
 ### Python Setup
