@@ -2,6 +2,7 @@ package myproject;
 
 import com.pulumi.Pulumi;
 import io.github.kitstream.netbird.*;
+import io.github.kitstream.netbird.inputs.*;
 import java.util.List;
 
 public class App {

@@ -294,7 +294,7 @@ func generateJava(dir string, res Resource, lang string) {
 		case "nameserver_array":
 			args += "                ." + k + "(List.of(NameserverGroupNameserverArgs.builder().ip(\"1.1.1.1\").port(53).build()))\n"
 		case "policy_rule":
-			args += "                ." + k + "(PolicyRuleArgs.builder().action(\"accept\").enabled(true).name(\"rule1\").sources(List.of(group.id())).destinations(List.of(group.id())).build())\n"
+			args += "                ." + k + "(PolicyRuleArgs.builder().action(\"accept\").enabled(true).name(\"rule1\").sources(group.id().applyValue(List::of)).destinations(group.id().applyValue(List::of)).build())\n"
 		case "os_version_check":
 			args += "                ." + k + "(PostureCheckOsVersionCheckArgs.builder().darwinMinVersion(\"1.0.0\").build())\n"
 		case "dependency":
@@ -333,10 +333,23 @@ func generateJava(dir string, res Resource, lang string) {
 		}
 	}
 
+	// Check if any args use nested input types
+	needsInputsImport := false
+	for _, arg := range res.Args {
+		switch arg.Type {
+		case "nameserver_array", "policy_rule", "os_version_check":
+			needsInputsImport = true
+		}
+	}
+	inputsImport := ""
+	if needsInputsImport {
+		inputsImport = "\nimport io.github.kitstream.netbird.inputs.*;"
+	}
+
 	content := fmt.Sprintf(`package myproject;
 
 import com.pulumi.Pulumi;
-import io.github.kitstream.netbird.*;
+import io.github.kitstream.netbird.*;%s
 import java.util.List;
 
 public class App {
@@ -349,7 +362,7 @@ public class App {
         });
     }
 }
-`, prefix, res.GoName, strings.ReplaceAll(res.Name, "_", "-"), res.GoName, args, strings.ToLower(res.CheckField[:1])+res.CheckField[1:])
+`, inputsImport, prefix, res.GoName, strings.ReplaceAll(res.Name, "_", "-"), res.GoName, args, strings.ToLower(res.CheckField[:1])+res.CheckField[1:])
 
 	// Write App.java to proper Java source directory
 	javaSrcDir := filepath.Join(dir, "src", "main", "java", "myproject")

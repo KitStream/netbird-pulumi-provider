@@ -35,6 +35,8 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+          cache-dependency-path: sdk/nodejs/package-lock.json
 
       - name: Setup Python
         uses: actions/setup-python@v5
