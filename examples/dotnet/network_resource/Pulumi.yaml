@@ -1,0 +1,3 @@
+name: netbird-dotnet-network_resource
+description: A Pulumi dotnet program to create a netbird network_resource
+runtime: dotnet

@@ -1,0 +1,3 @@
+name: netbird-go-posture_check
+description: A Pulumi go program to create a netbird posture_check
+runtime: go

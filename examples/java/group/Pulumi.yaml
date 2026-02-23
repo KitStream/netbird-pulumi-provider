@@ -1,0 +1,3 @@
+name: netbird-java-group
+description: A Pulumi java program to create a netbird group
+runtime: java

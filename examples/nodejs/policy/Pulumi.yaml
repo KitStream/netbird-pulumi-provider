@@ -1,0 +1,3 @@
+name: netbird-nodejs-policy
+description: A Pulumi nodejs program to create a netbird policy
+runtime: nodejs

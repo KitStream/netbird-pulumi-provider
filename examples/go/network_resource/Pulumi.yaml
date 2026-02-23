@@ -1,0 +1,3 @@
+name: netbird-go-network_resource
+description: A Pulumi go program to create a netbird network_resource
+runtime: go

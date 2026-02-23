@@ -1,0 +1,3 @@
+name: netbird-dotnet-account_settings
+description: A Pulumi dotnet program to create a netbird account_settings
+runtime: dotnet

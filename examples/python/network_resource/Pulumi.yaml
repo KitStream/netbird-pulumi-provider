@@ -1,0 +1,3 @@
+name: netbird-python-network_resource
+description: A Pulumi python program to create a netbird network_resource
+runtime: python

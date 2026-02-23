@@ -1,0 +1,3 @@
+name: netbird-java-posture_check
+description: A Pulumi java program to create a netbird posture_check
+runtime: java

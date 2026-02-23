@@ -1,0 +1,3 @@
+name: netbird-python-route
+description: A Pulumi python program to create a netbird route
+runtime: python

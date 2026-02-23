@@ -1,0 +1,3 @@
+name: netbird-nodejs-network_router
+description: A Pulumi nodejs program to create a netbird network_router
+runtime: nodejs

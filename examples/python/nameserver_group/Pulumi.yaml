@@ -1,0 +1,3 @@
+name: netbird-python-nameserver_group
+description: A Pulumi python program to create a netbird nameserver_group
+runtime: python

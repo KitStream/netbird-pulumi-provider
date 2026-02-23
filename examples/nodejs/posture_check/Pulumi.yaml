@@ -1,0 +1,3 @@
+name: netbird-nodejs-posture_check
+description: A Pulumi nodejs program to create a netbird posture_check
+runtime: nodejs

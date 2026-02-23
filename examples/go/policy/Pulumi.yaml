@@ -1,0 +1,3 @@
+name: netbird-go-policy
+description: A Pulumi go program to create a netbird policy
+runtime: go

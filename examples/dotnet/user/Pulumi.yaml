@@ -1,0 +1,3 @@
+name: netbird-dotnet-user
+description: A Pulumi dotnet program to create a netbird user
+runtime: dotnet

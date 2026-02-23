@@ -1,0 +1,3 @@
+name: netbird-dotnet-network
+description: A Pulumi dotnet program to create a netbird network
+runtime: dotnet

@@ -1,0 +1,12 @@
+{
+  "name": "netbird-nodejs-network_router",
+  "main": "index.ts",
+  "dependencies": {
+    "@pulumi/pulumi": "^3.0.0",
+    "@kitstream/netbird-pulumi": "file:../../../sdk/nodejs"
+  },
+  "devDependencies": {
+    "@types/node": "^16.0.0",
+    "typescript": "^4.0.0"
+  }
+}

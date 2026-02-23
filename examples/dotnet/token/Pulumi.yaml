@@ -1,0 +1,3 @@
+name: netbird-dotnet-token
+description: A Pulumi dotnet program to create a netbird token
+runtime: dotnet

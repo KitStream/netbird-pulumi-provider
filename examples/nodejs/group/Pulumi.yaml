@@ -1,0 +1,3 @@
+name: netbird-nodejs-group
+description: A Pulumi nodejs program to create a netbird group
+runtime: nodejs

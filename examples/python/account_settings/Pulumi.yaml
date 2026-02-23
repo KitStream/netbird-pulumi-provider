@@ -1,0 +1,3 @@
+name: netbird-python-account_settings
+description: A Pulumi python program to create a netbird account_settings
+runtime: python

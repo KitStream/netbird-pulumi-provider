@@ -1,0 +1,3 @@
+name: netbird-dotnet-setup_key
+description: A Pulumi dotnet program to create a netbird setup_key
+runtime: dotnet

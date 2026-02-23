@@ -1,0 +1,3 @@
+name: netbird-dotnet-policy
+description: A Pulumi dotnet program to create a netbird policy
+runtime: dotnet

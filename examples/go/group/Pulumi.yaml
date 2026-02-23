@@ -1,0 +1,3 @@
+name: netbird-go-group
+description: A Pulumi go program to create a netbird group
+runtime: go

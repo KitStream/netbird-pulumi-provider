@@ -1,0 +1,3 @@
+name: netbird-nodejs-token
+description: A Pulumi nodejs program to create a netbird token
+runtime: nodejs

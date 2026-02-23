@@ -1,0 +1,3 @@
+name: netbird-java-network
+description: A Pulumi java program to create a netbird network
+runtime: java

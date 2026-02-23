@@ -1,0 +1,3 @@
+name: netbird-go-route
+description: A Pulumi go program to create a netbird route
+runtime: go

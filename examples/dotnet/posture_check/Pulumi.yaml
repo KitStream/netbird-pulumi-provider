@@ -1,0 +1,3 @@
+name: netbird-dotnet-posture_check
+description: A Pulumi dotnet program to create a netbird posture_check
+runtime: dotnet

@@ -1,0 +1,3 @@
+name: netbird-go-setup_key
+description: A Pulumi go program to create a netbird setup_key
+runtime: go

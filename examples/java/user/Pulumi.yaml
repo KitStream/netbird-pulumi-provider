@@ -1,0 +1,3 @@
+name: netbird-java-user
+description: A Pulumi java program to create a netbird user
+runtime: java

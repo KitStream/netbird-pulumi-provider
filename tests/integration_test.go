@@ -48,6 +48,7 @@ func TestMain(m *testing.M) {
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, localMgmtURL+"/", nil)
 		if err != nil {
+			cancel()
 			time.Sleep(2 * time.Second)
 			continue
 		}
@@ -120,7 +121,21 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	// 3.6. DotNet
+	// 3.6. Python - clean stale build artifacts that break wheel builds
+	pythonSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "python"))
+	if err != nil {
+		fmt.Printf("failed to get absolute path for Python SDK: %v\n", err)
+		os.Exit(1)
+	}
+	for _, dir := range []string{"build", "pulumi_netbird.egg-info"} {
+		p := filepath.Join(pythonSdkPath, dir)
+		if _, err := os.Stat(p); err == nil {
+			fmt.Printf("Cleaning stale Python build artifact: %s\n", p)
+			os.RemoveAll(p)
+		}
+	}
+
+	// 3.7. DotNet
 	dotNetSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "dotnet"))
 	if err != nil {
 		fmt.Printf("failed to get absolute path for DotNet SDK: %v\n", err)
@@ -133,21 +148,6 @@ func TestMain(m *testing.M) {
 			fmt.Printf("failed to generate version.txt for DotNet SDK: %v\n", err)
 			os.Exit(1)
 		}
-	}
-
-	// NodeJS Example
-	nodeExamplePath, err := filepath.Abs(filepath.Join("..", "examples", "nodejs", "minimal"))
-	if err != nil {
-		fmt.Printf("failed to get absolute path for NodeJS example: %v\n", err)
-		os.Exit(1)
-	}
-	fmt.Printf("Installing dependencies for NodeJS example in %s...\n", nodeExamplePath)
-	npmInstallExampleCmd := exec.Command("npm", "install")
-	npmInstallExampleCmd.Dir = nodeExamplePath
-	if out, err := npmInstallExampleCmd.CombinedOutput(); err != nil {
-		fmt.Printf("failed to run npm install in NodeJS example: %v\n%s\n", err, string(out))
-		// We don't exit here as it's not strictly necessary for the test to pass (Pulumi will re-install in temp dir),
-		// but it's good for clearing IDE warnings.
 	}
 
 	// 4. Run tests
@@ -186,6 +186,7 @@ func baseOptions(t *testing.T) *integration.ProgramTestOptions {
 	return &integration.ProgramTestOptions{
 		Quick:       true,
 		SkipRefresh: true,
+		NoParallel:  true,
 		LocalProviders: []integration.LocalDependency{{
 			Package: "netbird",
 			Path:    providerPluginPath(t),
@@ -198,143 +199,271 @@ func baseOptions(t *testing.T) *integration.ProgramTestOptions {
 	}
 }
 
-func validateGroupName(expectedName string) func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-	return func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
-		if v, ok := stack.Outputs["groupName"]; !ok || v == nil {
-			t.Fatalf("expected output groupName, got: %v", stack.Outputs)
-		}
+// langDisplayName returns the display name for a language, used to format expected values.
+func langDisplayName(lang string) string {
+	switch lang {
+	case "nodejs":
+		return "NodeJS"
+	case "dotnet":
+		return "DotNet"
+	default:
+		return strings.ToUpper(lang[:1]) + lang[1:]
+	}
+}
 
-		// Verify that the group exists in NetBird API
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, localMgmtURL+"/api/groups", nil)
-		if err != nil {
-			t.Fatalf("failed to create request: %v", err)
-		}
-		req.Header.Set("Authorization", "Bearer "+localSeededPAT)
-
-		resp, err := http.DefaultClient.Do(req)
-		if err != nil {
-			t.Fatalf("failed to fetch groups: %v", err)
-		}
-		defer func() { _ = resp.Body.Close() }()
-
-		if resp.StatusCode != http.StatusOK {
-			body, err := io.ReadAll(resp.Body)
+// applyLanguageOptions configures language-specific PrePrepareProject hooks.
+func applyLanguageOptions(t *testing.T, opts *integration.ProgramTestOptions, lang, resName string) {
+	t.Helper()
+	switch lang {
+	case "go":
+		opts.PrePrepareProject = func(proj *engine.Projinfo) error {
+			absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "go", "index"))
 			if err != nil {
-				t.Fatalf("unexpected status code %d and failed to read body: %v", resp.StatusCode, err)
+				return err
 			}
-			t.Fatalf("unexpected status code %d: %s", resp.StatusCode, string(body))
-		}
-
-		var groups []map[string]interface{}
-		if err := json.NewDecoder(resp.Body).Decode(&groups); err != nil {
-			t.Fatalf("failed to decode groups: %v", err)
-		}
-
-		found := false
-		for _, g := range groups {
-			if g["name"] == expectedName {
-				found = true
-				break
+			goModPath := filepath.Join(proj.Root, "go.mod")
+			content, err := os.ReadFile(goModPath)
+			if err != nil {
+				return err
 			}
+			newContent := strings.Replace(string(content), "../../../sdk/go/index", absSdkPath, 1)
+			return os.WriteFile(goModPath, []byte(newContent), 0644)
 		}
+	case "nodejs":
+		opts.PrePrepareProject = func(proj *engine.Projinfo) error {
+			absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "nodejs"))
+			if err != nil {
+				return err
+			}
+			pkgJsonPath := filepath.Join(proj.Root, "package.json")
+			content, err := os.ReadFile(pkgJsonPath)
+			if err != nil {
+				return err
+			}
+			newContent := strings.Replace(string(content), "file:../../../sdk/nodejs", "file:"+absSdkPath, 1)
+			return os.WriteFile(pkgJsonPath, []byte(newContent), 0644)
+		}
+	case "python":
+		opts.PrePrepareProject = func(proj *engine.Projinfo) error {
+			absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "python"))
+			if err != nil {
+				return err
+			}
+			reqsPath := filepath.Join(proj.Root, "requirements.txt")
+			content, err := os.ReadFile(reqsPath)
+			if err != nil {
+				return err
+			}
+			newContent := strings.Replace(string(content), "../../../sdk/python", absSdkPath, 1)
+			return os.WriteFile(reqsPath, []byte(newContent), 0644)
+		}
+	case "dotnet":
+		opts.PrePrepareProject = func(proj *engine.Projinfo) error {
+			absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "dotnet", "KitStream.Pulumi.Netbird.csproj"))
+			if err != nil {
+				return err
+			}
+			csprojPath := filepath.Join(proj.Root, resName+"-dotnet.csproj")
+			content, err := os.ReadFile(csprojPath)
+			if err != nil {
+				return err
+			}
+			newContent := strings.Replace(string(content), "../../../sdk/dotnet/KitStream.Pulumi.Netbird.csproj", absSdkPath, 1)
+			return os.WriteFile(csprojPath, []byte(newContent), 0644)
+		}
+	case "java":
+		// Java SDK is published to mavenLocal in TestMain
+		// Examples use build.gradle with mavenLocal() repository
+	}
+}
 
-		if !found {
-			t.Fatalf("expected group %q not found in NetBird API", expectedName)
+// apiGet performs an authenticated GET request against the local NetBird API.
+func apiGet(t *testing.T, path string) []byte {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, localMgmtURL+path, nil)
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	req.Header.Set("Authorization", "Bearer "+localSeededPAT)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("failed to fetch resources from %s: %v", path, err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	body, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code %d from %s: %s", resp.StatusCode, path, string(body))
+	}
+	return body
+}
+
+// resolveAPIPath handles API paths that contain %s by looking up the network ID
+// from the /api/networks endpoint.
+func resolveAPIPath(t *testing.T, apiPath string) string {
+	t.Helper()
+	if !strings.Contains(apiPath, "%s") {
+		return apiPath
+	}
+
+	body := apiGet(t, "/api/networks")
+	type network struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+	}
+	var networks []network
+	if err := json.Unmarshal(body, &networks); err != nil {
+		t.Fatalf("failed to parse networks response: %v", err)
+	}
+
+	// Find the most recently created network (last in list)
+	for i := len(networks) - 1; i >= 0; i-- {
+		if networks[i].ID != "" {
+			return fmt.Sprintf(apiPath, networks[i].ID)
+		}
+	}
+	t.Fatal("no networks found to resolve API path")
+	return ""
+}
+
+// validateResource returns a validation function that checks the NetBird API
+// for the expected value in the response body.
+func validateResource(apiPath string, expectedValue string) func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+	return func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
+		resolvedPath := resolveAPIPath(t, apiPath)
+		body := apiGet(t, resolvedPath)
+
+		if expectedValue != "" && !strings.Contains(string(body), expectedValue) {
+			t.Fatalf("expected value %q not found in NetBird API response from %s: %s", expectedValue, resolvedPath, string(body))
 		}
 	}
 }
 
-func TestGo_Minimal_LocalStack(t *testing.T) {
-	opts := baseOptions(t)
-	opts.Dir = filepath.Join("..", "examples", "go", "minimal")
-	opts.PrePrepareProject = func(proj *engine.Projinfo) error {
-		absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "go", "index"))
-		if err != nil {
-			return err
-		}
-		goModPath := filepath.Join(proj.Root, "go.mod")
-		content, err := os.ReadFile(goModPath)
-		if err != nil {
-			return err
-		}
-		newContent := strings.Replace(string(content), "../../../sdk/go/index", absSdkPath, 1)
-		return os.WriteFile(goModPath, []byte(newContent), 0644)
+// resource describes a test resource with its API path and expected check value.
+type resource struct {
+	name       string
+	apiPath    string
+	checkValue string // may contain %s for language name substitution
+}
+
+// allResources returns the full list of resources to test.
+func allResources() []resource {
+	return []resource{
+		{"group", "/api/groups", "Pulumi %s Group"},
+		{"setup_key", "/api/setup-keys", "Pulumi %s Setup Key"},
+		{"user", "/api/users", "Pulumi %s User"},
+		{"account_settings", "/api/accounts", "true"},
+		// dns_settings is excluded: the upstream TF provider's Delete is a no-op so the group
+		// remains linked to disabled DNS management groups, causing group deletion to fail on destroy.
+		{"network", "/api/networks", "Pulumi %s Network"},
+		{"network_resource", "/api/networks/%s/resources", "Pulumi %s Net Res"},
+		{"network_router", "/api/networks/%s/routers", ""},
+		{"route", "/api/routes", "Pulumi %s Route"},
+		{"posture_check", "/api/posture-checks", "Pulumi %s Posture Check"},
+		{"nameserver_group", "/api/dns/nameservers", "Pulumi %s NS Group"},
+		{"policy", "/api/policies", "Pulumi %s Policy"},
+		{"token", "/api/users", "Pulumi Token Test User"},
 	}
-	opts.ExtraRuntimeValidation = validateGroupName("Pulumi Go Test Group")
+}
+
+// runResourceTest runs a single resource test for a given language.
+func runResourceTest(t *testing.T, lang string, res resource) {
+	t.Helper()
+
+	langName := langDisplayName(lang)
+
+	opts := baseOptions(t)
+	opts.Dir = filepath.Join("..", "examples", lang, res.name)
+
+	applyLanguageOptions(t, opts, lang, res.name)
+
+	expectedValue := res.checkValue
+	if strings.Contains(expectedValue, "%s") {
+		expectedValue = fmt.Sprintf(expectedValue, langName)
+	}
+	opts.ExtraRuntimeValidation = validateResource(res.apiPath, expectedValue)
 
 	integration.ProgramTest(t, opts)
 }
 
-func TestNodeJS_Minimal_LocalStack(t *testing.T) {
-	opts := baseOptions(t)
-	opts.Dir = filepath.Join("..", "examples", "nodejs", "minimal")
-	opts.PrePrepareProject = func(proj *engine.Projinfo) error {
-		absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "nodejs"))
-		if err != nil {
-			return err
-		}
-		pkgJsonPath := filepath.Join(proj.Root, "package.json")
-		content, err := os.ReadFile(pkgJsonPath)
-		if err != nil {
-			return err
-		}
-		newContent := strings.Replace(string(content), "file:../../../sdk/nodejs", "file:"+absSdkPath, 1)
-		return os.WriteFile(pkgJsonPath, []byte(newContent), 0644)
-	}
-	opts.ExtraRuntimeValidation = validateGroupName("Pulumi NodeJS Test Group")
+// TestSmoke runs only the "group" resource across all languages.
+// This is a fast sanity check before running the full suite.
+//
+// Run with: go test -v -timeout 30m -run TestSmoke ./...
+func TestSmoke(t *testing.T) {
+	groupRes := resource{"group", "/api/groups", "Pulumi %s Group"}
 
-	integration.ProgramTest(t, opts)
+	for _, lang := range []string{"go", "nodejs", "python", "dotnet", "java"} {
+		t.Run(lang, func(t *testing.T) {
+			runResourceTest(t, lang, groupRes)
+		})
+	}
 }
 
-func TestPython_Minimal_LocalStack(t *testing.T) {
-	opts := baseOptions(t)
-	opts.Dir = filepath.Join("..", "examples", "python", "minimal")
-	opts.PrePrepareProject = func(proj *engine.Projinfo) error {
-		absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "python"))
-		if err != nil {
-			return err
-		}
-		reqsPath := filepath.Join(proj.Root, "requirements.txt")
-		content, err := os.ReadFile(reqsPath)
-		if err != nil {
-			return err
-		}
-		newContent := strings.Replace(string(content), "../../../sdk/python", absSdkPath, 1)
-		return os.WriteFile(reqsPath, []byte(newContent), 0644)
+// TestExamples_Go runs all resource tests for Go.
+//
+// Run with: go test -v -timeout 60m -run TestExamples_Go ./...
+func TestExamples_Go(t *testing.T) {
+	for _, res := range allResources() {
+		t.Run(res.name, func(t *testing.T) {
+			runResourceTest(t, "go", res)
+		})
 	}
-	opts.ExtraRuntimeValidation = validateGroupName("Pulumi Python Test Group")
-
-	integration.ProgramTest(t, opts)
 }
 
-func TestDotNet_Minimal_LocalStack(t *testing.T) {
-	opts := baseOptions(t)
-	opts.Dir = filepath.Join("..", "examples", "dotnet", "minimal")
-	opts.PrePrepareProject = func(proj *engine.Projinfo) error {
-		absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "dotnet", "KitStream.Pulumi.Netbird.csproj"))
-		if err != nil {
-			return err
-		}
-		csprojPath := filepath.Join(proj.Root, "minimal-dotnet.csproj")
-		content, err := os.ReadFile(csprojPath)
-		if err != nil {
-			return err
-		}
-		newContent := strings.Replace(string(content), "../../../sdk/dotnet/KitStream.Pulumi.Netbird.csproj", absSdkPath, 1)
-		return os.WriteFile(csprojPath, []byte(newContent), 0644)
+// TestExamples_NodeJS runs all resource tests for NodeJS.
+//
+// Run with: go test -v -timeout 60m -run TestExamples_NodeJS ./...
+func TestExamples_NodeJS(t *testing.T) {
+	for _, res := range allResources() {
+		t.Run(res.name, func(t *testing.T) {
+			runResourceTest(t, "nodejs", res)
+		})
 	}
-	opts.ExtraRuntimeValidation = validateGroupName("Pulumi DotNet Test Group")
-
-	integration.ProgramTest(t, opts)
 }
 
+// TestExamples_Python runs all resource tests for Python.
+//
+// Run with: go test -v -timeout 60m -run TestExamples_Python ./...
+func TestExamples_Python(t *testing.T) {
+	for _, res := range allResources() {
+		t.Run(res.name, func(t *testing.T) {
+			runResourceTest(t, "python", res)
+		})
+	}
+}
+
+// TestExamples_DotNet runs all resource tests for DotNet.
+//
+// Run with: go test -v -timeout 60m -run TestExamples_DotNet ./...
+func TestExamples_DotNet(t *testing.T) {
+	for _, res := range allResources() {
+		t.Run(res.name, func(t *testing.T) {
+			runResourceTest(t, "dotnet", res)
+		})
+	}
+}
+
+// TestExamples_Java runs all resource tests for Java.
+//
+// Run with: go test -v -timeout 60m -run TestExamples_Java ./...
+func TestExamples_Java(t *testing.T) {
+	for _, res := range allResources() {
+		t.Run(res.name, func(t *testing.T) {
+			runResourceTest(t, "java", res)
+		})
+	}
+}
+
+// TestJava_Minimal_LocalStack tests the minimal Java example.
 func TestJava_Minimal_LocalStack(t *testing.T) {
 	opts := baseOptions(t)
 	opts.Dir = filepath.Join("..", "examples", "java", "minimal")
-	opts.ExtraRuntimeValidation = validateGroupName("Pulumi Java Test Group")
+	opts.ExtraRuntimeValidation = validateResource("/api/groups", "Pulumi Java Test Group")
 
 	integration.ProgramTest(t, opts)
 }
