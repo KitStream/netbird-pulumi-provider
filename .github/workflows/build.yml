@@ -52,6 +52,9 @@ jobs:
       - name: Install Pulumi CLI
         uses: pulumi/actions@v6
 
+      - name: Prepare upstream submodule
+        run: ./setup_upstream.sh
+
       - name: Build Provider
         run: |
           cd provider

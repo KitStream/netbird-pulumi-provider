@@ -49,6 +49,9 @@ jobs:
       - name: Install Pulumi CLI
         uses: pulumi/actions@v6
 
+      - name: Prepare upstream submodule
+        run: ./setup_upstream.sh
+
       - name: Build Provider
         run: |
           cd provider
@@ -60,6 +63,6 @@ jobs:
       - name: Run Integration Tests
         run: |
           cd tests
-          go test -v ./...
+          go test -v -timeout 30m ./...
         env:
           PULUMI_CONFIG_PASSPHRASE: test
