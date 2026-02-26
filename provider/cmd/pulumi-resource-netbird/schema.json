@@ -1,14 +1,17 @@
 {
     "name": "netbird",
+    "displayName": "NetBird",
     "description": "A Pulumi package for creating and managing netbird cloud resources.",
     "keywords": [
         "pulumi",
-        "netbird"
+        "netbird",
+        "category/network"
     ],
     "homepage": "https://netbird.io",
     "license": "Apache-2.0",
     "attribution": "This Pulumi package is based on the [`netbird` Terraform Provider](https://github.com/netbirdio/terraform-provider-netbird).",
     "repository": "https://github.com/KitStream/netbird-pulumi-provider",
+    "logoUrl": "https://raw.githubusercontent.com/KitStream/netbird-pulumi-provider/main/docs/netbird.svg",
     "pluginDownloadURL": "github://api.github.com/KitStream/netbird-pulumi-provider",
     "publisher": "KitStream",
     "meta": {
