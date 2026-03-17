@@ -1,16 +1,3 @@
-diff --git a/test/management.json b/test/management.json
-index 2843d96..e8f906c 100644
---- a/test/management.json
-+++ b/test/management.json
-@@ -15,7 +15,7 @@
-     "Password": ""
-   },
-   "Datadir": "/var/lib/netbird",
--  "DataStoreEncryptionKey": "Qb/a9fEuGOUQQqu3EZW80btl9ig5csuDUfa31RIJ/8M=",
-+  "DataStoreEncryptionKey": "Zm4cgxLh3jzUvul22IyVvyLj3ldLJMcV/jdpXLnB6eQ=",
-   "EmbeddedIdP": {
-     "Enabled": true,
-     "Issuer": "http://localhost:8080/oauth2"
 diff --git a/test/seed_database.sql b/test/seed_database.sql
 index fa9ad39..fe6a22d 100644
 --- a/test/seed_database.sql
