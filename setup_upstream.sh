@@ -10,9 +10,8 @@
 #      package rule prevents direct imports from outside the module).
 #      The shim MUST live inside upstream/ for this reason.
 #
-#   2. Small test-data patches (encryption key format, service-user
-#      flag, unique peer keys) required by our integration tests.
-#      Without these the management server fails to start.
+#   2. Small test-data patches (service-user flag) required by our
+#      integration tests.
 #
 # Because .gitmodules sets `ignore = dirty`, these changes never make
 # the parent repo appear dirty.
@@ -60,7 +59,7 @@ fi
 # -- 3. Apply test-data patches (idempotent) --------------------------------
 echo "Applying upstream test patches..."
 cd "$UPSTREAM_DIR"
-if git diff --quiet -- test/management.json test/seed_database.sql 2>/dev/null; then
+if git diff --quiet -- test/seed_database.sql 2>/dev/null; then
     # Files are unmodified - apply the patch
     git apply "$SCRIPT_DIR/upstream.patch" 2>/dev/null || true
 else
