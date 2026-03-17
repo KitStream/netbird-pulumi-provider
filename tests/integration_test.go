@@ -48,7 +48,7 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 	fmt.Println("Starting local NetBird stack...")
-	cmd := exec.Command("docker", "compose", "-f", composeFile, "up", "-d", "--wait")
+	cmd := exec.Command("docker", "compose", "-f", composeFile, "up", "-d")
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	if err := cmd.Run(); err != nil {
 		fmt.Printf("failed to start local netbird stack: %v\n", err)
