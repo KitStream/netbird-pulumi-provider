@@ -1,19 +1,13 @@
 {
     "name": "@kitstream/netbird-pulumi",
-    "main": "bin/index.js",
-    "types": "bin/index.d.ts",
-    "version": "0.0.1",
+    "version": "${VERSION}",
     "description": "A Pulumi package for creating and managing netbird cloud resources.",
     "keywords": [
         "pulumi",
         "netbird"
     ],
     "homepage": "https://netbird.io",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/KitStream/netbird-pulumi-provider.git",
-        "directory": "sdk/nodejs"
-    },
+    "repository": "https://github.com/KitStream/netbird-pulumi-provider",
     "license": "Apache-2.0",
     "scripts": {
         "build": "tsc"

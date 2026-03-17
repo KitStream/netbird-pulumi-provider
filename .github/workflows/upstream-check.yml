@@ -1,0 +1,55 @@
+name: Check Upstream Release
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Weekly on Monday at 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Get pinned version
+        id: pinned
+        run: |
+          cd upstream
+          PINNED=$(git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD)
+          echo "version=$PINNED" >> "$GITHUB_OUTPUT"
+
+      - name: Get latest upstream release
+        id: latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LATEST=$(gh api repos/netbirdio/terraform-provider-netbird/releases/latest --jq '.tag_name')
+          echo "version=$LATEST" >> "$GITHUB_OUTPUT"
+
+      - name: Compare and create issue
+        if: steps.pinned.outputs.version != steps.latest.outputs.version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PINNED: ${{ steps.pinned.outputs.version }}
+          LATEST: ${{ steps.latest.outputs.version }}
+        run: |
+          EXISTING=$(gh issue list --search "Upstream release $LATEST" --state open --json number --jq '.[0].number')
+          if [ -z "$EXISTING" ]; then
+            gh issue create \
+              --title "Upstream release $LATEST available (pinned: $PINNED)" \
+              --body "A new upstream release of \`netbirdio/terraform-provider-netbird\` is available.
+
+          **Pinned:** \`$PINNED\`
+          **Latest:** \`$LATEST\`
+
+          ### Steps
+          1. \`cd upstream && git fetch && git checkout $LATEST && cd ..\`
+          2. Run \`./setup_upstream.sh\`, rebuild provider and regenerate SDKs
+          3. Verify generated SDKs
+          4. Commit submodule update and tag a new release"
+          fi

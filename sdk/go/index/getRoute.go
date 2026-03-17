@@ -43,6 +43,7 @@ type LookupRouteResult struct {
 	NetworkType         string   `pulumi:"networkType"`
 	Peer                string   `pulumi:"peer"`
 	PeerGroups          []string `pulumi:"peerGroups"`
+	SkipAutoApply       bool     `pulumi:"skipAutoApply"`
 }
 
 func LookupRouteOutput(ctx *pulumi.Context, args LookupRouteOutputArgs, opts ...pulumi.InvokeOption) LookupRouteResultOutput {
@@ -133,6 +134,10 @@ func (o LookupRouteResultOutput) Peer() pulumi.StringOutput {
 
 func (o LookupRouteResultOutput) PeerGroups() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v LookupRouteResult) []string { return v.PeerGroups }).(pulumi.StringArrayOutput)
+}
+
+func (o LookupRouteResultOutput) SkipAutoApply() pulumi.BoolOutput {
+	return o.ApplyT(func(v LookupRouteResult) bool { return v.SkipAutoApply }).(pulumi.BoolOutput)
 }
 
 func init() {

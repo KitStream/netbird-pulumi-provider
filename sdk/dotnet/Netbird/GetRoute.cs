@@ -69,6 +69,7 @@ namespace KitStream.Pulumi.Netbird
         public readonly string NetworkType;
         public readonly string Peer;
         public readonly ImmutableArray<string> PeerGroups;
+        public readonly bool SkipAutoApply;
 
         [OutputConstructor]
         private GetRouteResult(
@@ -98,7 +99,9 @@ namespace KitStream.Pulumi.Netbird
 
             string peer,
 
-            ImmutableArray<string> peerGroups)
+            ImmutableArray<string> peerGroups,
+
+            bool skipAutoApply)
         {
             AccessControlGroups = accessControlGroups;
             Description = description;
@@ -114,6 +117,7 @@ namespace KitStream.Pulumi.Netbird
             NetworkType = networkType;
             Peer = peer;
             PeerGroups = peerGroups;
+            SkipAutoApply = skipAutoApply;
         }
     }
 }

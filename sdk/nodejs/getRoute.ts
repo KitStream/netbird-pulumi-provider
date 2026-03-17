@@ -39,6 +39,7 @@ export interface GetRouteResult {
     readonly networkType: string;
     readonly peer: string;
     readonly peerGroups: string[];
+    readonly skipAutoApply: boolean;
 }
 export function getRouteOutput(args?: GetRouteOutputArgs, opts?: pulumi.InvokeOutputOptions): pulumi.Output<GetRouteResult> {
     args = args || {};

@@ -19,6 +19,34 @@ import javax.annotation.Nullable;
 @ResourceType(type="netbird:index/accountSettings:AccountSettings")
 public class AccountSettings extends com.pulumi.resources.CustomResource {
     /**
+     * Set Clients auto-update version. &#34;latest&#34;, &#34;disabled&#34;, or a specific version (e.g &#34;0.64.5&#34;)
+     * 
+     */
+    @Export(name="autoUpdateVersion", refs={String.class}, tree="[0]")
+    private Output<String> autoUpdateVersion;
+
+    /**
+     * @return Set Clients auto-update version. &#34;latest&#34;, &#34;disabled&#34;, or a specific version (e.g &#34;0.64.5&#34;)
+     * 
+     */
+    public Output<String> autoUpdateVersion() {
+        return this.autoUpdateVersion;
+    }
+    /**
+     * Allows to define a custom DNS domain for the account
+     * 
+     */
+    @Export(name="dnsDomain", refs={String.class}, tree="[0]")
+    private Output<String> dnsDomain;
+
+    /**
+     * @return Allows to define a custom DNS domain for the account
+     * 
+     */
+    public Output<String> dnsDomain() {
+        return this.dnsDomain;
+    }
+    /**
      * Allows propagate the new user auto groups to peers that belongs to the user
      * 
      */
@@ -75,6 +103,34 @@ public class AccountSettings extends com.pulumi.resources.CustomResource {
         return this.jwtGroupsEnabled;
     }
     /**
+     * Enables or disables experimental lazy connection
+     * 
+     */
+    @Export(name="lazyConnectionEnabled", refs={Boolean.class}, tree="[0]")
+    private Output<Boolean> lazyConnectionEnabled;
+
+    /**
+     * @return Enables or disables experimental lazy connection
+     * 
+     */
+    public Output<Boolean> lazyConnectionEnabled() {
+        return this.lazyConnectionEnabled;
+    }
+    /**
+     * Allows to define a custom network range for the account in CIDR format
+     * 
+     */
+    @Export(name="networkRange", refs={String.class}, tree="[0]")
+    private Output<String> networkRange;
+
+    /**
+     * @return Allows to define a custom network range for the account in CIDR format
+     * 
+     */
+    public Output<String> networkRange() {
+        return this.networkRange;
+    }
+    /**
      * Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
      * 
      */
@@ -87,6 +143,20 @@ public class AccountSettings extends com.pulumi.resources.CustomResource {
      */
     public Output<Boolean> networkTrafficLogsEnabled() {
         return this.networkTrafficLogsEnabled;
+    }
+    /**
+     * Limits traffic logging to these groups. If unset all peers are enabled.
+     * 
+     */
+    @Export(name="networkTrafficLogsGroups", refs={List.class,String.class}, tree="[0,1]")
+    private Output<List<String>> networkTrafficLogsGroups;
+
+    /**
+     * @return Limits traffic logging to these groups. If unset all peers are enabled.
+     * 
+     */
+    public Output<List<String>> networkTrafficLogsGroups() {
+        return this.networkTrafficLogsGroups;
     }
     /**
      * Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
@@ -115,6 +185,34 @@ public class AccountSettings extends com.pulumi.resources.CustomResource {
      */
     public Output<Boolean> peerApprovalEnabled() {
         return this.peerApprovalEnabled;
+    }
+    /**
+     * Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+     * 
+     */
+    @Export(name="peerExposeEnabled", refs={Boolean.class}, tree="[0]")
+    private Output<Boolean> peerExposeEnabled;
+
+    /**
+     * @return Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+     * 
+     */
+    public Output<Boolean> peerExposeEnabled() {
+        return this.peerExposeEnabled;
+    }
+    /**
+     * Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+     * 
+     */
+    @Export(name="peerExposeGroups", refs={List.class,String.class}, tree="[0,1]")
+    private Output<List<String>> peerExposeGroups;
+
+    /**
+     * @return Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+     * 
+     */
+    public Output<List<String>> peerExposeGroups() {
+        return this.peerExposeGroups;
     }
     /**
      * Period of time of inactivity after which peer session expires (seconds).
@@ -199,6 +297,20 @@ public class AccountSettings extends com.pulumi.resources.CustomResource {
      */
     public Output<Boolean> routingPeerDnsResolutionEnabled() {
         return this.routingPeerDnsResolutionEnabled;
+    }
+    /**
+     * Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+     * 
+     */
+    @Export(name="userApprovalRequired", refs={Boolean.class}, tree="[0]")
+    private Output<Boolean> userApprovalRequired;
+
+    /**
+     * @return Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+     * 
+     */
+    public Output<Boolean> userApprovalRequired() {
+        return this.userApprovalRequired;
     }
 
     /**

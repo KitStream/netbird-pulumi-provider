@@ -91,6 +91,12 @@ namespace KitStream.Pulumi.Netbird
         [Output("peerGroups")]
         public Output<ImmutableArray<string>> PeerGroups { get; private set; } = null!;
 
+        /// <summary>
+        /// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+        /// </summary>
+        [Output("skipAutoApply")]
+        public Output<bool> SkipAutoApply { get; private set; } = null!;
+
 
         /// <summary>
         /// Create a Route resource with the given unique name, arguments, and options.
@@ -234,6 +240,12 @@ namespace KitStream.Pulumi.Netbird
             set => _peerGroups = value;
         }
 
+        /// <summary>
+        /// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+        /// </summary>
+        [Input("skipAutoApply")]
+        public Input<bool>? SkipAutoApply { get; set; }
+
         public RouteArgs()
         {
         }
@@ -343,6 +355,12 @@ namespace KitStream.Pulumi.Netbird
             get => _peerGroups ?? (_peerGroups = new InputList<string>());
             set => _peerGroups = value;
         }
+
+        /// <summary>
+        /// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+        /// </summary>
+        [Input("skipAutoApply")]
+        public Input<bool>? SkipAutoApply { get; set; }
 
         public RouteState()
         {

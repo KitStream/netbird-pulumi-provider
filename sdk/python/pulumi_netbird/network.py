@@ -23,6 +23,7 @@ class NetworkArgs:
                  description: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Network resource.
+
         :param pulumi.Input[_builtins.str] name: Network Name
         :param pulumi.Input[_builtins.str] description: Network Description
         """
@@ -65,6 +66,7 @@ class _NetworkState:
                  routers: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering Network resources.
+
         :param pulumi.Input[_builtins.str] description: Network Description
         :param pulumi.Input[_builtins.str] name: Network Name
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] policies: Policy IDs associated with resources inside this Network
@@ -154,6 +156,7 @@ class Network(pulumi.CustomResource):
                  __props__=None):
         """
         Create a Network resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] description: Network Description
@@ -167,6 +170,7 @@ class Network(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Network resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param NetworkArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

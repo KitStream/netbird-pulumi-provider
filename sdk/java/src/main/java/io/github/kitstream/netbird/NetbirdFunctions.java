@@ -10,8 +10,14 @@ import com.pulumi.deployment.InvokeOptions;
 import com.pulumi.deployment.InvokeOutputOptions;
 import com.pulumi.resources.InvokeArgs;
 import io.github.kitstream.netbird.Utilities;
+import io.github.kitstream.netbird.inputs.GetDnsRecordArgs;
+import io.github.kitstream.netbird.inputs.GetDnsRecordPlainArgs;
+import io.github.kitstream.netbird.inputs.GetDnsZoneArgs;
+import io.github.kitstream.netbird.inputs.GetDnsZonePlainArgs;
 import io.github.kitstream.netbird.inputs.GetGroupArgs;
 import io.github.kitstream.netbird.inputs.GetGroupPlainArgs;
+import io.github.kitstream.netbird.inputs.GetIdentityProviderArgs;
+import io.github.kitstream.netbird.inputs.GetIdentityProviderPlainArgs;
 import io.github.kitstream.netbird.inputs.GetNameserverGroupArgs;
 import io.github.kitstream.netbird.inputs.GetNameserverGroupPlainArgs;
 import io.github.kitstream.netbird.inputs.GetNetworkArgs;
@@ -28,8 +34,14 @@ import io.github.kitstream.netbird.inputs.GetPolicyArgs;
 import io.github.kitstream.netbird.inputs.GetPolicyPlainArgs;
 import io.github.kitstream.netbird.inputs.GetPostureCheckArgs;
 import io.github.kitstream.netbird.inputs.GetPostureCheckPlainArgs;
+import io.github.kitstream.netbird.inputs.GetReverseProxyDomainArgs;
+import io.github.kitstream.netbird.inputs.GetReverseProxyDomainPlainArgs;
+import io.github.kitstream.netbird.inputs.GetReverseProxyServiceArgs;
+import io.github.kitstream.netbird.inputs.GetReverseProxyServicePlainArgs;
 import io.github.kitstream.netbird.inputs.GetRouteArgs;
 import io.github.kitstream.netbird.inputs.GetRoutePlainArgs;
+import io.github.kitstream.netbird.inputs.GetScimArgs;
+import io.github.kitstream.netbird.inputs.GetScimPlainArgs;
 import io.github.kitstream.netbird.inputs.GetSetupKeyArgs;
 import io.github.kitstream.netbird.inputs.GetSetupKeyPlainArgs;
 import io.github.kitstream.netbird.inputs.GetTokenArgs;
@@ -37,8 +49,11 @@ import io.github.kitstream.netbird.inputs.GetTokenPlainArgs;
 import io.github.kitstream.netbird.inputs.GetUserArgs;
 import io.github.kitstream.netbird.inputs.GetUserPlainArgs;
 import io.github.kitstream.netbird.outputs.GetAccountSettingsResult;
+import io.github.kitstream.netbird.outputs.GetDnsRecordResult;
 import io.github.kitstream.netbird.outputs.GetDnsSettingsResult;
+import io.github.kitstream.netbird.outputs.GetDnsZoneResult;
 import io.github.kitstream.netbird.outputs.GetGroupResult;
+import io.github.kitstream.netbird.outputs.GetIdentityProviderResult;
 import io.github.kitstream.netbird.outputs.GetNameserverGroupResult;
 import io.github.kitstream.netbird.outputs.GetNetworkResourceResult;
 import io.github.kitstream.netbird.outputs.GetNetworkResult;
@@ -47,7 +62,11 @@ import io.github.kitstream.netbird.outputs.GetPeerResult;
 import io.github.kitstream.netbird.outputs.GetPeersResult;
 import io.github.kitstream.netbird.outputs.GetPolicyResult;
 import io.github.kitstream.netbird.outputs.GetPostureCheckResult;
+import io.github.kitstream.netbird.outputs.GetReverseProxyClustersResult;
+import io.github.kitstream.netbird.outputs.GetReverseProxyDomainResult;
+import io.github.kitstream.netbird.outputs.GetReverseProxyServiceResult;
 import io.github.kitstream.netbird.outputs.GetRouteResult;
+import io.github.kitstream.netbird.outputs.GetScimResult;
 import io.github.kitstream.netbird.outputs.GetSetupKeyResult;
 import io.github.kitstream.netbird.outputs.GetTokenResult;
 import io.github.kitstream.netbird.outputs.GetUserResult;
@@ -75,6 +94,21 @@ public final class NetbirdFunctions {
     public static CompletableFuture<GetAccountSettingsResult> getAccountSettingsPlain(InvokeArgs args, InvokeOptions options) {
         return Deployment.getInstance().invokeAsync("netbird:index/getAccountSettings:getAccountSettings", TypeShape.of(GetAccountSettingsResult.class), args, Utilities.withVersion(options));
     }
+    public static Output<GetDnsRecordResult> getDnsRecord(GetDnsRecordArgs args) {
+        return getDnsRecord(args, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetDnsRecordResult> getDnsRecordPlain(GetDnsRecordPlainArgs args) {
+        return getDnsRecordPlain(args, InvokeOptions.Empty);
+    }
+    public static Output<GetDnsRecordResult> getDnsRecord(GetDnsRecordArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getDnsRecord:getDnsRecord", TypeShape.of(GetDnsRecordResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetDnsRecordResult> getDnsRecord(GetDnsRecordArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getDnsRecord:getDnsRecord", TypeShape.of(GetDnsRecordResult.class), args, Utilities.withVersion(options));
+    }
+    public static CompletableFuture<GetDnsRecordResult> getDnsRecordPlain(GetDnsRecordPlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("netbird:index/getDnsRecord:getDnsRecord", TypeShape.of(GetDnsRecordResult.class), args, Utilities.withVersion(options));
+    }
     public static Output<GetDnsSettingsResult> getDnsSettings() {
         return getDnsSettings(InvokeArgs.Empty, InvokeOptions.Empty);
     }
@@ -96,6 +130,27 @@ public final class NetbirdFunctions {
     public static CompletableFuture<GetDnsSettingsResult> getDnsSettingsPlain(InvokeArgs args, InvokeOptions options) {
         return Deployment.getInstance().invokeAsync("netbird:index/getDnsSettings:getDnsSettings", TypeShape.of(GetDnsSettingsResult.class), args, Utilities.withVersion(options));
     }
+    public static Output<GetDnsZoneResult> getDnsZone() {
+        return getDnsZone(GetDnsZoneArgs.Empty, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetDnsZoneResult> getDnsZonePlain() {
+        return getDnsZonePlain(GetDnsZonePlainArgs.Empty, InvokeOptions.Empty);
+    }
+    public static Output<GetDnsZoneResult> getDnsZone(GetDnsZoneArgs args) {
+        return getDnsZone(args, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetDnsZoneResult> getDnsZonePlain(GetDnsZonePlainArgs args) {
+        return getDnsZonePlain(args, InvokeOptions.Empty);
+    }
+    public static Output<GetDnsZoneResult> getDnsZone(GetDnsZoneArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getDnsZone:getDnsZone", TypeShape.of(GetDnsZoneResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetDnsZoneResult> getDnsZone(GetDnsZoneArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getDnsZone:getDnsZone", TypeShape.of(GetDnsZoneResult.class), args, Utilities.withVersion(options));
+    }
+    public static CompletableFuture<GetDnsZoneResult> getDnsZonePlain(GetDnsZonePlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("netbird:index/getDnsZone:getDnsZone", TypeShape.of(GetDnsZoneResult.class), args, Utilities.withVersion(options));
+    }
     public static Output<GetGroupResult> getGroup() {
         return getGroup(GetGroupArgs.Empty, InvokeOptions.Empty);
     }
@@ -116,6 +171,27 @@ public final class NetbirdFunctions {
     }
     public static CompletableFuture<GetGroupResult> getGroupPlain(GetGroupPlainArgs args, InvokeOptions options) {
         return Deployment.getInstance().invokeAsync("netbird:index/getGroup:getGroup", TypeShape.of(GetGroupResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetIdentityProviderResult> getIdentityProvider() {
+        return getIdentityProvider(GetIdentityProviderArgs.Empty, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetIdentityProviderResult> getIdentityProviderPlain() {
+        return getIdentityProviderPlain(GetIdentityProviderPlainArgs.Empty, InvokeOptions.Empty);
+    }
+    public static Output<GetIdentityProviderResult> getIdentityProvider(GetIdentityProviderArgs args) {
+        return getIdentityProvider(args, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetIdentityProviderResult> getIdentityProviderPlain(GetIdentityProviderPlainArgs args) {
+        return getIdentityProviderPlain(args, InvokeOptions.Empty);
+    }
+    public static Output<GetIdentityProviderResult> getIdentityProvider(GetIdentityProviderArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getIdentityProvider:getIdentityProvider", TypeShape.of(GetIdentityProviderResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetIdentityProviderResult> getIdentityProvider(GetIdentityProviderArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getIdentityProvider:getIdentityProvider", TypeShape.of(GetIdentityProviderResult.class), args, Utilities.withVersion(options));
+    }
+    public static CompletableFuture<GetIdentityProviderResult> getIdentityProviderPlain(GetIdentityProviderPlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("netbird:index/getIdentityProvider:getIdentityProvider", TypeShape.of(GetIdentityProviderResult.class), args, Utilities.withVersion(options));
     }
     public static Output<GetNameserverGroupResult> getNameserverGroup() {
         return getNameserverGroup(GetNameserverGroupArgs.Empty, InvokeOptions.Empty);
@@ -273,6 +349,69 @@ public final class NetbirdFunctions {
     public static CompletableFuture<GetPostureCheckResult> getPostureCheckPlain(GetPostureCheckPlainArgs args, InvokeOptions options) {
         return Deployment.getInstance().invokeAsync("netbird:index/getPostureCheck:getPostureCheck", TypeShape.of(GetPostureCheckResult.class), args, Utilities.withVersion(options));
     }
+    public static Output<GetReverseProxyClustersResult> getReverseProxyClusters() {
+        return getReverseProxyClusters(InvokeArgs.Empty, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetReverseProxyClustersResult> getReverseProxyClustersPlain() {
+        return getReverseProxyClustersPlain(InvokeArgs.Empty, InvokeOptions.Empty);
+    }
+    public static Output<GetReverseProxyClustersResult> getReverseProxyClusters(InvokeArgs args) {
+        return getReverseProxyClusters(args, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetReverseProxyClustersResult> getReverseProxyClustersPlain(InvokeArgs args) {
+        return getReverseProxyClustersPlain(args, InvokeOptions.Empty);
+    }
+    public static Output<GetReverseProxyClustersResult> getReverseProxyClusters(InvokeArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getReverseProxyClusters:getReverseProxyClusters", TypeShape.of(GetReverseProxyClustersResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetReverseProxyClustersResult> getReverseProxyClusters(InvokeArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getReverseProxyClusters:getReverseProxyClusters", TypeShape.of(GetReverseProxyClustersResult.class), args, Utilities.withVersion(options));
+    }
+    public static CompletableFuture<GetReverseProxyClustersResult> getReverseProxyClustersPlain(InvokeArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("netbird:index/getReverseProxyClusters:getReverseProxyClusters", TypeShape.of(GetReverseProxyClustersResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetReverseProxyDomainResult> getReverseProxyDomain() {
+        return getReverseProxyDomain(GetReverseProxyDomainArgs.Empty, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetReverseProxyDomainResult> getReverseProxyDomainPlain() {
+        return getReverseProxyDomainPlain(GetReverseProxyDomainPlainArgs.Empty, InvokeOptions.Empty);
+    }
+    public static Output<GetReverseProxyDomainResult> getReverseProxyDomain(GetReverseProxyDomainArgs args) {
+        return getReverseProxyDomain(args, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetReverseProxyDomainResult> getReverseProxyDomainPlain(GetReverseProxyDomainPlainArgs args) {
+        return getReverseProxyDomainPlain(args, InvokeOptions.Empty);
+    }
+    public static Output<GetReverseProxyDomainResult> getReverseProxyDomain(GetReverseProxyDomainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getReverseProxyDomain:getReverseProxyDomain", TypeShape.of(GetReverseProxyDomainResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetReverseProxyDomainResult> getReverseProxyDomain(GetReverseProxyDomainArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getReverseProxyDomain:getReverseProxyDomain", TypeShape.of(GetReverseProxyDomainResult.class), args, Utilities.withVersion(options));
+    }
+    public static CompletableFuture<GetReverseProxyDomainResult> getReverseProxyDomainPlain(GetReverseProxyDomainPlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("netbird:index/getReverseProxyDomain:getReverseProxyDomain", TypeShape.of(GetReverseProxyDomainResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetReverseProxyServiceResult> getReverseProxyService() {
+        return getReverseProxyService(GetReverseProxyServiceArgs.Empty, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetReverseProxyServiceResult> getReverseProxyServicePlain() {
+        return getReverseProxyServicePlain(GetReverseProxyServicePlainArgs.Empty, InvokeOptions.Empty);
+    }
+    public static Output<GetReverseProxyServiceResult> getReverseProxyService(GetReverseProxyServiceArgs args) {
+        return getReverseProxyService(args, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetReverseProxyServiceResult> getReverseProxyServicePlain(GetReverseProxyServicePlainArgs args) {
+        return getReverseProxyServicePlain(args, InvokeOptions.Empty);
+    }
+    public static Output<GetReverseProxyServiceResult> getReverseProxyService(GetReverseProxyServiceArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getReverseProxyService:getReverseProxyService", TypeShape.of(GetReverseProxyServiceResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetReverseProxyServiceResult> getReverseProxyService(GetReverseProxyServiceArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getReverseProxyService:getReverseProxyService", TypeShape.of(GetReverseProxyServiceResult.class), args, Utilities.withVersion(options));
+    }
+    public static CompletableFuture<GetReverseProxyServiceResult> getReverseProxyServicePlain(GetReverseProxyServicePlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("netbird:index/getReverseProxyService:getReverseProxyService", TypeShape.of(GetReverseProxyServiceResult.class), args, Utilities.withVersion(options));
+    }
     public static Output<GetRouteResult> getRoute() {
         return getRoute(GetRouteArgs.Empty, InvokeOptions.Empty);
     }
@@ -293,6 +432,27 @@ public final class NetbirdFunctions {
     }
     public static CompletableFuture<GetRouteResult> getRoutePlain(GetRoutePlainArgs args, InvokeOptions options) {
         return Deployment.getInstance().invokeAsync("netbird:index/getRoute:getRoute", TypeShape.of(GetRouteResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetScimResult> getScim() {
+        return getScim(GetScimArgs.Empty, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetScimResult> getScimPlain() {
+        return getScimPlain(GetScimPlainArgs.Empty, InvokeOptions.Empty);
+    }
+    public static Output<GetScimResult> getScim(GetScimArgs args) {
+        return getScim(args, InvokeOptions.Empty);
+    }
+    public static CompletableFuture<GetScimResult> getScimPlain(GetScimPlainArgs args) {
+        return getScimPlain(args, InvokeOptions.Empty);
+    }
+    public static Output<GetScimResult> getScim(GetScimArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getScim:getScim", TypeShape.of(GetScimResult.class), args, Utilities.withVersion(options));
+    }
+    public static Output<GetScimResult> getScim(GetScimArgs args, InvokeOutputOptions options) {
+        return Deployment.getInstance().invoke("netbird:index/getScim:getScim", TypeShape.of(GetScimResult.class), args, Utilities.withVersion(options));
+    }
+    public static CompletableFuture<GetScimResult> getScimPlain(GetScimPlainArgs args, InvokeOptions options) {
+        return Deployment.getInstance().invokeAsync("netbird:index/getScim:getScim", TypeShape.of(GetScimResult.class), args, Utilities.withVersion(options));
     }
     public static Output<GetSetupKeyResult> getSetupKey() {
         return getSetupKey(GetSetupKeyArgs.Empty, InvokeOptions.Empty);

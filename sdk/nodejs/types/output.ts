@@ -26,6 +26,10 @@ export interface GetPolicyRule {
      */
     action: string;
     /**
+     * Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     */
+    authorizedGroups: {[key: string]: string[]};
+    /**
      * Policy Rule Bidirectional
      */
     bidirectional: boolean;
@@ -62,7 +66,7 @@ export interface GetPolicyRule {
      */
     ports: string[];
     /**
-     * Policy Rule Protocol (tcp|udp|icmp|all)
+     * Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      */
     protocol: string;
     /**
@@ -123,6 +127,89 @@ export interface GetPostureCheckProcessCheck {
     windowsPath: string;
 }
 
+export interface GetReverseProxyClustersCluster {
+    /**
+     * Cluster address used for CNAME targets
+     */
+    address: string;
+    /**
+     * Number of proxy nodes connected in this cluster
+     */
+    connectedProxies: number;
+}
+
+export interface GetReverseProxyServiceAuth {
+    /**
+     * Bearer token authentication
+     */
+    bearerAuth: outputs.GetReverseProxyServiceAuthBearerAuth;
+    /**
+     * Link authentication
+     */
+    linkAuth: outputs.GetReverseProxyServiceAuthLinkAuth;
+    /**
+     * Password authentication
+     */
+    passwordAuth: outputs.GetReverseProxyServiceAuthPasswordAuth;
+    /**
+     * PIN authentication
+     */
+    pinAuth: outputs.GetReverseProxyServiceAuthPinAuth;
+}
+
+export interface GetReverseProxyServiceAuthBearerAuth {
+    /**
+     * List of group IDs that can use bearer auth
+     */
+    distributionGroups: string[];
+    enabled: boolean;
+}
+
+export interface GetReverseProxyServiceAuthLinkAuth {
+    enabled: boolean;
+}
+
+export interface GetReverseProxyServiceAuthPasswordAuth {
+    enabled: boolean;
+    password: string;
+}
+
+export interface GetReverseProxyServiceAuthPinAuth {
+    enabled: boolean;
+    pin: string;
+}
+
+export interface GetReverseProxyServiceTarget {
+    /**
+     * Whether this target is enabled
+     */
+    enabled: boolean;
+    /**
+     * Backend IP or domain for this target
+     */
+    host: string;
+    /**
+     * URL path prefix for this target
+     */
+    path: string;
+    /**
+     * Backend port for this target
+     */
+    port: number;
+    /**
+     * Protocol to use when connecting to the backend (http, https)
+     */
+    protocol: string;
+    /**
+     * Target ID (resource or peer ID)
+     */
+    targetId: string;
+    /**
+     * Target type (peer, host, domain, subnet)
+     */
+    targetType: string;
+}
+
 export interface NameserverGroupNameserver {
     /**
      * Nameserver IP
@@ -143,6 +230,10 @@ export interface PolicyRule {
      * Policy Rule Action (accept|drop)
      */
     action: string;
+    /**
+     * Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     */
+    authorizedGroups: {[key: string]: string[]};
     /**
      * Policy Rule Bidirectional
      */
@@ -180,7 +271,7 @@ export interface PolicyRule {
      */
     ports: string[];
     /**
-     * Policy Rule Protocol (tcp|udp|icmp|all)
+     * Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      */
     protocol: string;
     /**
@@ -239,5 +330,77 @@ export interface PostureCheckProcessCheck {
     linuxPath?: string;
     macPath?: string;
     windowsPath?: string;
+}
+
+export interface ReverseProxyServiceAuth {
+    /**
+     * Bearer token authentication
+     */
+    bearerAuth?: outputs.ReverseProxyServiceAuthBearerAuth;
+    /**
+     * Link authentication
+     */
+    linkAuth?: outputs.ReverseProxyServiceAuthLinkAuth;
+    /**
+     * Password authentication
+     */
+    passwordAuth?: outputs.ReverseProxyServiceAuthPasswordAuth;
+    /**
+     * PIN authentication
+     */
+    pinAuth?: outputs.ReverseProxyServiceAuthPinAuth;
+}
+
+export interface ReverseProxyServiceAuthBearerAuth {
+    /**
+     * List of group IDs that can use bearer auth
+     */
+    distributionGroups?: string[];
+    enabled: boolean;
+}
+
+export interface ReverseProxyServiceAuthLinkAuth {
+    enabled: boolean;
+}
+
+export interface ReverseProxyServiceAuthPasswordAuth {
+    enabled: boolean;
+    password?: string;
+}
+
+export interface ReverseProxyServiceAuthPinAuth {
+    enabled: boolean;
+    pin?: string;
+}
+
+export interface ReverseProxyServiceTarget {
+    /**
+     * Whether this target is enabled
+     */
+    enabled: boolean;
+    /**
+     * Backend IP or domain for this target. If omitted, the API resolves it from the target peer.
+     */
+    host: string;
+    /**
+     * URL path prefix for this target. Defaults to "/" if omitted.
+     */
+    path: string;
+    /**
+     * Backend port for this target (0 for scheme default)
+     */
+    port: number;
+    /**
+     * Protocol to use when connecting to the backend (http, https)
+     */
+    protocol: string;
+    /**
+     * Target ID (resource or peer ID)
+     */
+    targetId: string;
+    /**
+     * Target type (peer, host, domain, subnet)
+     */
+    targetType: string;
 }
 

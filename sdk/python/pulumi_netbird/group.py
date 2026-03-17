@@ -24,6 +24,7 @@ class GroupArgs:
                  resources: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Group resource.
+
         :param pulumi.Input[_builtins.str] name: Group name identifier
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] peers: List of peers ids
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] resources: List of network resource ids
@@ -80,6 +81,7 @@ class _GroupState:
                  resources: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering Group resources.
+
         :param pulumi.Input[_builtins.str] issued: Group issued by
         :param pulumi.Input[_builtins.str] name: Group name identifier
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] peers: List of peers ids
@@ -155,6 +157,7 @@ class Group(pulumi.CustomResource):
                  __props__=None):
         """
         Create a Group resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] name: Group name identifier
@@ -169,6 +172,7 @@ class Group(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Group resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param GroupArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

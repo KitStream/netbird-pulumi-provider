@@ -27,6 +27,7 @@ class PeerArgs:
                  ssh_enabled: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a Peer resource.
+
         :param pulumi.Input[_builtins.str] peer_id: Peer ID
         :param pulumi.Input[_builtins.bool] approval_required: Indicates whether peer needs approval
         :param pulumi.Input[_builtins.bool] inactivity_expiration_enabled: Enable inactivity expiration for peer
@@ -149,6 +150,7 @@ class _PeerState:
                  version: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering Peer resources.
+
         :param pulumi.Input[_builtins.bool] approval_required: Indicates whether peer needs approval
         :param pulumi.Input[_builtins.str] city_name: Peer city name
         :param pulumi.Input[_builtins.bool] connected: Peer Connection Status
@@ -542,6 +544,7 @@ class Peer(pulumi.CustomResource):
                  __props__=None):
         """
         Create a Peer resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] approval_required: Indicates whether peer needs approval
@@ -559,6 +562,7 @@ class Peer(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Peer resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param PeerArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

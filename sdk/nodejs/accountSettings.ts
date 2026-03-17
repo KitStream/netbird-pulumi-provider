@@ -33,6 +33,14 @@ export class AccountSettings extends pulumi.CustomResource {
     }
 
     /**
+     * Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+     */
+    declare public readonly autoUpdateVersion: pulumi.Output<string>;
+    /**
+     * Allows to define a custom DNS domain for the account
+     */
+    declare public readonly dnsDomain: pulumi.Output<string>;
+    /**
      * Allows propagate the new user auto groups to peers that belongs to the user
      */
     declare public readonly groupsPropagationEnabled: pulumi.Output<boolean>;
@@ -49,9 +57,21 @@ export class AccountSettings extends pulumi.CustomResource {
      */
     declare public readonly jwtGroupsEnabled: pulumi.Output<boolean>;
     /**
+     * Enables or disables experimental lazy connection
+     */
+    declare public readonly lazyConnectionEnabled: pulumi.Output<boolean>;
+    /**
+     * Allows to define a custom network range for the account in CIDR format
+     */
+    declare public readonly networkRange: pulumi.Output<string>;
+    /**
      * Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
      */
     declare public readonly networkTrafficLogsEnabled: pulumi.Output<boolean>;
+    /**
+     * Limits traffic logging to these groups. If unset all peers are enabled.
+     */
+    declare public readonly networkTrafficLogsGroups: pulumi.Output<string[]>;
     /**
      * Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
      */
@@ -60,6 +80,14 @@ export class AccountSettings extends pulumi.CustomResource {
      * (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
      */
     declare public readonly peerApprovalEnabled: pulumi.Output<boolean>;
+    /**
+     * Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+     */
+    declare public readonly peerExposeEnabled: pulumi.Output<boolean>;
+    /**
+     * Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+     */
+    declare public readonly peerExposeGroups: pulumi.Output<string[]>;
     /**
      * Period of time of inactivity after which peer session expires (seconds).
      */
@@ -84,6 +112,10 @@ export class AccountSettings extends pulumi.CustomResource {
      * Enables or disables DNS resolution on the routing peers
      */
     declare public readonly routingPeerDnsResolutionEnabled: pulumi.Output<boolean>;
+    /**
+     * Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+     */
+    declare public readonly userApprovalRequired: pulumi.Output<boolean>;
 
     /**
      * Create a AccountSettings resource with the given unique name, arguments, and options.
@@ -98,34 +130,50 @@ export class AccountSettings extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as AccountSettingsState | undefined;
+            resourceInputs["autoUpdateVersion"] = state?.autoUpdateVersion;
+            resourceInputs["dnsDomain"] = state?.dnsDomain;
             resourceInputs["groupsPropagationEnabled"] = state?.groupsPropagationEnabled;
             resourceInputs["jwtAllowGroups"] = state?.jwtAllowGroups;
             resourceInputs["jwtGroupsClaimName"] = state?.jwtGroupsClaimName;
             resourceInputs["jwtGroupsEnabled"] = state?.jwtGroupsEnabled;
+            resourceInputs["lazyConnectionEnabled"] = state?.lazyConnectionEnabled;
+            resourceInputs["networkRange"] = state?.networkRange;
             resourceInputs["networkTrafficLogsEnabled"] = state?.networkTrafficLogsEnabled;
+            resourceInputs["networkTrafficLogsGroups"] = state?.networkTrafficLogsGroups;
             resourceInputs["networkTrafficPacketCounterEnabled"] = state?.networkTrafficPacketCounterEnabled;
             resourceInputs["peerApprovalEnabled"] = state?.peerApprovalEnabled;
+            resourceInputs["peerExposeEnabled"] = state?.peerExposeEnabled;
+            resourceInputs["peerExposeGroups"] = state?.peerExposeGroups;
             resourceInputs["peerInactivityExpiration"] = state?.peerInactivityExpiration;
             resourceInputs["peerInactivityExpirationEnabled"] = state?.peerInactivityExpirationEnabled;
             resourceInputs["peerLoginExpiration"] = state?.peerLoginExpiration;
             resourceInputs["peerLoginExpirationEnabled"] = state?.peerLoginExpirationEnabled;
             resourceInputs["regularUsersViewBlocked"] = state?.regularUsersViewBlocked;
             resourceInputs["routingPeerDnsResolutionEnabled"] = state?.routingPeerDnsResolutionEnabled;
+            resourceInputs["userApprovalRequired"] = state?.userApprovalRequired;
         } else {
             const args = argsOrState as AccountSettingsArgs | undefined;
+            resourceInputs["autoUpdateVersion"] = args?.autoUpdateVersion;
+            resourceInputs["dnsDomain"] = args?.dnsDomain;
             resourceInputs["groupsPropagationEnabled"] = args?.groupsPropagationEnabled;
             resourceInputs["jwtAllowGroups"] = args?.jwtAllowGroups;
             resourceInputs["jwtGroupsClaimName"] = args?.jwtGroupsClaimName;
             resourceInputs["jwtGroupsEnabled"] = args?.jwtGroupsEnabled;
+            resourceInputs["lazyConnectionEnabled"] = args?.lazyConnectionEnabled;
+            resourceInputs["networkRange"] = args?.networkRange;
             resourceInputs["networkTrafficLogsEnabled"] = args?.networkTrafficLogsEnabled;
+            resourceInputs["networkTrafficLogsGroups"] = args?.networkTrafficLogsGroups;
             resourceInputs["networkTrafficPacketCounterEnabled"] = args?.networkTrafficPacketCounterEnabled;
             resourceInputs["peerApprovalEnabled"] = args?.peerApprovalEnabled;
+            resourceInputs["peerExposeEnabled"] = args?.peerExposeEnabled;
+            resourceInputs["peerExposeGroups"] = args?.peerExposeGroups;
             resourceInputs["peerInactivityExpiration"] = args?.peerInactivityExpiration;
             resourceInputs["peerInactivityExpirationEnabled"] = args?.peerInactivityExpirationEnabled;
             resourceInputs["peerLoginExpiration"] = args?.peerLoginExpiration;
             resourceInputs["peerLoginExpirationEnabled"] = args?.peerLoginExpirationEnabled;
             resourceInputs["regularUsersViewBlocked"] = args?.regularUsersViewBlocked;
             resourceInputs["routingPeerDnsResolutionEnabled"] = args?.routingPeerDnsResolutionEnabled;
+            resourceInputs["userApprovalRequired"] = args?.userApprovalRequired;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(AccountSettings.__pulumiType, name, resourceInputs, opts);
@@ -137,6 +185,14 @@ export class AccountSettings extends pulumi.CustomResource {
  */
 export interface AccountSettingsState {
     /**
+     * Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+     */
+    autoUpdateVersion?: pulumi.Input<string>;
+    /**
+     * Allows to define a custom DNS domain for the account
+     */
+    dnsDomain?: pulumi.Input<string>;
+    /**
      * Allows propagate the new user auto groups to peers that belongs to the user
      */
     groupsPropagationEnabled?: pulumi.Input<boolean>;
@@ -153,9 +209,21 @@ export interface AccountSettingsState {
      */
     jwtGroupsEnabled?: pulumi.Input<boolean>;
     /**
+     * Enables or disables experimental lazy connection
+     */
+    lazyConnectionEnabled?: pulumi.Input<boolean>;
+    /**
+     * Allows to define a custom network range for the account in CIDR format
+     */
+    networkRange?: pulumi.Input<string>;
+    /**
      * Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
      */
     networkTrafficLogsEnabled?: pulumi.Input<boolean>;
+    /**
+     * Limits traffic logging to these groups. If unset all peers are enabled.
+     */
+    networkTrafficLogsGroups?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
      */
@@ -164,6 +232,14 @@ export interface AccountSettingsState {
      * (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
      */
     peerApprovalEnabled?: pulumi.Input<boolean>;
+    /**
+     * Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+     */
+    peerExposeEnabled?: pulumi.Input<boolean>;
+    /**
+     * Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+     */
+    peerExposeGroups?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Period of time of inactivity after which peer session expires (seconds).
      */
@@ -188,6 +264,10 @@ export interface AccountSettingsState {
      * Enables or disables DNS resolution on the routing peers
      */
     routingPeerDnsResolutionEnabled?: pulumi.Input<boolean>;
+    /**
+     * Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+     */
+    userApprovalRequired?: pulumi.Input<boolean>;
 }
 
 /**
@@ -195,6 +275,14 @@ export interface AccountSettingsState {
  */
 export interface AccountSettingsArgs {
     /**
+     * Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+     */
+    autoUpdateVersion?: pulumi.Input<string>;
+    /**
+     * Allows to define a custom DNS domain for the account
+     */
+    dnsDomain?: pulumi.Input<string>;
+    /**
      * Allows propagate the new user auto groups to peers that belongs to the user
      */
     groupsPropagationEnabled?: pulumi.Input<boolean>;
@@ -211,9 +299,21 @@ export interface AccountSettingsArgs {
      */
     jwtGroupsEnabled?: pulumi.Input<boolean>;
     /**
+     * Enables or disables experimental lazy connection
+     */
+    lazyConnectionEnabled?: pulumi.Input<boolean>;
+    /**
+     * Allows to define a custom network range for the account in CIDR format
+     */
+    networkRange?: pulumi.Input<string>;
+    /**
      * Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
      */
     networkTrafficLogsEnabled?: pulumi.Input<boolean>;
+    /**
+     * Limits traffic logging to these groups. If unset all peers are enabled.
+     */
+    networkTrafficLogsGroups?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
      */
@@ -222,6 +322,14 @@ export interface AccountSettingsArgs {
      * (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
      */
     peerApprovalEnabled?: pulumi.Input<boolean>;
+    /**
+     * Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+     */
+    peerExposeEnabled?: pulumi.Input<boolean>;
+    /**
+     * Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+     */
+    peerExposeGroups?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * Period of time of inactivity after which peer session expires (seconds).
      */
@@ -246,4 +354,8 @@ export interface AccountSettingsArgs {
      * Enables or disables DNS resolution on the routing peers
      */
     routingPeerDnsResolutionEnabled?: pulumi.Input<boolean>;
+    /**
+     * Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+     */
+    userApprovalRequired?: pulumi.Input<boolean>;
 }

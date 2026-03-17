@@ -213,6 +213,21 @@ public final class RouteState extends com.pulumi.resources.ResourceArgs {
         return Optional.ofNullable(this.peerGroups);
     }
 
+    /**
+     * Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+     * 
+     */
+    @Import(name="skipAutoApply")
+    private @Nullable Output<Boolean> skipAutoApply;
+
+    /**
+     * @return Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+     * 
+     */
+    public Optional<Output<Boolean>> skipAutoApply() {
+        return Optional.ofNullable(this.skipAutoApply);
+    }
+
     private RouteState() {}
 
     private RouteState(RouteState $) {
@@ -229,6 +244,7 @@ public final class RouteState extends com.pulumi.resources.ResourceArgs {
         this.networkType = $.networkType;
         this.peer = $.peer;
         this.peerGroups = $.peerGroups;
+        this.skipAutoApply = $.skipAutoApply;
     }
 
     public static Builder builder() {
@@ -560,6 +576,27 @@ public final class RouteState extends com.pulumi.resources.ResourceArgs {
          */
         public Builder peerGroups(String... peerGroups) {
             return peerGroups(List.of(peerGroups));
+        }
+
+        /**
+         * @param skipAutoApply Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+         * 
+         * @return builder
+         * 
+         */
+        public Builder skipAutoApply(@Nullable Output<Boolean> skipAutoApply) {
+            $.skipAutoApply = skipAutoApply;
+            return this;
+        }
+
+        /**
+         * @param skipAutoApply Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+         * 
+         * @return builder
+         * 
+         */
+        public Builder skipAutoApply(Boolean skipAutoApply) {
+            return skipAutoApply(Output.of(skipAutoApply));
         }
 
         public RouteState build() {

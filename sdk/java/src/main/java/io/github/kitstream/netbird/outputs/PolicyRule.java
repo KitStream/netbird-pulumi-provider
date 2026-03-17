@@ -11,6 +11,7 @@ import io.github.kitstream.netbird.outputs.PolicyRuleSourceResource;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -22,6 +23,11 @@ public final class PolicyRule {
      * 
      */
     private @Nullable String action;
+    /**
+     * @return Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    private @Nullable Map<String,List<String>> authorizedGroups;
     /**
      * @return Policy Rule Bidirectional
      * 
@@ -68,7 +74,7 @@ public final class PolicyRule {
      */
     private @Nullable List<String> ports;
     /**
-     * @return Policy Rule Protocol (tcp|udp|icmp|all)
+     * @return Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     private @Nullable String protocol;
@@ -90,6 +96,13 @@ public final class PolicyRule {
      */
     public Optional<String> action() {
         return Optional.ofNullable(this.action);
+    }
+    /**
+     * @return Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    public Map<String,List<String>> authorizedGroups() {
+        return this.authorizedGroups == null ? Map.of() : this.authorizedGroups;
     }
     /**
      * @return Policy Rule Bidirectional
@@ -155,7 +168,7 @@ public final class PolicyRule {
         return this.ports == null ? List.of() : this.ports;
     }
     /**
-     * @return Policy Rule Protocol (tcp|udp|icmp|all)
+     * @return Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     public Optional<String> protocol() {
@@ -186,6 +199,7 @@ public final class PolicyRule {
     @CustomType.Builder
     public static final class Builder {
         private @Nullable String action;
+        private @Nullable Map<String,List<String>> authorizedGroups;
         private @Nullable Boolean bidirectional;
         private @Nullable String description;
         private @Nullable PolicyRuleDestinationResource destinationResource;
@@ -202,6 +216,7 @@ public final class PolicyRule {
         public Builder(PolicyRule defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.action = defaults.action;
+    	      this.authorizedGroups = defaults.authorizedGroups;
     	      this.bidirectional = defaults.bidirectional;
     	      this.description = defaults.description;
     	      this.destinationResource = defaults.destinationResource;
@@ -220,6 +235,12 @@ public final class PolicyRule {
         public Builder action(@Nullable String action) {
 
             this.action = action;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder authorizedGroups(@Nullable Map<String,List<String>> authorizedGroups) {
+
+            this.authorizedGroups = authorizedGroups;
             return this;
         }
         @CustomType.Setter
@@ -311,6 +332,7 @@ public final class PolicyRule {
         public PolicyRule build() {
             final var _resultValue = new PolicyRule();
             _resultValue.action = action;
+            _resultValue.authorizedGroups = authorizedGroups;
             _resultValue.bidirectional = bidirectional;
             _resultValue.description = description;
             _resultValue.destinationResource = destinationResource;

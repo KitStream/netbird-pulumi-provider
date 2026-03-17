@@ -26,23 +26,35 @@ namespace KitStream.Pulumi.Netbird
     [OutputType]
     public sealed class GetAccountSettingsResult
     {
+        public readonly string AutoUpdateVersion;
+        public readonly string DnsDomain;
         public readonly bool GroupsPropagationEnabled;
         public readonly string Id;
         public readonly ImmutableArray<string> JwtAllowGroups;
         public readonly string JwtGroupsClaimName;
         public readonly bool JwtGroupsEnabled;
+        public readonly bool LazyConnectionEnabled;
+        public readonly string NetworkRange;
         public readonly bool NetworkTrafficLogsEnabled;
+        public readonly ImmutableArray<string> NetworkTrafficLogsGroups;
         public readonly bool NetworkTrafficPacketCounterEnabled;
         public readonly bool PeerApprovalEnabled;
+        public readonly bool PeerExposeEnabled;
+        public readonly ImmutableArray<string> PeerExposeGroups;
         public readonly int PeerInactivityExpiration;
         public readonly bool PeerInactivityExpirationEnabled;
         public readonly int PeerLoginExpiration;
         public readonly bool PeerLoginExpirationEnabled;
         public readonly bool RegularUsersViewBlocked;
         public readonly bool RoutingPeerDnsResolutionEnabled;
+        public readonly bool UserApprovalRequired;
 
         [OutputConstructor]
         private GetAccountSettingsResult(
+            string autoUpdateVersion,
+
+            string dnsDomain,
+
             bool groupsPropagationEnabled,
 
             string id,
@@ -53,11 +65,21 @@ namespace KitStream.Pulumi.Netbird
 
             bool jwtGroupsEnabled,
 
+            bool lazyConnectionEnabled,
+
+            string networkRange,
+
             bool networkTrafficLogsEnabled,
+
+            ImmutableArray<string> networkTrafficLogsGroups,
 
             bool networkTrafficPacketCounterEnabled,
 
             bool peerApprovalEnabled,
+
+            bool peerExposeEnabled,
+
+            ImmutableArray<string> peerExposeGroups,
 
             int peerInactivityExpiration,
 
@@ -69,22 +91,32 @@ namespace KitStream.Pulumi.Netbird
 
             bool regularUsersViewBlocked,
 
-            bool routingPeerDnsResolutionEnabled)
+            bool routingPeerDnsResolutionEnabled,
+
+            bool userApprovalRequired)
         {
+            AutoUpdateVersion = autoUpdateVersion;
+            DnsDomain = dnsDomain;
             GroupsPropagationEnabled = groupsPropagationEnabled;
             Id = id;
             JwtAllowGroups = jwtAllowGroups;
             JwtGroupsClaimName = jwtGroupsClaimName;
             JwtGroupsEnabled = jwtGroupsEnabled;
+            LazyConnectionEnabled = lazyConnectionEnabled;
+            NetworkRange = networkRange;
             NetworkTrafficLogsEnabled = networkTrafficLogsEnabled;
+            NetworkTrafficLogsGroups = networkTrafficLogsGroups;
             NetworkTrafficPacketCounterEnabled = networkTrafficPacketCounterEnabled;
             PeerApprovalEnabled = peerApprovalEnabled;
+            PeerExposeEnabled = peerExposeEnabled;
+            PeerExposeGroups = peerExposeGroups;
             PeerInactivityExpiration = peerInactivityExpiration;
             PeerInactivityExpirationEnabled = peerInactivityExpirationEnabled;
             PeerLoginExpiration = peerLoginExpiration;
             PeerLoginExpirationEnabled = peerLoginExpirationEnabled;
             RegularUsersViewBlocked = regularUsersViewBlocked;
             RoutingPeerDnsResolutionEnabled = routingPeerDnsResolutionEnabled;
+            UserApprovalRequired = userApprovalRequired;
         }
     }
 }

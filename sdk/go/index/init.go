@@ -23,10 +23,16 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 	switch typ {
 	case "netbird:index/accountSettings:AccountSettings":
 		r = &AccountSettings{}
+	case "netbird:index/dnsRecord:DnsRecord":
+		r = &DnsRecord{}
 	case "netbird:index/dnsSettings:DnsSettings":
 		r = &DnsSettings{}
+	case "netbird:index/dnsZone:DnsZone":
+		r = &DnsZone{}
 	case "netbird:index/group:Group":
 		r = &Group{}
+	case "netbird:index/identityProvider:IdentityProvider":
+		r = &IdentityProvider{}
 	case "netbird:index/nameserverGroup:NameserverGroup":
 		r = &NameserverGroup{}
 	case "netbird:index/network:Network":
@@ -43,8 +49,14 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &Policy{}
 	case "netbird:index/postureCheck:PostureCheck":
 		r = &PostureCheck{}
+	case "netbird:index/reverseProxyDomain:ReverseProxyDomain":
+		r = &ReverseProxyDomain{}
+	case "netbird:index/reverseProxyService:ReverseProxyService":
+		r = &ReverseProxyService{}
 	case "netbird:index/route:Route":
 		r = &Route{}
+	case "netbird:index/scim:Scim":
+		r = &Scim{}
 	case "netbird:index/setupKey:SetupKey":
 		r = &SetupKey{}
 	case "netbird:index/user:User":
@@ -87,12 +99,27 @@ func init() {
 	)
 	pulumi.RegisterResourceModule(
 		"netbird",
+		"index/dnsRecord",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"netbird",
 		"index/dnsSettings",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(
 		"netbird",
+		"index/dnsZone",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"netbird",
 		"index/group",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"netbird",
+		"index/identityProvider",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(
@@ -137,7 +164,22 @@ func init() {
 	)
 	pulumi.RegisterResourceModule(
 		"netbird",
+		"index/reverseProxyDomain",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"netbird",
+		"index/reverseProxyService",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"netbird",
 		"index/route",
+		&module{version},
+	)
+	pulumi.RegisterResourceModule(
+		"netbird",
+		"index/scim",
 		&module{version},
 	)
 	pulumi.RegisterResourceModule(

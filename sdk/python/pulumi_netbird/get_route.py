@@ -26,7 +26,7 @@ class GetRouteResult:
     """
     A collection of values returned by getRoute.
     """
-    def __init__(__self__, access_control_groups=None, description=None, domains=None, enabled=None, groups=None, id=None, keep_route=None, masquerade=None, metric=None, network=None, network_id=None, network_type=None, peer=None, peer_groups=None):
+    def __init__(__self__, access_control_groups=None, description=None, domains=None, enabled=None, groups=None, id=None, keep_route=None, masquerade=None, metric=None, network=None, network_id=None, network_type=None, peer=None, peer_groups=None, skip_auto_apply=None):
         if access_control_groups and not isinstance(access_control_groups, list):
             raise TypeError("Expected argument 'access_control_groups' to be a list")
         pulumi.set(__self__, "access_control_groups", access_control_groups)
@@ -69,6 +69,9 @@ class GetRouteResult:
         if peer_groups and not isinstance(peer_groups, list):
             raise TypeError("Expected argument 'peer_groups' to be a list")
         pulumi.set(__self__, "peer_groups", peer_groups)
+        if skip_auto_apply and not isinstance(skip_auto_apply, bool):
+            raise TypeError("Expected argument 'skip_auto_apply' to be a bool")
+        pulumi.set(__self__, "skip_auto_apply", skip_auto_apply)
 
     @_builtins.property
     @pulumi.getter(name="accessControlGroups")
@@ -140,6 +143,11 @@ class GetRouteResult:
     def peer_groups(self) -> Sequence[_builtins.str]:
         return pulumi.get(self, "peer_groups")
 
+    @_builtins.property
+    @pulumi.getter(name="skipAutoApply")
+    def skip_auto_apply(self) -> _builtins.bool:
+        return pulumi.get(self, "skip_auto_apply")
+
 
 class AwaitableGetRouteResult(GetRouteResult):
     # pylint: disable=using-constant-test
@@ -160,7 +168,8 @@ class AwaitableGetRouteResult(GetRouteResult):
             network_id=self.network_id,
             network_type=self.network_type,
             peer=self.peer,
-            peer_groups=self.peer_groups)
+            peer_groups=self.peer_groups,
+            skip_auto_apply=self.skip_auto_apply)
 
 
 def get_route(id: Optional[_builtins.str] = None,
@@ -189,7 +198,8 @@ def get_route(id: Optional[_builtins.str] = None,
         network_id=pulumi.get(__ret__, 'network_id'),
         network_type=pulumi.get(__ret__, 'network_type'),
         peer=pulumi.get(__ret__, 'peer'),
-        peer_groups=pulumi.get(__ret__, 'peer_groups'))
+        peer_groups=pulumi.get(__ret__, 'peer_groups'),
+        skip_auto_apply=pulumi.get(__ret__, 'skip_auto_apply'))
 def get_route_output(id: Optional[pulumi.Input[Optional[_builtins.str]]] = None,
                      network_id: Optional[pulumi.Input[Optional[_builtins.str]]] = None,
                      opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetRouteResult]:
@@ -215,4 +225,5 @@ def get_route_output(id: Optional[pulumi.Input[Optional[_builtins.str]]] = None,
         network_id=pulumi.get(__response__, 'network_id'),
         network_type=pulumi.get(__response__, 'network_type'),
         peer=pulumi.get(__response__, 'peer'),
-        peer_groups=pulumi.get(__response__, 'peer_groups')))
+        peer_groups=pulumi.get(__response__, 'peer_groups'),
+        skip_auto_apply=pulumi.get(__response__, 'skip_auto_apply')))

@@ -41,6 +41,8 @@ type Route struct {
 	Peer pulumi.StringPtrOutput `pulumi:"peer"`
 	// Peers Group Identifier associated with route. This property can not be set together with peer
 	PeerGroups pulumi.StringArrayOutput `pulumi:"peerGroups"`
+	// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+	SkipAutoApply pulumi.BoolOutput `pulumi:"skipAutoApply"`
 }
 
 // NewRoute registers a new resource with the given unique name, arguments, and options.
@@ -105,6 +107,8 @@ type routeState struct {
 	Peer *string `pulumi:"peer"`
 	// Peers Group Identifier associated with route. This property can not be set together with peer
 	PeerGroups []string `pulumi:"peerGroups"`
+	// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+	SkipAutoApply *bool `pulumi:"skipAutoApply"`
 }
 
 type RouteState struct {
@@ -134,6 +138,8 @@ type RouteState struct {
 	Peer pulumi.StringPtrInput
 	// Peers Group Identifier associated with route. This property can not be set together with peer
 	PeerGroups pulumi.StringArrayInput
+	// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+	SkipAutoApply pulumi.BoolPtrInput
 }
 
 func (RouteState) ElementType() reflect.Type {
@@ -165,6 +171,8 @@ type routeArgs struct {
 	Peer *string `pulumi:"peer"`
 	// Peers Group Identifier associated with route. This property can not be set together with peer
 	PeerGroups []string `pulumi:"peerGroups"`
+	// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+	SkipAutoApply *bool `pulumi:"skipAutoApply"`
 }
 
 // The set of arguments for constructing a Route resource.
@@ -193,6 +201,8 @@ type RouteArgs struct {
 	Peer pulumi.StringPtrInput
 	// Peers Group Identifier associated with route. This property can not be set together with peer
 	PeerGroups pulumi.StringArrayInput
+	// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+	SkipAutoApply pulumi.BoolPtrInput
 }
 
 func (RouteArgs) ElementType() reflect.Type {
@@ -345,6 +355,11 @@ func (o RouteOutput) Peer() pulumi.StringPtrOutput {
 // Peers Group Identifier associated with route. This property can not be set together with peer
 func (o RouteOutput) PeerGroups() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *Route) pulumi.StringArrayOutput { return v.PeerGroups }).(pulumi.StringArrayOutput)
+}
+
+// Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+func (o RouteOutput) SkipAutoApply() pulumi.BoolOutput {
+	return o.ApplyT(func(v *Route) pulumi.BoolOutput { return v.SkipAutoApply }).(pulumi.BoolOutput)
 }
 
 type RouteArrayOutput struct{ *pulumi.OutputState }

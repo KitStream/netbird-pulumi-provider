@@ -24,6 +24,7 @@ class ProviderArgs:
                  token: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Provider resource.
+
         :param pulumi.Input[_builtins.str] management_url: NetBird Management API URL, can be also set through NB_MANAGEMENT_URL Environment Variable, value defined in Terraform files takes precedence
         :param pulumi.Input[_builtins.str] tenant_account: Account ID to impersonate, can be also set through NB_ACCOUNT Environment Variable, value defined in Terraform files takes precedence
         :param pulumi.Input[_builtins.str] token: Admin PAT for NetBird Management Server, can be also set through NB_PAT Environment Variable, value defined in Terraform files takes precedence
@@ -88,6 +89,7 @@ class Provider(pulumi.ProviderResource):
         construction to achieve fine-grained programmatic control over provider settings. See the
         [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
 
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] management_url: NetBird Management API URL, can be also set through NB_MANAGEMENT_URL Environment Variable, value defined in Terraform files takes precedence
@@ -105,6 +107,7 @@ class Provider(pulumi.ProviderResource):
         settings, however an explicit `Provider` instance may be created and passed during resource
         construction to achieve fine-grained programmatic control over provider settings. See the
         [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
+
 
         :param str resource_name: The name of the resource.
         :param ProviderArgs args: The arguments to use to populate this resource's properties.

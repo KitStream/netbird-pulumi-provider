@@ -7,10 +7,15 @@ from . import _utilities
 import typing
 # Export this package's modules as members:
 from .account_settings import *
+from .dns_record import *
 from .dns_settings import *
+from .dns_zone import *
 from .get_account_settings import *
+from .get_dns_record import *
 from .get_dns_settings import *
+from .get_dns_zone import *
 from .get_group import *
+from .get_identity_provider import *
 from .get_nameserver_group import *
 from .get_network import *
 from .get_network_resource import *
@@ -19,11 +24,16 @@ from .get_peer import *
 from .get_peers import *
 from .get_policy import *
 from .get_posture_check import *
+from .get_reverse_proxy_clusters import *
+from .get_reverse_proxy_domain import *
+from .get_reverse_proxy_service import *
 from .get_route import *
+from .get_scim import *
 from .get_setup_key import *
 from .get_token import *
 from .get_user import *
 from .group import *
+from .identity_provider import *
 from .nameserver_group import *
 from .network import *
 from .network_resource import *
@@ -33,7 +43,10 @@ from .personal_access_token import *
 from .policy import *
 from .posture_check import *
 from .provider import *
+from .reverse_proxy_domain import *
+from .reverse_proxy_service import *
 from .route import *
+from .scim import *
 from .setup_key import *
 from .user import *
 from ._inputs import *
@@ -59,6 +72,14 @@ _utilities.register(
  },
  {
   "pkg": "netbird",
+  "mod": "index/dnsRecord",
+  "fqn": "pulumi_netbird",
+  "classes": {
+   "netbird:index/dnsRecord:DnsRecord": "DnsRecord"
+  }
+ },
+ {
+  "pkg": "netbird",
   "mod": "index/dnsSettings",
   "fqn": "pulumi_netbird",
   "classes": {
@@ -67,10 +88,26 @@ _utilities.register(
  },
  {
   "pkg": "netbird",
+  "mod": "index/dnsZone",
+  "fqn": "pulumi_netbird",
+  "classes": {
+   "netbird:index/dnsZone:DnsZone": "DnsZone"
+  }
+ },
+ {
+  "pkg": "netbird",
   "mod": "index/group",
   "fqn": "pulumi_netbird",
   "classes": {
    "netbird:index/group:Group": "Group"
+  }
+ },
+ {
+  "pkg": "netbird",
+  "mod": "index/identityProvider",
+  "fqn": "pulumi_netbird",
+  "classes": {
+   "netbird:index/identityProvider:IdentityProvider": "IdentityProvider"
   }
  },
  {
@@ -139,10 +176,34 @@ _utilities.register(
  },
  {
   "pkg": "netbird",
+  "mod": "index/reverseProxyDomain",
+  "fqn": "pulumi_netbird",
+  "classes": {
+   "netbird:index/reverseProxyDomain:ReverseProxyDomain": "ReverseProxyDomain"
+  }
+ },
+ {
+  "pkg": "netbird",
+  "mod": "index/reverseProxyService",
+  "fqn": "pulumi_netbird",
+  "classes": {
+   "netbird:index/reverseProxyService:ReverseProxyService": "ReverseProxyService"
+  }
+ },
+ {
+  "pkg": "netbird",
   "mod": "index/route",
   "fqn": "pulumi_netbird",
   "classes": {
    "netbird:index/route:Route": "Route"
+  }
+ },
+ {
+  "pkg": "netbird",
+  "mod": "index/scim",
+  "fqn": "pulumi_netbird",
+  "classes": {
+   "netbird:index/scim:Scim": "Scim"
   }
  },
  {

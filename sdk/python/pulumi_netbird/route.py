@@ -30,9 +30,11 @@ class RouteArgs:
                  metric: Optional[pulumi.Input[_builtins.int]] = None,
                  network: Optional[pulumi.Input[_builtins.str]] = None,
                  peer: Optional[pulumi.Input[_builtins.str]] = None,
-                 peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
+                 peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 skip_auto_apply: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a Route resource.
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] groups: Group IDs containing routing peers
         :param pulumi.Input[_builtins.str] network_id: Route network identifier, to group HA routes
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] access_control_groups: Access control group identifier associated with route.
@@ -45,6 +47,7 @@ class RouteArgs:
         :param pulumi.Input[_builtins.str] network: Network range in CIDR format, Conflicts with domains
         :param pulumi.Input[_builtins.str] peer: Peer Identifier associated with route. This property can not be set together with peer_groups
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] peer_groups: Peers Group Identifier associated with route. This property can not be set together with peer
+        :param pulumi.Input[_builtins.bool] skip_auto_apply: Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
         """
         pulumi.set(__self__, "groups", groups)
         pulumi.set(__self__, "network_id", network_id)
@@ -68,6 +71,8 @@ class RouteArgs:
             pulumi.set(__self__, "peer", peer)
         if peer_groups is not None:
             pulumi.set(__self__, "peer_groups", peer_groups)
+        if skip_auto_apply is not None:
+            pulumi.set(__self__, "skip_auto_apply", skip_auto_apply)
 
     @_builtins.property
     @pulumi.getter
@@ -213,6 +218,18 @@ class RouteArgs:
     def peer_groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "peer_groups", value)
 
+    @_builtins.property
+    @pulumi.getter(name="skipAutoApply")
+    def skip_auto_apply(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+        """
+        return pulumi.get(self, "skip_auto_apply")
+
+    @skip_auto_apply.setter
+    def skip_auto_apply(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "skip_auto_apply", value)
+
 
 @pulumi.input_type
 class _RouteState:
@@ -229,9 +246,11 @@ class _RouteState:
                  network_id: Optional[pulumi.Input[_builtins.str]] = None,
                  network_type: Optional[pulumi.Input[_builtins.str]] = None,
                  peer: Optional[pulumi.Input[_builtins.str]] = None,
-                 peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
+                 peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 skip_auto_apply: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         Input properties used for looking up and filtering Route resources.
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] access_control_groups: Access control group identifier associated with route.
         :param pulumi.Input[_builtins.str] description: Route description
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] domains: Domain list to be dynamically resolved. Max of 32 domains can be added per route configuration. Conflicts with network
@@ -245,6 +264,7 @@ class _RouteState:
         :param pulumi.Input[_builtins.str] network_type: Domain or IPv4
         :param pulumi.Input[_builtins.str] peer: Peer Identifier associated with route. This property can not be set together with peer_groups
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] peer_groups: Peers Group Identifier associated with route. This property can not be set together with peer
+        :param pulumi.Input[_builtins.bool] skip_auto_apply: Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
         """
         if access_control_groups is not None:
             pulumi.set(__self__, "access_control_groups", access_control_groups)
@@ -272,6 +292,8 @@ class _RouteState:
             pulumi.set(__self__, "peer", peer)
         if peer_groups is not None:
             pulumi.set(__self__, "peer_groups", peer_groups)
+        if skip_auto_apply is not None:
+            pulumi.set(__self__, "skip_auto_apply", skip_auto_apply)
 
     @_builtins.property
     @pulumi.getter(name="accessControlGroups")
@@ -429,6 +451,18 @@ class _RouteState:
     def peer_groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
         pulumi.set(self, "peer_groups", value)
 
+    @_builtins.property
+    @pulumi.getter(name="skipAutoApply")
+    def skip_auto_apply(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+        """
+        return pulumi.get(self, "skip_auto_apply")
+
+    @skip_auto_apply.setter
+    def skip_auto_apply(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "skip_auto_apply", value)
+
 
 @pulumi.type_token("netbird:index/route:Route")
 class Route(pulumi.CustomResource):
@@ -448,9 +482,11 @@ class Route(pulumi.CustomResource):
                  network_id: Optional[pulumi.Input[_builtins.str]] = None,
                  peer: Optional[pulumi.Input[_builtins.str]] = None,
                  peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 skip_auto_apply: Optional[pulumi.Input[_builtins.bool]] = None,
                  __props__=None):
         """
         Create a Route resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] access_control_groups: Access control group identifier associated with route.
@@ -465,6 +501,7 @@ class Route(pulumi.CustomResource):
         :param pulumi.Input[_builtins.str] network_id: Route network identifier, to group HA routes
         :param pulumi.Input[_builtins.str] peer: Peer Identifier associated with route. This property can not be set together with peer_groups
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] peer_groups: Peers Group Identifier associated with route. This property can not be set together with peer
+        :param pulumi.Input[_builtins.bool] skip_auto_apply: Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
         """
         ...
     @overload
@@ -474,6 +511,7 @@ class Route(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Route resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param RouteArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
@@ -501,6 +539,7 @@ class Route(pulumi.CustomResource):
                  network_id: Optional[pulumi.Input[_builtins.str]] = None,
                  peer: Optional[pulumi.Input[_builtins.str]] = None,
                  peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+                 skip_auto_apply: Optional[pulumi.Input[_builtins.bool]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -526,6 +565,7 @@ class Route(pulumi.CustomResource):
             __props__.__dict__["network_id"] = network_id
             __props__.__dict__["peer"] = peer
             __props__.__dict__["peer_groups"] = peer_groups
+            __props__.__dict__["skip_auto_apply"] = skip_auto_apply
             __props__.__dict__["network_type"] = None
         super(Route, __self__).__init__(
             'netbird:index/route:Route',
@@ -549,7 +589,8 @@ class Route(pulumi.CustomResource):
             network_id: Optional[pulumi.Input[_builtins.str]] = None,
             network_type: Optional[pulumi.Input[_builtins.str]] = None,
             peer: Optional[pulumi.Input[_builtins.str]] = None,
-            peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None) -> 'Route':
+            peer_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None,
+            skip_auto_apply: Optional[pulumi.Input[_builtins.bool]] = None) -> 'Route':
         """
         Get an existing Route resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
@@ -570,6 +611,7 @@ class Route(pulumi.CustomResource):
         :param pulumi.Input[_builtins.str] network_type: Domain or IPv4
         :param pulumi.Input[_builtins.str] peer: Peer Identifier associated with route. This property can not be set together with peer_groups
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] peer_groups: Peers Group Identifier associated with route. This property can not be set together with peer
+        :param pulumi.Input[_builtins.bool] skip_auto_apply: Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
@@ -588,6 +630,7 @@ class Route(pulumi.CustomResource):
         __props__.__dict__["network_type"] = network_type
         __props__.__dict__["peer"] = peer
         __props__.__dict__["peer_groups"] = peer_groups
+        __props__.__dict__["skip_auto_apply"] = skip_auto_apply
         return Route(resource_name, opts=opts, __props__=__props__)
 
     @_builtins.property
@@ -693,4 +736,12 @@ class Route(pulumi.CustomResource):
         Peers Group Identifier associated with route. This property can not be set together with peer
         """
         return pulumi.get(self, "peer_groups")
+
+    @_builtins.property
+    @pulumi.getter(name="skipAutoApply")
+    def skip_auto_apply(self) -> pulumi.Output[_builtins.bool]:
+        """
+        Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+        """
+        return pulumi.get(self, "skip_auto_apply")
 

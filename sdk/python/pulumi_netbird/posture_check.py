@@ -30,6 +30,7 @@ class PostureCheckArgs:
                  process_checks: Optional[pulumi.Input[Sequence[pulumi.Input['PostureCheckProcessCheckArgs']]]] = None):
         """
         The set of arguments for constructing a PostureCheck resource.
+
         :param pulumi.Input[_builtins.str] name: PostureCheck Name
         :param pulumi.Input[_builtins.str] description: PostureCheck description
         """
@@ -129,6 +130,7 @@ class _PostureCheckState:
                  process_checks: Optional[pulumi.Input[Sequence[pulumi.Input['PostureCheckProcessCheckArgs']]]] = None):
         """
         Input properties used for looking up and filtering PostureCheck resources.
+
         :param pulumi.Input[_builtins.str] description: PostureCheck description
         :param pulumi.Input[_builtins.str] name: PostureCheck Name
         """
@@ -233,6 +235,7 @@ class PostureCheck(pulumi.CustomResource):
                  __props__=None):
         """
         Create a PostureCheck resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] description: PostureCheck description
@@ -246,6 +249,7 @@ class PostureCheck(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a PostureCheck resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param PostureCheckArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

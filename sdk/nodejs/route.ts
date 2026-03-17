@@ -84,6 +84,10 @@ export class Route extends pulumi.CustomResource {
      * Peers Group Identifier associated with route. This property can not be set together with peer
      */
     declare public readonly peerGroups: pulumi.Output<string[] | undefined>;
+    /**
+     * Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+     */
+    declare public readonly skipAutoApply: pulumi.Output<boolean>;
 
     /**
      * Create a Route resource with the given unique name, arguments, and options.
@@ -111,6 +115,7 @@ export class Route extends pulumi.CustomResource {
             resourceInputs["networkType"] = state?.networkType;
             resourceInputs["peer"] = state?.peer;
             resourceInputs["peerGroups"] = state?.peerGroups;
+            resourceInputs["skipAutoApply"] = state?.skipAutoApply;
         } else {
             const args = argsOrState as RouteArgs | undefined;
             if (args?.groups === undefined && !opts.urn) {
@@ -131,6 +136,7 @@ export class Route extends pulumi.CustomResource {
             resourceInputs["networkId"] = args?.networkId;
             resourceInputs["peer"] = args?.peer;
             resourceInputs["peerGroups"] = args?.peerGroups;
+            resourceInputs["skipAutoApply"] = args?.skipAutoApply;
             resourceInputs["networkType"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -194,6 +200,10 @@ export interface RouteState {
      * Peers Group Identifier associated with route. This property can not be set together with peer
      */
     peerGroups?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+     */
+    skipAutoApply?: pulumi.Input<boolean>;
 }
 
 /**
@@ -248,4 +258,8 @@ export interface RouteArgs {
      * Peers Group Identifier associated with route. This property can not be set together with peer
      */
     peerGroups?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+     */
+    skipAutoApply?: pulumi.Input<boolean>;
 }

@@ -1,17 +1,14 @@
 {
     "name": "netbird",
-    "displayName": "NetBird",
     "description": "A Pulumi package for creating and managing netbird cloud resources.",
     "keywords": [
         "pulumi",
-        "netbird",
-        "category/network"
+        "netbird"
     ],
     "homepage": "https://netbird.io",
     "license": "Apache-2.0",
     "attribution": "This Pulumi package is based on the [`netbird` Terraform Provider](https://github.com/netbirdio/terraform-provider-netbird).",
     "repository": "https://github.com/KitStream/netbird-pulumi-provider",
-    "logoUrl": "https://raw.githubusercontent.com/KitStream/netbird-pulumi-provider/main/docs/netbird.svg",
     "pluginDownloadURL": "github://api.github.com/KitStream/netbird-pulumi-provider",
     "publisher": "KitStream",
     "meta": {
@@ -112,6 +109,16 @@
                     "type": "string",
                     "description": "Policy Rule Action (accept|drop)\n"
                 },
+                "authorizedGroups": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in \u003cspan pulumi-lang-nodejs=\"`sources`\" pulumi-lang-dotnet=\"`Sources`\" pulumi-lang-go=\"`sources`\" pulumi-lang-python=\"`sources`\" pulumi-lang-yaml=\"`sources`\" pulumi-lang-java=\"`sources`\"\u003e`sources`\u003c/span\u003e. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.\n"
+                },
                 "bidirectional": {
                     "type": "boolean",
                     "description": "Policy Rule Bidirectional\n"
@@ -159,7 +166,7 @@
                 },
                 "protocol": {
                     "type": "string",
-                    "description": "Policy Rule Protocol (tcp|udp|icmp|all)\n"
+                    "description": "Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)\n"
                 },
                 "sourceResource": {
                     "$ref": "#/types/netbird:index/PolicyRuleSourceResource:PolicyRuleSourceResource",
@@ -181,6 +188,7 @@
                 "nodejs": {
                     "requiredOutputs": [
                         "action",
+                        "authorizedGroups",
                         "bidirectional",
                         "destinationResource",
                         "destinations",
@@ -325,6 +333,138 @@
             },
             "type": "object"
         },
+        "netbird:index/ReverseProxyServiceAuth:ReverseProxyServiceAuth": {
+            "properties": {
+                "bearerAuth": {
+                    "$ref": "#/types/netbird:index/ReverseProxyServiceAuthBearerAuth:ReverseProxyServiceAuthBearerAuth",
+                    "description": "Bearer token authentication\n"
+                },
+                "linkAuth": {
+                    "$ref": "#/types/netbird:index/ReverseProxyServiceAuthLinkAuth:ReverseProxyServiceAuthLinkAuth",
+                    "description": "Link authentication\n"
+                },
+                "passwordAuth": {
+                    "$ref": "#/types/netbird:index/ReverseProxyServiceAuthPasswordAuth:ReverseProxyServiceAuthPasswordAuth",
+                    "description": "Password authentication\n"
+                },
+                "pinAuth": {
+                    "$ref": "#/types/netbird:index/ReverseProxyServiceAuthPinAuth:ReverseProxyServiceAuthPinAuth",
+                    "description": "PIN authentication\n"
+                }
+            },
+            "type": "object"
+        },
+        "netbird:index/ReverseProxyServiceAuthBearerAuth:ReverseProxyServiceAuthBearerAuth": {
+            "properties": {
+                "distributionGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of group IDs that can use bearer auth\n"
+                },
+                "enabled": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled"
+            ]
+        },
+        "netbird:index/ReverseProxyServiceAuthLinkAuth:ReverseProxyServiceAuthLinkAuth": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled"
+            ]
+        },
+        "netbird:index/ReverseProxyServiceAuthPasswordAuth:ReverseProxyServiceAuthPasswordAuth": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled"
+            ]
+        },
+        "netbird:index/ReverseProxyServiceAuthPinAuth:ReverseProxyServiceAuthPinAuth": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "pin": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled"
+            ]
+        },
+        "netbird:index/ReverseProxyServiceTarget:ReverseProxyServiceTarget": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether this target is enabled\n"
+                },
+                "host": {
+                    "type": "string",
+                    "description": "Backend IP or domain for this target. If omitted, the API resolves it from the target peer.\n"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "URL path prefix for this target. Defaults to \"/\" if omitted.\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Backend port for this target (0 for scheme default)\n"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Protocol to use when connecting to the backend (http, https)\n"
+                },
+                "targetId": {
+                    "type": "string",
+                    "description": "Target ID (resource or peer ID)\n"
+                },
+                "targetType": {
+                    "type": "string",
+                    "description": "Target type (peer, host, domain, subnet)\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "port",
+                "protocol",
+                "targetId",
+                "targetType"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "enabled",
+                        "host",
+                        "path",
+                        "port",
+                        "protocol",
+                        "targetId",
+                        "targetType"
+                    ]
+                }
+            }
+        },
         "netbird:index/getNameserverGroupNameserver:getNameserverGroupNameserver": {
             "properties": {
                 "ip": {
@@ -357,6 +497,16 @@
                 "action": {
                     "type": "string",
                     "description": "Policy Rule Action (accept|drop)\n"
+                },
+                "authorizedGroups": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in \u003cspan pulumi-lang-nodejs=\"`sources`\" pulumi-lang-dotnet=\"`Sources`\" pulumi-lang-go=\"`sources`\" pulumi-lang-python=\"`sources`\" pulumi-lang-yaml=\"`sources`\" pulumi-lang-java=\"`sources`\"\u003e`sources`\u003c/span\u003e. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.\n"
                 },
                 "bidirectional": {
                     "type": "boolean",
@@ -405,7 +555,7 @@
                 },
                 "protocol": {
                     "type": "string",
-                    "description": "Policy Rule Protocol (tcp|udp|icmp|all)\n"
+                    "description": "Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)\n"
                 },
                 "sourceResource": {
                     "$ref": "#/types/netbird:index/getPolicyRuleSourceResource:getPolicyRuleSourceResource",
@@ -422,6 +572,7 @@
             "type": "object",
             "required": [
                 "action",
+                "authorizedGroups",
                 "bidirectional",
                 "description",
                 "destinationResource",
@@ -628,6 +779,189 @@
                     "requiredInputs": []
                 }
             }
+        },
+        "netbird:index/getReverseProxyClustersCluster:getReverseProxyClustersCluster": {
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "Cluster address used for CNAME targets\n"
+                },
+                "connectedProxies": {
+                    "type": "integer",
+                    "description": "Number of proxy nodes connected in this cluster\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "address",
+                "connectedProxies"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getReverseProxyServiceAuth:getReverseProxyServiceAuth": {
+            "properties": {
+                "bearerAuth": {
+                    "$ref": "#/types/netbird:index/getReverseProxyServiceAuthBearerAuth:getReverseProxyServiceAuthBearerAuth",
+                    "description": "Bearer token authentication\n"
+                },
+                "linkAuth": {
+                    "$ref": "#/types/netbird:index/getReverseProxyServiceAuthLinkAuth:getReverseProxyServiceAuthLinkAuth",
+                    "description": "Link authentication\n"
+                },
+                "passwordAuth": {
+                    "$ref": "#/types/netbird:index/getReverseProxyServiceAuthPasswordAuth:getReverseProxyServiceAuthPasswordAuth",
+                    "description": "Password authentication\n"
+                },
+                "pinAuth": {
+                    "$ref": "#/types/netbird:index/getReverseProxyServiceAuthPinAuth:getReverseProxyServiceAuthPinAuth",
+                    "description": "PIN authentication\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "bearerAuth",
+                "linkAuth",
+                "passwordAuth",
+                "pinAuth"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getReverseProxyServiceAuthBearerAuth:getReverseProxyServiceAuthBearerAuth": {
+            "properties": {
+                "distributionGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of group IDs that can use bearer auth\n"
+                },
+                "enabled": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "required": [
+                "distributionGroups",
+                "enabled"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getReverseProxyServiceAuthLinkAuth:getReverseProxyServiceAuthLinkAuth": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getReverseProxyServiceAuthPasswordAuth:getReverseProxyServiceAuthPasswordAuth": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled",
+                "password"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getReverseProxyServiceAuthPinAuth:getReverseProxyServiceAuthPinAuth": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "pin": {
+                    "type": "string",
+                    "secret": true
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled",
+                "pin"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "netbird:index/getReverseProxyServiceTarget:getReverseProxyServiceTarget": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether this target is enabled\n"
+                },
+                "host": {
+                    "type": "string",
+                    "description": "Backend IP or domain for this target\n"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "URL path prefix for this target\n"
+                },
+                "port": {
+                    "type": "integer",
+                    "description": "Backend port for this target\n"
+                },
+                "protocol": {
+                    "type": "string",
+                    "description": "Protocol to use when connecting to the backend (http, https)\n"
+                },
+                "targetId": {
+                    "type": "string",
+                    "description": "Target ID (resource or peer ID)\n"
+                },
+                "targetType": {
+                    "type": "string",
+                    "description": "Target type (peer, host, domain, subnet)\n"
+                }
+            },
+            "type": "object",
+            "required": [
+                "enabled",
+                "host",
+                "path",
+                "port",
+                "protocol",
+                "targetId",
+                "targetType"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
         }
     },
     "provider": {
@@ -669,6 +1003,14 @@
     "resources": {
         "netbird:index/accountSettings:AccountSettings": {
             "properties": {
+                "autoUpdateVersion": {
+                    "type": "string",
+                    "description": "Set Clients auto-update version. \"latest\", \"disabled\", or a specific version (e.g \"0.64.5\")"
+                },
+                "dnsDomain": {
+                    "type": "string",
+                    "description": "Allows to define a custom DNS domain for the account"
+                },
                 "groupsPropagationEnabled": {
                     "type": "boolean",
                     "description": "Allows propagate the new user auto groups to peers that belongs to the user"
@@ -688,9 +1030,24 @@
                     "type": "boolean",
                     "description": "Allows extract groups from JWT claim and add it to account groups."
                 },
+                "lazyConnectionEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables experimental lazy connection"
+                },
+                "networkRange": {
+                    "type": "string",
+                    "description": "Allows to define a custom network range for the account in CIDR format"
+                },
                 "networkTrafficLogsEnabled": {
                     "type": "boolean",
                     "description": "Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored."
+                },
+                "networkTrafficLogsGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Limits traffic logging to these groups. If unset all peers are enabled."
                 },
                 "networkTrafficPacketCounterEnabled": {
                     "type": "boolean",
@@ -699,6 +1056,17 @@
                 "peerApprovalEnabled": {
                     "type": "boolean",
                     "description": "(Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin."
+                },
+                "peerExposeEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI."
+                },
+                "peerExposeGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled."
                 },
                 "peerInactivityExpiration": {
                     "type": "integer",
@@ -723,24 +1091,44 @@
                 "routingPeerDnsResolutionEnabled": {
                     "type": "boolean",
                     "description": "Enables or disables DNS resolution on the routing peers"
+                },
+                "userApprovalRequired": {
+                    "type": "boolean",
+                    "description": "Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin."
                 }
             },
             "required": [
+                "autoUpdateVersion",
+                "dnsDomain",
                 "groupsPropagationEnabled",
                 "jwtAllowGroups",
                 "jwtGroupsClaimName",
                 "jwtGroupsEnabled",
+                "lazyConnectionEnabled",
+                "networkRange",
                 "networkTrafficLogsEnabled",
+                "networkTrafficLogsGroups",
                 "networkTrafficPacketCounterEnabled",
                 "peerApprovalEnabled",
+                "peerExposeEnabled",
+                "peerExposeGroups",
                 "peerInactivityExpiration",
                 "peerInactivityExpirationEnabled",
                 "peerLoginExpiration",
                 "peerLoginExpirationEnabled",
                 "regularUsersViewBlocked",
-                "routingPeerDnsResolutionEnabled"
+                "routingPeerDnsResolutionEnabled",
+                "userApprovalRequired"
             ],
             "inputProperties": {
+                "autoUpdateVersion": {
+                    "type": "string",
+                    "description": "Set Clients auto-update version. \"latest\", \"disabled\", or a specific version (e.g \"0.64.5\")"
+                },
+                "dnsDomain": {
+                    "type": "string",
+                    "description": "Allows to define a custom DNS domain for the account"
+                },
                 "groupsPropagationEnabled": {
                     "type": "boolean",
                     "description": "Allows propagate the new user auto groups to peers that belongs to the user"
@@ -760,9 +1148,24 @@
                     "type": "boolean",
                     "description": "Allows extract groups from JWT claim and add it to account groups."
                 },
+                "lazyConnectionEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables experimental lazy connection"
+                },
+                "networkRange": {
+                    "type": "string",
+                    "description": "Allows to define a custom network range for the account in CIDR format"
+                },
                 "networkTrafficLogsEnabled": {
                     "type": "boolean",
                     "description": "Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored."
+                },
+                "networkTrafficLogsGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Limits traffic logging to these groups. If unset all peers are enabled."
                 },
                 "networkTrafficPacketCounterEnabled": {
                     "type": "boolean",
@@ -771,6 +1174,17 @@
                 "peerApprovalEnabled": {
                     "type": "boolean",
                     "description": "(Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin."
+                },
+                "peerExposeEnabled": {
+                    "type": "boolean",
+                    "description": "Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI."
+                },
+                "peerExposeGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled."
                 },
                 "peerInactivityExpiration": {
                     "type": "integer",
@@ -795,11 +1209,23 @@
                 "routingPeerDnsResolutionEnabled": {
                     "type": "boolean",
                     "description": "Enables or disables DNS resolution on the routing peers"
+                },
+                "userApprovalRequired": {
+                    "type": "boolean",
+                    "description": "Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin."
                 }
             },
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering AccountSettings resources.\n",
                 "properties": {
+                    "autoUpdateVersion": {
+                        "type": "string",
+                        "description": "Set Clients auto-update version. \"latest\", \"disabled\", or a specific version (e.g \"0.64.5\")"
+                    },
+                    "dnsDomain": {
+                        "type": "string",
+                        "description": "Allows to define a custom DNS domain for the account"
+                    },
                     "groupsPropagationEnabled": {
                         "type": "boolean",
                         "description": "Allows propagate the new user auto groups to peers that belongs to the user"
@@ -819,9 +1245,24 @@
                         "type": "boolean",
                         "description": "Allows extract groups from JWT claim and add it to account groups."
                     },
+                    "lazyConnectionEnabled": {
+                        "type": "boolean",
+                        "description": "Enables or disables experimental lazy connection"
+                    },
+                    "networkRange": {
+                        "type": "string",
+                        "description": "Allows to define a custom network range for the account in CIDR format"
+                    },
                     "networkTrafficLogsEnabled": {
                         "type": "boolean",
                         "description": "Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored."
+                    },
+                    "networkTrafficLogsGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Limits traffic logging to these groups. If unset all peers are enabled."
                     },
                     "networkTrafficPacketCounterEnabled": {
                         "type": "boolean",
@@ -830,6 +1271,17 @@
                     "peerApprovalEnabled": {
                         "type": "boolean",
                         "description": "(Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin."
+                    },
+                    "peerExposeEnabled": {
+                        "type": "boolean",
+                        "description": "Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI."
+                    },
+                    "peerExposeGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled."
                     },
                     "peerInactivityExpiration": {
                         "type": "integer",
@@ -854,6 +1306,95 @@
                     "routingPeerDnsResolutionEnabled": {
                         "type": "boolean",
                         "description": "Enables or disables DNS resolution on the routing peers"
+                    },
+                    "userApprovalRequired": {
+                        "type": "boolean",
+                        "description": "Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin."
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/dnsRecord:DnsRecord": {
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "description": "DNS record content (IP address for A/AAAA, domain for CNAME)"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "DNS record name as a full FQDN (e.g., 'www.example.com' or 'example.com' for root domain). Short names like 'www' or '@' are not supported"
+                },
+                "ttl": {
+                    "type": "integer",
+                    "description": "Time to live in seconds"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "DNS record type (A, AAAA, or CNAME)"
+                },
+                "zoneId": {
+                    "type": "string",
+                    "description": "DNS Zone ID that this record belongs to"
+                }
+            },
+            "required": [
+                "content",
+                "name",
+                "ttl",
+                "type",
+                "zoneId"
+            ],
+            "inputProperties": {
+                "content": {
+                    "type": "string",
+                    "description": "DNS record content (IP address for A/AAAA, domain for CNAME)"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "DNS record name as a full FQDN (e.g., 'www.example.com' or 'example.com' for root domain). Short names like 'www' or '@' are not supported"
+                },
+                "ttl": {
+                    "type": "integer",
+                    "description": "Time to live in seconds"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "DNS record type (A, AAAA, or CNAME)"
+                },
+                "zoneId": {
+                    "type": "string",
+                    "description": "DNS Zone ID that this record belongs to"
+                }
+            },
+            "requiredInputs": [
+                "content",
+                "name",
+                "type",
+                "zoneId"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering DnsRecord resources.\n",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "DNS record content (IP address for A/AAAA, domain for CNAME)"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "DNS record name as a full FQDN (e.g., 'www.example.com' or 'example.com' for root domain). Short names like 'www' or '@' are not supported"
+                    },
+                    "ttl": {
+                        "type": "integer",
+                        "description": "Time to live in seconds"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "DNS record type (A, AAAA, or CNAME)"
+                    },
+                    "zoneId": {
+                        "type": "string",
+                        "description": "DNS Zone ID that this record belongs to"
                     }
                 },
                 "type": "object"
@@ -893,6 +1434,98 @@
                             "type": "string"
                         },
                         "description": "Groups whose DNS management is disabled"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/dnsZone:DnsZone": {
+            "properties": {
+                "distributionGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs that define groups of peers that will resolve this zone"
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "Zone domain (FQDN)"
+                },
+                "enableSearchDomain": {
+                    "type": "boolean",
+                    "description": "Enable this zone as a search domain"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "DNS Zone status"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "DNS Zone name identifier"
+                }
+            },
+            "required": [
+                "distributionGroups",
+                "domain",
+                "enableSearchDomain",
+                "enabled",
+                "name"
+            ],
+            "inputProperties": {
+                "distributionGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Group IDs that define groups of peers that will resolve this zone"
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "Zone domain (FQDN)"
+                },
+                "enableSearchDomain": {
+                    "type": "boolean",
+                    "description": "Enable this zone as a search domain"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "DNS Zone status"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "DNS Zone name identifier"
+                }
+            },
+            "requiredInputs": [
+                "domain",
+                "name"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering DnsZone resources.\n",
+                "properties": {
+                    "distributionGroups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Group IDs that define groups of peers that will resolve this zone"
+                    },
+                    "domain": {
+                        "type": "string",
+                        "description": "Zone domain (FQDN)"
+                    },
+                    "enableSearchDomain": {
+                        "type": "boolean",
+                        "description": "Enable this zone as a search domain"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "DNS Zone status"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "DNS Zone name identifier"
                     }
                 },
                 "type": "object"
@@ -976,6 +1609,95 @@
                             "type": "string"
                         },
                         "description": "List of network resource ids"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/identityProvider:IdentityProvider": {
+            "properties": {
+                "clientId": {
+                    "type": "string",
+                    "description": "OAuth2 client ID"
+                },
+                "clientSecret": {
+                    "type": "string",
+                    "description": "OAuth2 client secret",
+                    "secret": true
+                },
+                "issuer": {
+                    "type": "string",
+                    "description": "OIDC issuer URL"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Human-readable name for the identity provider"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Type of identity provider (entra, google, microsoft, oidc, okta, pocketid, zitadel)"
+                }
+            },
+            "required": [
+                "clientId",
+                "clientSecret",
+                "issuer",
+                "name",
+                "type"
+            ],
+            "inputProperties": {
+                "clientId": {
+                    "type": "string",
+                    "description": "OAuth2 client ID"
+                },
+                "clientSecret": {
+                    "type": "string",
+                    "description": "OAuth2 client secret",
+                    "secret": true
+                },
+                "issuer": {
+                    "type": "string",
+                    "description": "OIDC issuer URL"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Human-readable name for the identity provider"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Type of identity provider (entra, google, microsoft, oidc, okta, pocketid, zitadel)"
+                }
+            },
+            "requiredInputs": [
+                "clientId",
+                "clientSecret",
+                "issuer",
+                "name",
+                "type"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering IdentityProvider resources.\n",
+                "properties": {
+                    "clientId": {
+                        "type": "string",
+                        "description": "OAuth2 client ID"
+                    },
+                    "clientSecret": {
+                        "type": "string",
+                        "description": "OAuth2 client secret",
+                        "secret": true
+                    },
+                    "issuer": {
+                        "type": "string",
+                        "description": "OIDC issuer URL"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Human-readable name for the identity provider"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of identity provider (entra, google, microsoft, oidc, okta, pocketid, zitadel)"
                     }
                 },
                 "type": "object"
@@ -1982,6 +2704,197 @@
                 "type": "object"
             }
         },
+        "netbird:index/reverseProxyDomain:ReverseProxyDomain": {
+            "properties": {
+                "domain": {
+                    "type": "string",
+                    "description": "Domain name"
+                },
+                "targetCluster": {
+                    "type": "string",
+                    "description": "The proxy cluster this domain should be validated against"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Type of reverse proxy domain (free, custom)"
+                },
+                "validated": {
+                    "type": "boolean",
+                    "description": "Whether the domain has been validated"
+                }
+            },
+            "required": [
+                "domain",
+                "targetCluster",
+                "type",
+                "validated"
+            ],
+            "inputProperties": {
+                "domain": {
+                    "type": "string",
+                    "description": "Domain name"
+                },
+                "targetCluster": {
+                    "type": "string",
+                    "description": "The proxy cluster this domain should be validated against"
+                }
+            },
+            "requiredInputs": [
+                "domain",
+                "targetCluster"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering ReverseProxyDomain resources.\n",
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "description": "Domain name"
+                    },
+                    "targetCluster": {
+                        "type": "string",
+                        "description": "The proxy cluster this domain should be validated against"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Type of reverse proxy domain (free, custom)"
+                    },
+                    "validated": {
+                        "type": "boolean",
+                        "description": "Whether the domain has been validated"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/reverseProxyService:ReverseProxyService": {
+            "properties": {
+                "auth": {
+                    "$ref": "#/types/netbird:index/ReverseProxyServiceAuth:ReverseProxyServiceAuth",
+                    "description": "Authentication configuration"
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "Domain for the service"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether the service is enabled"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Service name"
+                },
+                "passHostHeader": {
+                    "type": "boolean",
+                    "description": "When true, the original client Host header is passed through to the backend"
+                },
+                "proxyCluster": {
+                    "type": "string",
+                    "description": "The proxy cluster handling this service (derived from domain)"
+                },
+                "rewriteRedirects": {
+                    "type": "boolean",
+                    "description": "When true, Location headers in backend responses are rewritten to replace the backend address with the public-facing domain"
+                },
+                "targets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/ReverseProxyServiceTarget:ReverseProxyServiceTarget"
+                    },
+                    "description": "List of target backends for this service"
+                }
+            },
+            "required": [
+                "auth",
+                "domain",
+                "enabled",
+                "name",
+                "passHostHeader",
+                "proxyCluster",
+                "rewriteRedirects",
+                "targets"
+            ],
+            "inputProperties": {
+                "auth": {
+                    "$ref": "#/types/netbird:index/ReverseProxyServiceAuth:ReverseProxyServiceAuth",
+                    "description": "Authentication configuration"
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "Domain for the service"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Whether the service is enabled"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Service name"
+                },
+                "passHostHeader": {
+                    "type": "boolean",
+                    "description": "When true, the original client Host header is passed through to the backend"
+                },
+                "rewriteRedirects": {
+                    "type": "boolean",
+                    "description": "When true, Location headers in backend responses are rewritten to replace the backend address with the public-facing domain"
+                },
+                "targets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/netbird:index/ReverseProxyServiceTarget:ReverseProxyServiceTarget"
+                    },
+                    "description": "List of target backends for this service"
+                }
+            },
+            "requiredInputs": [
+                "auth",
+                "domain",
+                "name",
+                "targets"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering ReverseProxyService resources.\n",
+                "properties": {
+                    "auth": {
+                        "$ref": "#/types/netbird:index/ReverseProxyServiceAuth:ReverseProxyServiceAuth",
+                        "description": "Authentication configuration"
+                    },
+                    "domain": {
+                        "type": "string",
+                        "description": "Domain for the service"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether the service is enabled"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Service name"
+                    },
+                    "passHostHeader": {
+                        "type": "boolean",
+                        "description": "When true, the original client Host header is passed through to the backend"
+                    },
+                    "proxyCluster": {
+                        "type": "string",
+                        "description": "The proxy cluster handling this service (derived from domain)"
+                    },
+                    "rewriteRedirects": {
+                        "type": "boolean",
+                        "description": "When true, Location headers in backend responses are rewritten to replace the backend address with the public-facing domain"
+                    },
+                    "targets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/netbird:index/ReverseProxyServiceTarget:ReverseProxyServiceTarget"
+                        },
+                        "description": "List of target backends for this service"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "netbird:index/route:Route": {
             "properties": {
                 "accessControlGroups": {
@@ -2047,6 +2960,10 @@
                         "type": "string"
                     },
                     "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                },
+                "skipAutoApply": {
+                    "type": "boolean",
+                    "description": "Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing"
                 }
             },
             "required": [
@@ -2057,7 +2974,8 @@
                 "masquerade",
                 "metric",
                 "networkId",
-                "networkType"
+                "networkType",
+                "skipAutoApply"
             ],
             "inputProperties": {
                 "accessControlGroups": {
@@ -2119,6 +3037,10 @@
                         "type": "string"
                     },
                     "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                },
+                "skipAutoApply": {
+                    "type": "boolean",
+                    "description": "Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing"
                 }
             },
             "requiredInputs": [
@@ -2191,6 +3113,130 @@
                             "type": "string"
                         },
                         "description": "Peers Group Identifier associated with route. This property can not be set together with peer"
+                    },
+                    "skipAutoApply": {
+                        "type": "boolean",
+                        "description": "Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "netbird:index/scim:Scim": {
+            "properties": {
+                "authToken": {
+                    "type": "string",
+                    "description": "SCIM API token (only available in full after creation)",
+                    "secret": true
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Indicates whether the integration is enabled"
+                },
+                "groupPrefixes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of\u003cspan pulumi-lang-nodejs=\" startWith \" pulumi-lang-dotnet=\" StartWith \" pulumi-lang-go=\" startWith \" pulumi-lang-python=\" start_with \" pulumi-lang-yaml=\" startWith \" pulumi-lang-java=\" startWith \"\u003e start_with \u003c/span\u003estring patterns for groups to sync"
+                },
+                "lastSyncedAt": {
+                    "type": "string",
+                    "description": "Timestamp of when the integration was last synced"
+                },
+                "prefix": {
+                    "type": "string",
+                    "description": "The connection prefix used for the SCIM provider."
+                },
+                "providerName": {
+                    "type": "string",
+                    "description": "Name of the SCIM identity provider"
+                },
+                "userGroupPrefixes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of\u003cspan pulumi-lang-nodejs=\" startWith \" pulumi-lang-dotnet=\" StartWith \" pulumi-lang-go=\" startWith \" pulumi-lang-python=\" start_with \" pulumi-lang-yaml=\" startWith \" pulumi-lang-java=\" startWith \"\u003e start_with \u003c/span\u003estring patterns for groups which users to sync"
+                }
+            },
+            "required": [
+                "authToken",
+                "enabled",
+                "groupPrefixes",
+                "lastSyncedAt",
+                "prefix",
+                "providerName",
+                "userGroupPrefixes"
+            ],
+            "inputProperties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Indicates whether the integration is enabled"
+                },
+                "groupPrefixes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of\u003cspan pulumi-lang-nodejs=\" startWith \" pulumi-lang-dotnet=\" StartWith \" pulumi-lang-go=\" startWith \" pulumi-lang-python=\" start_with \" pulumi-lang-yaml=\" startWith \" pulumi-lang-java=\" startWith \"\u003e start_with \u003c/span\u003estring patterns for groups to sync"
+                },
+                "prefix": {
+                    "type": "string",
+                    "description": "The connection prefix used for the SCIM provider."
+                },
+                "providerName": {
+                    "type": "string",
+                    "description": "Name of the SCIM identity provider"
+                },
+                "userGroupPrefixes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "List of\u003cspan pulumi-lang-nodejs=\" startWith \" pulumi-lang-dotnet=\" StartWith \" pulumi-lang-go=\" startWith \" pulumi-lang-python=\" start_with \" pulumi-lang-yaml=\" startWith \" pulumi-lang-java=\" startWith \"\u003e start_with \u003c/span\u003estring patterns for groups which users to sync"
+                }
+            },
+            "requiredInputs": [
+                "providerName"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Scim resources.\n",
+                "properties": {
+                    "authToken": {
+                        "type": "string",
+                        "description": "SCIM API token (only available in full after creation)",
+                        "secret": true
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Indicates whether the integration is enabled"
+                    },
+                    "groupPrefixes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of\u003cspan pulumi-lang-nodejs=\" startWith \" pulumi-lang-dotnet=\" StartWith \" pulumi-lang-go=\" startWith \" pulumi-lang-python=\" start_with \" pulumi-lang-yaml=\" startWith \" pulumi-lang-java=\" startWith \"\u003e start_with \u003c/span\u003estring patterns for groups to sync"
+                    },
+                    "lastSyncedAt": {
+                        "type": "string",
+                        "description": "Timestamp of when the integration was last synced"
+                    },
+                    "prefix": {
+                        "type": "string",
+                        "description": "The connection prefix used for the SCIM provider."
+                    },
+                    "providerName": {
+                        "type": "string",
+                        "description": "Name of the SCIM identity provider"
+                    },
+                    "userGroupPrefixes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of\u003cspan pulumi-lang-nodejs=\" startWith \" pulumi-lang-dotnet=\" StartWith \" pulumi-lang-go=\" startWith \" pulumi-lang-python=\" start_with \" pulumi-lang-yaml=\" startWith \" pulumi-lang-java=\" startWith \"\u003e start_with \u003c/span\u003estring patterns for groups which users to sync"
                     }
                 },
                 "type": "object"
@@ -2537,6 +3583,12 @@
             "outputs": {
                 "description": "A collection of values returned by getAccountSettings.\n",
                 "properties": {
+                    "autoUpdateVersion": {
+                        "type": "string"
+                    },
+                    "dnsDomain": {
+                        "type": "string"
+                    },
                     "groupsPropagationEnabled": {
                         "type": "boolean"
                     },
@@ -2555,14 +3607,35 @@
                     "jwtGroupsEnabled": {
                         "type": "boolean"
                     },
+                    "lazyConnectionEnabled": {
+                        "type": "boolean"
+                    },
+                    "networkRange": {
+                        "type": "string"
+                    },
                     "networkTrafficLogsEnabled": {
                         "type": "boolean"
+                    },
+                    "networkTrafficLogsGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
                     },
                     "networkTrafficPacketCounterEnabled": {
                         "type": "boolean"
                     },
                     "peerApprovalEnabled": {
                         "type": "boolean"
+                    },
+                    "peerExposeEnabled": {
+                        "type": "boolean"
+                    },
+                    "peerExposeGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
                     },
                     "peerInactivityExpiration": {
                         "type": "integer"
@@ -2581,23 +3654,89 @@
                     },
                     "routingPeerDnsResolutionEnabled": {
                         "type": "boolean"
+                    },
+                    "userApprovalRequired": {
+                        "type": "boolean"
                     }
                 },
                 "required": [
+                    "autoUpdateVersion",
+                    "dnsDomain",
                     "groupsPropagationEnabled",
                     "id",
                     "jwtAllowGroups",
                     "jwtGroupsClaimName",
                     "jwtGroupsEnabled",
+                    "lazyConnectionEnabled",
+                    "networkRange",
                     "networkTrafficLogsEnabled",
+                    "networkTrafficLogsGroups",
                     "networkTrafficPacketCounterEnabled",
                     "peerApprovalEnabled",
+                    "peerExposeEnabled",
+                    "peerExposeGroups",
                     "peerInactivityExpiration",
                     "peerInactivityExpirationEnabled",
                     "peerLoginExpiration",
                     "peerLoginExpirationEnabled",
                     "regularUsersViewBlocked",
-                    "routingPeerDnsResolutionEnabled"
+                    "routingPeerDnsResolutionEnabled",
+                    "userApprovalRequired"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getDnsRecord:getDnsRecord": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getDnsRecord.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "zoneId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "zoneId"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by getDnsRecord.\n",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "ttl": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "zoneId": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "content",
+                    "id",
+                    "name",
+                    "ttl",
+                    "type",
+                    "zoneId"
                 ],
                 "type": "object"
             }
@@ -2620,6 +3759,58 @@
                 "required": [
                     "disabledManagementGroups",
                     "id"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getDnsZone:getDnsZone": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getDnsZone.\n",
+                "properties": {
+                    "domain": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getDnsZone.\n",
+                "properties": {
+                    "distributionGroups": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "domain": {
+                        "type": "string"
+                    },
+                    "enableSearchDomain": {
+                        "type": "boolean"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "distributionGroups",
+                    "domain",
+                    "enableSearchDomain",
+                    "enabled",
+                    "id",
+                    "name"
                 ],
                 "type": "object"
             }
@@ -2668,6 +3859,48 @@
                     "name",
                     "peers",
                     "resources"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getIdentityProvider:getIdentityProvider": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getIdentityProvider.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getIdentityProvider.\n",
+                "properties": {
+                    "clientId": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "issuer": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "clientId",
+                    "id",
+                    "issuer",
+                    "name",
+                    "type"
                 ],
                 "type": "object"
             }
@@ -3345,6 +4578,140 @@
                 "type": "object"
             }
         },
+        "netbird:index/getReverseProxyClusters:getReverseProxyClusters": {
+            "outputs": {
+                "description": "A collection of values returned by getReverseProxyClusters.\n",
+                "properties": {
+                    "clusters": {
+                        "items": {
+                            "$ref": "#/types/netbird:index/getReverseProxyClustersCluster:getReverseProxyClustersCluster"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "description": "The provider-assigned unique ID for this managed resource.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "clusters",
+                    "id"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getReverseProxyDomain:getReverseProxyDomain": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getReverseProxyDomain.\n",
+                "properties": {
+                    "domain": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "validated": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getReverseProxyDomain.\n",
+                "properties": {
+                    "domain": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "targetCluster": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "validated": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "domain",
+                    "id",
+                    "targetCluster",
+                    "type",
+                    "validated"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getReverseProxyService:getReverseProxyService": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getReverseProxyService.\n",
+                "properties": {
+                    "domain": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getReverseProxyService.\n",
+                "properties": {
+                    "auth": {
+                        "$ref": "#/types/netbird:index/getReverseProxyServiceAuth:getReverseProxyServiceAuth"
+                    },
+                    "domain": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "passHostHeader": {
+                        "type": "boolean"
+                    },
+                    "proxyCluster": {
+                        "type": "string"
+                    },
+                    "rewriteRedirects": {
+                        "type": "boolean"
+                    },
+                    "targets": {
+                        "items": {
+                            "$ref": "#/types/netbird:index/getReverseProxyServiceTarget:getReverseProxyServiceTarget"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "auth",
+                    "domain",
+                    "enabled",
+                    "id",
+                    "name",
+                    "passHostHeader",
+                    "proxyCluster",
+                    "rewriteRedirects",
+                    "targets"
+                ],
+                "type": "object"
+            }
+        },
         "netbird:index/getRoute:getRoute": {
             "inputs": {
                 "description": "A collection of arguments for invoking getRoute.\n",
@@ -3414,6 +4781,9 @@
                             "type": "string"
                         },
                         "type": "array"
+                    },
+                    "skipAutoApply": {
+                        "type": "boolean"
                     }
                 },
                 "required": [
@@ -3430,7 +4800,60 @@
                     "networkId",
                     "networkType",
                     "peer",
-                    "peerGroups"
+                    "peerGroups",
+                    "skipAutoApply"
+                ],
+                "type": "object"
+            }
+        },
+        "netbird:index/getScim:getScim": {
+            "inputs": {
+                "description": "A collection of arguments for invoking getScim.\n",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "providerName": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "outputs": {
+                "description": "A collection of values returned by getScim.\n",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "groupPrefixes": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "lastSyncedAt": {
+                        "type": "string"
+                    },
+                    "providerName": {
+                        "type": "string"
+                    },
+                    "userGroupPrefixes": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "enabled",
+                    "groupPrefixes",
+                    "id",
+                    "lastSyncedAt",
+                    "providerName",
+                    "userGroupPrefixes"
                 ],
                 "type": "object"
             }

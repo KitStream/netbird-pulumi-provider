@@ -13,22 +13,36 @@ import java.util.Objects;
 
 @CustomType
 public final class GetAccountSettingsResult {
+    private String autoUpdateVersion;
+    private String dnsDomain;
     private Boolean groupsPropagationEnabled;
     private String id;
     private List<String> jwtAllowGroups;
     private String jwtGroupsClaimName;
     private Boolean jwtGroupsEnabled;
+    private Boolean lazyConnectionEnabled;
+    private String networkRange;
     private Boolean networkTrafficLogsEnabled;
+    private List<String> networkTrafficLogsGroups;
     private Boolean networkTrafficPacketCounterEnabled;
     private Boolean peerApprovalEnabled;
+    private Boolean peerExposeEnabled;
+    private List<String> peerExposeGroups;
     private Integer peerInactivityExpiration;
     private Boolean peerInactivityExpirationEnabled;
     private Integer peerLoginExpiration;
     private Boolean peerLoginExpirationEnabled;
     private Boolean regularUsersViewBlocked;
     private Boolean routingPeerDnsResolutionEnabled;
+    private Boolean userApprovalRequired;
 
     private GetAccountSettingsResult() {}
+    public String autoUpdateVersion() {
+        return this.autoUpdateVersion;
+    }
+    public String dnsDomain() {
+        return this.dnsDomain;
+    }
     public Boolean groupsPropagationEnabled() {
         return this.groupsPropagationEnabled;
     }
@@ -44,14 +58,29 @@ public final class GetAccountSettingsResult {
     public Boolean jwtGroupsEnabled() {
         return this.jwtGroupsEnabled;
     }
+    public Boolean lazyConnectionEnabled() {
+        return this.lazyConnectionEnabled;
+    }
+    public String networkRange() {
+        return this.networkRange;
+    }
     public Boolean networkTrafficLogsEnabled() {
         return this.networkTrafficLogsEnabled;
+    }
+    public List<String> networkTrafficLogsGroups() {
+        return this.networkTrafficLogsGroups;
     }
     public Boolean networkTrafficPacketCounterEnabled() {
         return this.networkTrafficPacketCounterEnabled;
     }
     public Boolean peerApprovalEnabled() {
         return this.peerApprovalEnabled;
+    }
+    public Boolean peerExposeEnabled() {
+        return this.peerExposeEnabled;
+    }
+    public List<String> peerExposeGroups() {
+        return this.peerExposeGroups;
     }
     public Integer peerInactivityExpiration() {
         return this.peerInactivityExpiration;
@@ -71,6 +100,9 @@ public final class GetAccountSettingsResult {
     public Boolean routingPeerDnsResolutionEnabled() {
         return this.routingPeerDnsResolutionEnabled;
     }
+    public Boolean userApprovalRequired() {
+        return this.userApprovalRequired;
+    }
 
     public static Builder builder() {
         return new Builder();
@@ -81,39 +113,71 @@ public final class GetAccountSettingsResult {
     }
     @CustomType.Builder
     public static final class Builder {
+        private String autoUpdateVersion;
+        private String dnsDomain;
         private Boolean groupsPropagationEnabled;
         private String id;
         private List<String> jwtAllowGroups;
         private String jwtGroupsClaimName;
         private Boolean jwtGroupsEnabled;
+        private Boolean lazyConnectionEnabled;
+        private String networkRange;
         private Boolean networkTrafficLogsEnabled;
+        private List<String> networkTrafficLogsGroups;
         private Boolean networkTrafficPacketCounterEnabled;
         private Boolean peerApprovalEnabled;
+        private Boolean peerExposeEnabled;
+        private List<String> peerExposeGroups;
         private Integer peerInactivityExpiration;
         private Boolean peerInactivityExpirationEnabled;
         private Integer peerLoginExpiration;
         private Boolean peerLoginExpirationEnabled;
         private Boolean regularUsersViewBlocked;
         private Boolean routingPeerDnsResolutionEnabled;
+        private Boolean userApprovalRequired;
         public Builder() {}
         public Builder(GetAccountSettingsResult defaults) {
     	      Objects.requireNonNull(defaults);
+    	      this.autoUpdateVersion = defaults.autoUpdateVersion;
+    	      this.dnsDomain = defaults.dnsDomain;
     	      this.groupsPropagationEnabled = defaults.groupsPropagationEnabled;
     	      this.id = defaults.id;
     	      this.jwtAllowGroups = defaults.jwtAllowGroups;
     	      this.jwtGroupsClaimName = defaults.jwtGroupsClaimName;
     	      this.jwtGroupsEnabled = defaults.jwtGroupsEnabled;
+    	      this.lazyConnectionEnabled = defaults.lazyConnectionEnabled;
+    	      this.networkRange = defaults.networkRange;
     	      this.networkTrafficLogsEnabled = defaults.networkTrafficLogsEnabled;
+    	      this.networkTrafficLogsGroups = defaults.networkTrafficLogsGroups;
     	      this.networkTrafficPacketCounterEnabled = defaults.networkTrafficPacketCounterEnabled;
     	      this.peerApprovalEnabled = defaults.peerApprovalEnabled;
+    	      this.peerExposeEnabled = defaults.peerExposeEnabled;
+    	      this.peerExposeGroups = defaults.peerExposeGroups;
     	      this.peerInactivityExpiration = defaults.peerInactivityExpiration;
     	      this.peerInactivityExpirationEnabled = defaults.peerInactivityExpirationEnabled;
     	      this.peerLoginExpiration = defaults.peerLoginExpiration;
     	      this.peerLoginExpirationEnabled = defaults.peerLoginExpirationEnabled;
     	      this.regularUsersViewBlocked = defaults.regularUsersViewBlocked;
     	      this.routingPeerDnsResolutionEnabled = defaults.routingPeerDnsResolutionEnabled;
+    	      this.userApprovalRequired = defaults.userApprovalRequired;
         }
 
+        @CustomType.Setter
+        public Builder autoUpdateVersion(String autoUpdateVersion) {
+            if (autoUpdateVersion == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "autoUpdateVersion");
+            }
+            this.autoUpdateVersion = autoUpdateVersion;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder dnsDomain(String dnsDomain) {
+            if (dnsDomain == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "dnsDomain");
+            }
+            this.dnsDomain = dnsDomain;
+            return this;
+        }
         @CustomType.Setter
         public Builder groupsPropagationEnabled(Boolean groupsPropagationEnabled) {
             if (groupsPropagationEnabled == null) {
@@ -158,12 +222,39 @@ public final class GetAccountSettingsResult {
             return this;
         }
         @CustomType.Setter
+        public Builder lazyConnectionEnabled(Boolean lazyConnectionEnabled) {
+            if (lazyConnectionEnabled == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "lazyConnectionEnabled");
+            }
+            this.lazyConnectionEnabled = lazyConnectionEnabled;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder networkRange(String networkRange) {
+            if (networkRange == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "networkRange");
+            }
+            this.networkRange = networkRange;
+            return this;
+        }
+        @CustomType.Setter
         public Builder networkTrafficLogsEnabled(Boolean networkTrafficLogsEnabled) {
             if (networkTrafficLogsEnabled == null) {
               throw new MissingRequiredPropertyException("GetAccountSettingsResult", "networkTrafficLogsEnabled");
             }
             this.networkTrafficLogsEnabled = networkTrafficLogsEnabled;
             return this;
+        }
+        @CustomType.Setter
+        public Builder networkTrafficLogsGroups(List<String> networkTrafficLogsGroups) {
+            if (networkTrafficLogsGroups == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "networkTrafficLogsGroups");
+            }
+            this.networkTrafficLogsGroups = networkTrafficLogsGroups;
+            return this;
+        }
+        public Builder networkTrafficLogsGroups(String... networkTrafficLogsGroups) {
+            return networkTrafficLogsGroups(List.of(networkTrafficLogsGroups));
         }
         @CustomType.Setter
         public Builder networkTrafficPacketCounterEnabled(Boolean networkTrafficPacketCounterEnabled) {
@@ -180,6 +271,25 @@ public final class GetAccountSettingsResult {
             }
             this.peerApprovalEnabled = peerApprovalEnabled;
             return this;
+        }
+        @CustomType.Setter
+        public Builder peerExposeEnabled(Boolean peerExposeEnabled) {
+            if (peerExposeEnabled == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "peerExposeEnabled");
+            }
+            this.peerExposeEnabled = peerExposeEnabled;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder peerExposeGroups(List<String> peerExposeGroups) {
+            if (peerExposeGroups == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "peerExposeGroups");
+            }
+            this.peerExposeGroups = peerExposeGroups;
+            return this;
+        }
+        public Builder peerExposeGroups(String... peerExposeGroups) {
+            return peerExposeGroups(List.of(peerExposeGroups));
         }
         @CustomType.Setter
         public Builder peerInactivityExpiration(Integer peerInactivityExpiration) {
@@ -229,22 +339,38 @@ public final class GetAccountSettingsResult {
             this.routingPeerDnsResolutionEnabled = routingPeerDnsResolutionEnabled;
             return this;
         }
+        @CustomType.Setter
+        public Builder userApprovalRequired(Boolean userApprovalRequired) {
+            if (userApprovalRequired == null) {
+              throw new MissingRequiredPropertyException("GetAccountSettingsResult", "userApprovalRequired");
+            }
+            this.userApprovalRequired = userApprovalRequired;
+            return this;
+        }
         public GetAccountSettingsResult build() {
             final var _resultValue = new GetAccountSettingsResult();
+            _resultValue.autoUpdateVersion = autoUpdateVersion;
+            _resultValue.dnsDomain = dnsDomain;
             _resultValue.groupsPropagationEnabled = groupsPropagationEnabled;
             _resultValue.id = id;
             _resultValue.jwtAllowGroups = jwtAllowGroups;
             _resultValue.jwtGroupsClaimName = jwtGroupsClaimName;
             _resultValue.jwtGroupsEnabled = jwtGroupsEnabled;
+            _resultValue.lazyConnectionEnabled = lazyConnectionEnabled;
+            _resultValue.networkRange = networkRange;
             _resultValue.networkTrafficLogsEnabled = networkTrafficLogsEnabled;
+            _resultValue.networkTrafficLogsGroups = networkTrafficLogsGroups;
             _resultValue.networkTrafficPacketCounterEnabled = networkTrafficPacketCounterEnabled;
             _resultValue.peerApprovalEnabled = peerApprovalEnabled;
+            _resultValue.peerExposeEnabled = peerExposeEnabled;
+            _resultValue.peerExposeGroups = peerExposeGroups;
             _resultValue.peerInactivityExpiration = peerInactivityExpiration;
             _resultValue.peerInactivityExpirationEnabled = peerInactivityExpirationEnabled;
             _resultValue.peerLoginExpiration = peerLoginExpiration;
             _resultValue.peerLoginExpirationEnabled = peerLoginExpirationEnabled;
             _resultValue.regularUsersViewBlocked = regularUsersViewBlocked;
             _resultValue.routingPeerDnsResolutionEnabled = routingPeerDnsResolutionEnabled;
+            _resultValue.userApprovalRequired = userApprovalRequired;
             return _resultValue;
         }
     }

@@ -12,6 +12,7 @@ import io.github.kitstream.netbird.inputs.PolicyRuleSourceResourceArgs;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -34,6 +35,21 @@ public final class PolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Optional<Output<String>> action() {
         return Optional.ofNullable(this.action);
+    }
+
+    /**
+     * Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    @Import(name="authorizedGroups")
+    private @Nullable Output<Map<String,List<String>>> authorizedGroups;
+
+    /**
+     * @return Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    public Optional<Output<Map<String,List<String>>>> authorizedGroups() {
+        return Optional.ofNullable(this.authorizedGroups);
     }
 
     /**
@@ -172,14 +188,14 @@ public final class PolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Policy Rule Protocol (tcp|udp|icmp|all)
+     * Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     @Import(name="protocol")
     private @Nullable Output<String> protocol;
 
     /**
-     * @return Policy Rule Protocol (tcp|udp|icmp|all)
+     * @return Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     public Optional<Output<String>> protocol() {
@@ -220,6 +236,7 @@ public final class PolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
 
     private PolicyRuleArgs(PolicyRuleArgs $) {
         this.action = $.action;
+        this.authorizedGroups = $.authorizedGroups;
         this.bidirectional = $.bidirectional;
         this.description = $.description;
         this.destinationResource = $.destinationResource;
@@ -271,6 +288,27 @@ public final class PolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder action(String action) {
             return action(Output.of(action));
+        }
+
+        /**
+         * @param authorizedGroups Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder authorizedGroups(@Nullable Output<Map<String,List<String>>> authorizedGroups) {
+            $.authorizedGroups = authorizedGroups;
+            return this;
+        }
+
+        /**
+         * @param authorizedGroups Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder authorizedGroups(Map<String,List<String>> authorizedGroups) {
+            return authorizedGroups(Output.of(authorizedGroups));
         }
 
         /**
@@ -493,7 +531,7 @@ public final class PolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all)
+         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
          * 
          * @return builder
          * 
@@ -504,7 +542,7 @@ public final class PolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all)
+         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
          * 
          * @return builder
          * 
