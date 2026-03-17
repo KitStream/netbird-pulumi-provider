@@ -19,6 +19,10 @@ namespace KitStream.Pulumi.Netbird.Outputs
         /// </summary>
         public readonly string? Action;
         /// <summary>
+        /// Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `Sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+        /// </summary>
+        public readonly ImmutableDictionary<string, ImmutableArray<string>>? AuthorizedGroups;
+        /// <summary>
         /// Policy Rule Bidirectional
         /// </summary>
         public readonly bool? Bidirectional;
@@ -55,7 +59,7 @@ namespace KitStream.Pulumi.Netbird.Outputs
         /// </summary>
         public readonly ImmutableArray<string> Ports;
         /// <summary>
-        /// Policy Rule Protocol (tcp|udp|icmp|all)
+        /// Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
         /// </summary>
         public readonly string? Protocol;
         /// <summary>
@@ -70,6 +74,8 @@ namespace KitStream.Pulumi.Netbird.Outputs
         [OutputConstructor]
         private PolicyRule(
             string? action,
+
+            ImmutableDictionary<string, ImmutableArray<string>>? authorizedGroups,
 
             bool? bidirectional,
 
@@ -96,6 +102,7 @@ namespace KitStream.Pulumi.Netbird.Outputs
             ImmutableArray<string> sources)
         {
             Action = action;
+            AuthorizedGroups = authorizedGroups;
             Bidirectional = bidirectional;
             Description = description;
             DestinationResource = destinationResource;

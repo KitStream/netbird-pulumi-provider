@@ -19,6 +19,18 @@ namespace KitStream.Pulumi.Netbird.Inputs
         [Input("action")]
         public Input<string>? Action { get; set; }
 
+        [Input("authorizedGroups")]
+        private InputMap<ImmutableArray<string>>? _authorizedGroups;
+
+        /// <summary>
+        /// Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `Sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+        /// </summary>
+        public InputMap<ImmutableArray<string>> AuthorizedGroups
+        {
+            get => _authorizedGroups ?? (_authorizedGroups = new InputMap<ImmutableArray<string>>());
+            set => _authorizedGroups = value;
+        }
+
         /// <summary>
         /// Policy Rule Bidirectional
         /// </summary>
@@ -92,7 +104,7 @@ namespace KitStream.Pulumi.Netbird.Inputs
         }
 
         /// <summary>
-        /// Policy Rule Protocol (tcp|udp|icmp|all)
+        /// Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
         /// </summary>
         [Input("protocol")]
         public Input<string>? Protocol { get; set; }

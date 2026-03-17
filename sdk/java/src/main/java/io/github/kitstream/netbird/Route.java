@@ -201,6 +201,20 @@ public class Route extends com.pulumi.resources.CustomResource {
     public Output<Optional<List<String>>> peerGroups() {
         return Codegen.optional(this.peerGroups);
     }
+    /**
+     * Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+     * 
+     */
+    @Export(name="skipAutoApply", refs={Boolean.class}, tree="[0]")
+    private Output<Boolean> skipAutoApply;
+
+    /**
+     * @return Indicate if this exit node route (0.0.0.0/0) should skip auto-application for client routing
+     * 
+     */
+    public Output<Boolean> skipAutoApply() {
+        return this.skipAutoApply;
+    }
 
     /**
      *

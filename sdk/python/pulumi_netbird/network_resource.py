@@ -27,6 +27,7 @@ class NetworkResourceArgs:
                  enabled: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a NetworkResource resource.
+
         :param pulumi.Input[_builtins.str] address: Network resource address (either a direct host like 1.1.1.1 or 1.1.1.1/32, or a subnet like 192.168.178.0/24, or domains like example.com and *.example.com)
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] groups: Group IDs containing the resource
         :param pulumi.Input[_builtins.str] name: NetworkResource Name
@@ -127,6 +128,7 @@ class _NetworkResourceState:
                  network_id: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering NetworkResource resources.
+
         :param pulumi.Input[_builtins.str] address: Network resource address (either a direct host like 1.1.1.1 or 1.1.1.1/32, or a subnet like 192.168.178.0/24, or domains like example.com and *.example.com)
         :param pulumi.Input[_builtins.str] description: NetworkResource Description
         :param pulumi.Input[_builtins.bool] enabled: NetworkResource status
@@ -235,6 +237,7 @@ class NetworkResource(pulumi.CustomResource):
                  __props__=None):
         """
         Create a NetworkResource resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] address: Network resource address (either a direct host like 1.1.1.1 or 1.1.1.1/32, or a subnet like 192.168.178.0/24, or domains like example.com and *.example.com)
@@ -252,6 +255,7 @@ class NetworkResource(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a NetworkResource resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param NetworkResourceArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

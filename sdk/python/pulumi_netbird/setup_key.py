@@ -29,6 +29,7 @@ class SetupKeyArgs:
                  usage_limit: Optional[pulumi.Input[_builtins.int]] = None):
         """
         The set of arguments for constructing a SetupKey resource.
+
         :param pulumi.Input[_builtins.str] name: SetupKey Name
         :param pulumi.Input[_builtins.bool] allow_extra_dns_labels: Allow extra DNS labels to be added to the peer
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] auto_groups: List of groups to automatically assign to peers created through this setup key
@@ -171,6 +172,7 @@ class _SetupKeyState:
                  valid: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         Input properties used for looking up and filtering SetupKey resources.
+
         :param pulumi.Input[_builtins.bool] allow_extra_dns_labels: Allow extra DNS labels to be added to the peer
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] auto_groups: List of groups to automatically assign to peers created through this setup key
         :param pulumi.Input[_builtins.bool] ephemeral: Indicate that the peer will be ephemeral or not, ephemeral peers are deleted after 10 minutes of inactivity
@@ -416,6 +418,7 @@ class SetupKey(pulumi.CustomResource):
                  __props__=None):
         """
         Create a SetupKey resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] allow_extra_dns_labels: Allow extra DNS labels to be added to the peer
@@ -435,6 +438,7 @@ class SetupKey(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a SetupKey resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param SetupKeyArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

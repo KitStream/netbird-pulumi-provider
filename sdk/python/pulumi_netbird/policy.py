@@ -28,6 +28,7 @@ class PolicyArgs:
                  source_posture_checks: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Policy resource.
+
         :param pulumi.Input[_builtins.str] name: Policy Name
         :param pulumi.Input[_builtins.str] description: Policy Description
         :param pulumi.Input[_builtins.bool] enabled: Policy enabled
@@ -111,6 +112,7 @@ class _PolicyState:
                  source_posture_checks: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         Input properties used for looking up and filtering Policy resources.
+
         :param pulumi.Input[_builtins.str] description: Policy Description
         :param pulumi.Input[_builtins.bool] enabled: Policy enabled
         :param pulumi.Input[_builtins.str] name: Policy Name
@@ -199,6 +201,7 @@ class Policy(pulumi.CustomResource):
                  __props__=None):
         """
         Create a Policy resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] description: Policy Description
@@ -214,6 +217,7 @@ class Policy(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Policy resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param PolicyArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

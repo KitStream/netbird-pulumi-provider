@@ -23,20 +23,28 @@ func LookupAccountSettings(ctx *pulumi.Context, opts ...pulumi.InvokeOption) (*L
 
 // A collection of values returned by getAccountSettings.
 type LookupAccountSettingsResult struct {
+	AutoUpdateVersion                  string   `pulumi:"autoUpdateVersion"`
+	DnsDomain                          string   `pulumi:"dnsDomain"`
 	GroupsPropagationEnabled           bool     `pulumi:"groupsPropagationEnabled"`
 	Id                                 string   `pulumi:"id"`
 	JwtAllowGroups                     []string `pulumi:"jwtAllowGroups"`
 	JwtGroupsClaimName                 string   `pulumi:"jwtGroupsClaimName"`
 	JwtGroupsEnabled                   bool     `pulumi:"jwtGroupsEnabled"`
+	LazyConnectionEnabled              bool     `pulumi:"lazyConnectionEnabled"`
+	NetworkRange                       string   `pulumi:"networkRange"`
 	NetworkTrafficLogsEnabled          bool     `pulumi:"networkTrafficLogsEnabled"`
+	NetworkTrafficLogsGroups           []string `pulumi:"networkTrafficLogsGroups"`
 	NetworkTrafficPacketCounterEnabled bool     `pulumi:"networkTrafficPacketCounterEnabled"`
 	PeerApprovalEnabled                bool     `pulumi:"peerApprovalEnabled"`
+	PeerExposeEnabled                  bool     `pulumi:"peerExposeEnabled"`
+	PeerExposeGroups                   []string `pulumi:"peerExposeGroups"`
 	PeerInactivityExpiration           int      `pulumi:"peerInactivityExpiration"`
 	PeerInactivityExpirationEnabled    bool     `pulumi:"peerInactivityExpirationEnabled"`
 	PeerLoginExpiration                int      `pulumi:"peerLoginExpiration"`
 	PeerLoginExpirationEnabled         bool     `pulumi:"peerLoginExpirationEnabled"`
 	RegularUsersViewBlocked            bool     `pulumi:"regularUsersViewBlocked"`
 	RoutingPeerDnsResolutionEnabled    bool     `pulumi:"routingPeerDnsResolutionEnabled"`
+	UserApprovalRequired               bool     `pulumi:"userApprovalRequired"`
 }
 
 func LookupAccountSettingsOutput(ctx *pulumi.Context, opts ...pulumi.InvokeOption) LookupAccountSettingsResultOutput {
@@ -61,6 +69,14 @@ func (o LookupAccountSettingsResultOutput) ToLookupAccountSettingsResultOutputWi
 	return o
 }
 
+func (o LookupAccountSettingsResultOutput) AutoUpdateVersion() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) string { return v.AutoUpdateVersion }).(pulumi.StringOutput)
+}
+
+func (o LookupAccountSettingsResultOutput) DnsDomain() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) string { return v.DnsDomain }).(pulumi.StringOutput)
+}
+
 func (o LookupAccountSettingsResultOutput) GroupsPropagationEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.GroupsPropagationEnabled }).(pulumi.BoolOutput)
 }
@@ -81,8 +97,20 @@ func (o LookupAccountSettingsResultOutput) JwtGroupsEnabled() pulumi.BoolOutput 
 	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.JwtGroupsEnabled }).(pulumi.BoolOutput)
 }
 
+func (o LookupAccountSettingsResultOutput) LazyConnectionEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.LazyConnectionEnabled }).(pulumi.BoolOutput)
+}
+
+func (o LookupAccountSettingsResultOutput) NetworkRange() pulumi.StringOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) string { return v.NetworkRange }).(pulumi.StringOutput)
+}
+
 func (o LookupAccountSettingsResultOutput) NetworkTrafficLogsEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.NetworkTrafficLogsEnabled }).(pulumi.BoolOutput)
+}
+
+func (o LookupAccountSettingsResultOutput) NetworkTrafficLogsGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) []string { return v.NetworkTrafficLogsGroups }).(pulumi.StringArrayOutput)
 }
 
 func (o LookupAccountSettingsResultOutput) NetworkTrafficPacketCounterEnabled() pulumi.BoolOutput {
@@ -91,6 +119,14 @@ func (o LookupAccountSettingsResultOutput) NetworkTrafficPacketCounterEnabled() 
 
 func (o LookupAccountSettingsResultOutput) PeerApprovalEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.PeerApprovalEnabled }).(pulumi.BoolOutput)
+}
+
+func (o LookupAccountSettingsResultOutput) PeerExposeEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.PeerExposeEnabled }).(pulumi.BoolOutput)
+}
+
+func (o LookupAccountSettingsResultOutput) PeerExposeGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) []string { return v.PeerExposeGroups }).(pulumi.StringArrayOutput)
 }
 
 func (o LookupAccountSettingsResultOutput) PeerInactivityExpiration() pulumi.IntOutput {
@@ -115,6 +151,10 @@ func (o LookupAccountSettingsResultOutput) RegularUsersViewBlocked() pulumi.Bool
 
 func (o LookupAccountSettingsResultOutput) RoutingPeerDnsResolutionEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.RoutingPeerDnsResolutionEnabled }).(pulumi.BoolOutput)
+}
+
+func (o LookupAccountSettingsResultOutput) UserApprovalRequired() pulumi.BoolOutput {
+	return o.ApplyT(func(v LookupAccountSettingsResult) bool { return v.UserApprovalRequired }).(pulumi.BoolOutput)
 }
 
 func init() {

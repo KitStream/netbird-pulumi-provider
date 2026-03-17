@@ -14,6 +14,18 @@ namespace KitStream.Pulumi.Netbird
     public partial class AccountSettings : global::Pulumi.CustomResource
     {
         /// <summary>
+        /// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+        /// </summary>
+        [Output("autoUpdateVersion")]
+        public Output<string> AutoUpdateVersion { get; private set; } = null!;
+
+        /// <summary>
+        /// Allows to define a custom DNS domain for the account
+        /// </summary>
+        [Output("dnsDomain")]
+        public Output<string> DnsDomain { get; private set; } = null!;
+
+        /// <summary>
         /// Allows propagate the new user auto groups to peers that belongs to the user
         /// </summary>
         [Output("groupsPropagationEnabled")]
@@ -38,10 +50,28 @@ namespace KitStream.Pulumi.Netbird
         public Output<bool> JwtGroupsEnabled { get; private set; } = null!;
 
         /// <summary>
+        /// Enables or disables experimental lazy connection
+        /// </summary>
+        [Output("lazyConnectionEnabled")]
+        public Output<bool> LazyConnectionEnabled { get; private set; } = null!;
+
+        /// <summary>
+        /// Allows to define a custom network range for the account in CIDR format
+        /// </summary>
+        [Output("networkRange")]
+        public Output<string> NetworkRange { get; private set; } = null!;
+
+        /// <summary>
         /// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
         /// </summary>
         [Output("networkTrafficLogsEnabled")]
         public Output<bool> NetworkTrafficLogsEnabled { get; private set; } = null!;
+
+        /// <summary>
+        /// Limits traffic logging to these groups. If unset all peers are enabled.
+        /// </summary>
+        [Output("networkTrafficLogsGroups")]
+        public Output<ImmutableArray<string>> NetworkTrafficLogsGroups { get; private set; } = null!;
 
         /// <summary>
         /// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
@@ -54,6 +84,18 @@ namespace KitStream.Pulumi.Netbird
         /// </summary>
         [Output("peerApprovalEnabled")]
         public Output<bool> PeerApprovalEnabled { get; private set; } = null!;
+
+        /// <summary>
+        /// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+        /// </summary>
+        [Output("peerExposeEnabled")]
+        public Output<bool> PeerExposeEnabled { get; private set; } = null!;
+
+        /// <summary>
+        /// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+        /// </summary>
+        [Output("peerExposeGroups")]
+        public Output<ImmutableArray<string>> PeerExposeGroups { get; private set; } = null!;
 
         /// <summary>
         /// Period of time of inactivity after which peer session expires (seconds).
@@ -90,6 +132,12 @@ namespace KitStream.Pulumi.Netbird
         /// </summary>
         [Output("routingPeerDnsResolutionEnabled")]
         public Output<bool> RoutingPeerDnsResolutionEnabled { get; private set; } = null!;
+
+        /// <summary>
+        /// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+        /// </summary>
+        [Output("userApprovalRequired")]
+        public Output<bool> UserApprovalRequired { get; private set; } = null!;
 
 
         /// <summary>
@@ -139,6 +187,18 @@ namespace KitStream.Pulumi.Netbird
     public sealed class AccountSettingsArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+        /// </summary>
+        [Input("autoUpdateVersion")]
+        public Input<string>? AutoUpdateVersion { get; set; }
+
+        /// <summary>
+        /// Allows to define a custom DNS domain for the account
+        /// </summary>
+        [Input("dnsDomain")]
+        public Input<string>? DnsDomain { get; set; }
+
+        /// <summary>
         /// Allows propagate the new user auto groups to peers that belongs to the user
         /// </summary>
         [Input("groupsPropagationEnabled")]
@@ -169,10 +229,34 @@ namespace KitStream.Pulumi.Netbird
         public Input<bool>? JwtGroupsEnabled { get; set; }
 
         /// <summary>
+        /// Enables or disables experimental lazy connection
+        /// </summary>
+        [Input("lazyConnectionEnabled")]
+        public Input<bool>? LazyConnectionEnabled { get; set; }
+
+        /// <summary>
+        /// Allows to define a custom network range for the account in CIDR format
+        /// </summary>
+        [Input("networkRange")]
+        public Input<string>? NetworkRange { get; set; }
+
+        /// <summary>
         /// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
         /// </summary>
         [Input("networkTrafficLogsEnabled")]
         public Input<bool>? NetworkTrafficLogsEnabled { get; set; }
+
+        [Input("networkTrafficLogsGroups")]
+        private InputList<string>? _networkTrafficLogsGroups;
+
+        /// <summary>
+        /// Limits traffic logging to these groups. If unset all peers are enabled.
+        /// </summary>
+        public InputList<string> NetworkTrafficLogsGroups
+        {
+            get => _networkTrafficLogsGroups ?? (_networkTrafficLogsGroups = new InputList<string>());
+            set => _networkTrafficLogsGroups = value;
+        }
 
         /// <summary>
         /// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
@@ -185,6 +269,24 @@ namespace KitStream.Pulumi.Netbird
         /// </summary>
         [Input("peerApprovalEnabled")]
         public Input<bool>? PeerApprovalEnabled { get; set; }
+
+        /// <summary>
+        /// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+        /// </summary>
+        [Input("peerExposeEnabled")]
+        public Input<bool>? PeerExposeEnabled { get; set; }
+
+        [Input("peerExposeGroups")]
+        private InputList<string>? _peerExposeGroups;
+
+        /// <summary>
+        /// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+        /// </summary>
+        public InputList<string> PeerExposeGroups
+        {
+            get => _peerExposeGroups ?? (_peerExposeGroups = new InputList<string>());
+            set => _peerExposeGroups = value;
+        }
 
         /// <summary>
         /// Period of time of inactivity after which peer session expires (seconds).
@@ -221,6 +323,12 @@ namespace KitStream.Pulumi.Netbird
         /// </summary>
         [Input("routingPeerDnsResolutionEnabled")]
         public Input<bool>? RoutingPeerDnsResolutionEnabled { get; set; }
+
+        /// <summary>
+        /// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+        /// </summary>
+        [Input("userApprovalRequired")]
+        public Input<bool>? UserApprovalRequired { get; set; }
 
         public AccountSettingsArgs()
         {
@@ -231,6 +339,18 @@ namespace KitStream.Pulumi.Netbird
     public sealed class AccountSettingsState : global::Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+        /// </summary>
+        [Input("autoUpdateVersion")]
+        public Input<string>? AutoUpdateVersion { get; set; }
+
+        /// <summary>
+        /// Allows to define a custom DNS domain for the account
+        /// </summary>
+        [Input("dnsDomain")]
+        public Input<string>? DnsDomain { get; set; }
+
+        /// <summary>
         /// Allows propagate the new user auto groups to peers that belongs to the user
         /// </summary>
         [Input("groupsPropagationEnabled")]
@@ -261,10 +381,34 @@ namespace KitStream.Pulumi.Netbird
         public Input<bool>? JwtGroupsEnabled { get; set; }
 
         /// <summary>
+        /// Enables or disables experimental lazy connection
+        /// </summary>
+        [Input("lazyConnectionEnabled")]
+        public Input<bool>? LazyConnectionEnabled { get; set; }
+
+        /// <summary>
+        /// Allows to define a custom network range for the account in CIDR format
+        /// </summary>
+        [Input("networkRange")]
+        public Input<string>? NetworkRange { get; set; }
+
+        /// <summary>
         /// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
         /// </summary>
         [Input("networkTrafficLogsEnabled")]
         public Input<bool>? NetworkTrafficLogsEnabled { get; set; }
+
+        [Input("networkTrafficLogsGroups")]
+        private InputList<string>? _networkTrafficLogsGroups;
+
+        /// <summary>
+        /// Limits traffic logging to these groups. If unset all peers are enabled.
+        /// </summary>
+        public InputList<string> NetworkTrafficLogsGroups
+        {
+            get => _networkTrafficLogsGroups ?? (_networkTrafficLogsGroups = new InputList<string>());
+            set => _networkTrafficLogsGroups = value;
+        }
 
         /// <summary>
         /// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
@@ -277,6 +421,24 @@ namespace KitStream.Pulumi.Netbird
         /// </summary>
         [Input("peerApprovalEnabled")]
         public Input<bool>? PeerApprovalEnabled { get; set; }
+
+        /// <summary>
+        /// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+        /// </summary>
+        [Input("peerExposeEnabled")]
+        public Input<bool>? PeerExposeEnabled { get; set; }
+
+        [Input("peerExposeGroups")]
+        private InputList<string>? _peerExposeGroups;
+
+        /// <summary>
+        /// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+        /// </summary>
+        public InputList<string> PeerExposeGroups
+        {
+            get => _peerExposeGroups ?? (_peerExposeGroups = new InputList<string>());
+            set => _peerExposeGroups = value;
+        }
 
         /// <summary>
         /// Period of time of inactivity after which peer session expires (seconds).
@@ -313,6 +475,12 @@ namespace KitStream.Pulumi.Netbird
         /// </summary>
         [Input("routingPeerDnsResolutionEnabled")]
         public Input<bool>? RoutingPeerDnsResolutionEnabled { get; set; }
+
+        /// <summary>
+        /// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+        /// </summary>
+        [Input("userApprovalRequired")]
+        public Input<bool>? UserApprovalRequired { get; set; }
 
         public AccountSettingsState()
         {

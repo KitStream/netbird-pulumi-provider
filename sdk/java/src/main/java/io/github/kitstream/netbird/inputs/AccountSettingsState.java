@@ -19,6 +19,36 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
     public static final AccountSettingsState Empty = new AccountSettingsState();
 
     /**
+     * Set Clients auto-update version. &#34;latest&#34;, &#34;disabled&#34;, or a specific version (e.g &#34;0.64.5&#34;)
+     * 
+     */
+    @Import(name="autoUpdateVersion")
+    private @Nullable Output<String> autoUpdateVersion;
+
+    /**
+     * @return Set Clients auto-update version. &#34;latest&#34;, &#34;disabled&#34;, or a specific version (e.g &#34;0.64.5&#34;)
+     * 
+     */
+    public Optional<Output<String>> autoUpdateVersion() {
+        return Optional.ofNullable(this.autoUpdateVersion);
+    }
+
+    /**
+     * Allows to define a custom DNS domain for the account
+     * 
+     */
+    @Import(name="dnsDomain")
+    private @Nullable Output<String> dnsDomain;
+
+    /**
+     * @return Allows to define a custom DNS domain for the account
+     * 
+     */
+    public Optional<Output<String>> dnsDomain() {
+        return Optional.ofNullable(this.dnsDomain);
+    }
+
+    /**
      * Allows propagate the new user auto groups to peers that belongs to the user
      * 
      */
@@ -79,6 +109,36 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
     }
 
     /**
+     * Enables or disables experimental lazy connection
+     * 
+     */
+    @Import(name="lazyConnectionEnabled")
+    private @Nullable Output<Boolean> lazyConnectionEnabled;
+
+    /**
+     * @return Enables or disables experimental lazy connection
+     * 
+     */
+    public Optional<Output<Boolean>> lazyConnectionEnabled() {
+        return Optional.ofNullable(this.lazyConnectionEnabled);
+    }
+
+    /**
+     * Allows to define a custom network range for the account in CIDR format
+     * 
+     */
+    @Import(name="networkRange")
+    private @Nullable Output<String> networkRange;
+
+    /**
+     * @return Allows to define a custom network range for the account in CIDR format
+     * 
+     */
+    public Optional<Output<String>> networkRange() {
+        return Optional.ofNullable(this.networkRange);
+    }
+
+    /**
      * Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
      * 
      */
@@ -91,6 +151,21 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
      */
     public Optional<Output<Boolean>> networkTrafficLogsEnabled() {
         return Optional.ofNullable(this.networkTrafficLogsEnabled);
+    }
+
+    /**
+     * Limits traffic logging to these groups. If unset all peers are enabled.
+     * 
+     */
+    @Import(name="networkTrafficLogsGroups")
+    private @Nullable Output<List<String>> networkTrafficLogsGroups;
+
+    /**
+     * @return Limits traffic logging to these groups. If unset all peers are enabled.
+     * 
+     */
+    public Optional<Output<List<String>>> networkTrafficLogsGroups() {
+        return Optional.ofNullable(this.networkTrafficLogsGroups);
     }
 
     /**
@@ -121,6 +196,36 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
      */
     public Optional<Output<Boolean>> peerApprovalEnabled() {
         return Optional.ofNullable(this.peerApprovalEnabled);
+    }
+
+    /**
+     * Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+     * 
+     */
+    @Import(name="peerExposeEnabled")
+    private @Nullable Output<Boolean> peerExposeEnabled;
+
+    /**
+     * @return Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+     * 
+     */
+    public Optional<Output<Boolean>> peerExposeEnabled() {
+        return Optional.ofNullable(this.peerExposeEnabled);
+    }
+
+    /**
+     * Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+     * 
+     */
+    @Import(name="peerExposeGroups")
+    private @Nullable Output<List<String>> peerExposeGroups;
+
+    /**
+     * @return Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+     * 
+     */
+    public Optional<Output<List<String>>> peerExposeGroups() {
+        return Optional.ofNullable(this.peerExposeGroups);
     }
 
     /**
@@ -213,22 +318,45 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
         return Optional.ofNullable(this.routingPeerDnsResolutionEnabled);
     }
 
+    /**
+     * Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+     * 
+     */
+    @Import(name="userApprovalRequired")
+    private @Nullable Output<Boolean> userApprovalRequired;
+
+    /**
+     * @return Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+     * 
+     */
+    public Optional<Output<Boolean>> userApprovalRequired() {
+        return Optional.ofNullable(this.userApprovalRequired);
+    }
+
     private AccountSettingsState() {}
 
     private AccountSettingsState(AccountSettingsState $) {
+        this.autoUpdateVersion = $.autoUpdateVersion;
+        this.dnsDomain = $.dnsDomain;
         this.groupsPropagationEnabled = $.groupsPropagationEnabled;
         this.jwtAllowGroups = $.jwtAllowGroups;
         this.jwtGroupsClaimName = $.jwtGroupsClaimName;
         this.jwtGroupsEnabled = $.jwtGroupsEnabled;
+        this.lazyConnectionEnabled = $.lazyConnectionEnabled;
+        this.networkRange = $.networkRange;
         this.networkTrafficLogsEnabled = $.networkTrafficLogsEnabled;
+        this.networkTrafficLogsGroups = $.networkTrafficLogsGroups;
         this.networkTrafficPacketCounterEnabled = $.networkTrafficPacketCounterEnabled;
         this.peerApprovalEnabled = $.peerApprovalEnabled;
+        this.peerExposeEnabled = $.peerExposeEnabled;
+        this.peerExposeGroups = $.peerExposeGroups;
         this.peerInactivityExpiration = $.peerInactivityExpiration;
         this.peerInactivityExpirationEnabled = $.peerInactivityExpirationEnabled;
         this.peerLoginExpiration = $.peerLoginExpiration;
         this.peerLoginExpirationEnabled = $.peerLoginExpirationEnabled;
         this.regularUsersViewBlocked = $.regularUsersViewBlocked;
         this.routingPeerDnsResolutionEnabled = $.routingPeerDnsResolutionEnabled;
+        this.userApprovalRequired = $.userApprovalRequired;
     }
 
     public static Builder builder() {
@@ -247,6 +375,48 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
 
         public Builder(AccountSettingsState defaults) {
             $ = new AccountSettingsState(Objects.requireNonNull(defaults));
+        }
+
+        /**
+         * @param autoUpdateVersion Set Clients auto-update version. &#34;latest&#34;, &#34;disabled&#34;, or a specific version (e.g &#34;0.64.5&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder autoUpdateVersion(@Nullable Output<String> autoUpdateVersion) {
+            $.autoUpdateVersion = autoUpdateVersion;
+            return this;
+        }
+
+        /**
+         * @param autoUpdateVersion Set Clients auto-update version. &#34;latest&#34;, &#34;disabled&#34;, or a specific version (e.g &#34;0.64.5&#34;)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder autoUpdateVersion(String autoUpdateVersion) {
+            return autoUpdateVersion(Output.of(autoUpdateVersion));
+        }
+
+        /**
+         * @param dnsDomain Allows to define a custom DNS domain for the account
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dnsDomain(@Nullable Output<String> dnsDomain) {
+            $.dnsDomain = dnsDomain;
+            return this;
+        }
+
+        /**
+         * @param dnsDomain Allows to define a custom DNS domain for the account
+         * 
+         * @return builder
+         * 
+         */
+        public Builder dnsDomain(String dnsDomain) {
+            return dnsDomain(Output.of(dnsDomain));
         }
 
         /**
@@ -344,6 +514,48 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
         }
 
         /**
+         * @param lazyConnectionEnabled Enables or disables experimental lazy connection
+         * 
+         * @return builder
+         * 
+         */
+        public Builder lazyConnectionEnabled(@Nullable Output<Boolean> lazyConnectionEnabled) {
+            $.lazyConnectionEnabled = lazyConnectionEnabled;
+            return this;
+        }
+
+        /**
+         * @param lazyConnectionEnabled Enables or disables experimental lazy connection
+         * 
+         * @return builder
+         * 
+         */
+        public Builder lazyConnectionEnabled(Boolean lazyConnectionEnabled) {
+            return lazyConnectionEnabled(Output.of(lazyConnectionEnabled));
+        }
+
+        /**
+         * @param networkRange Allows to define a custom network range for the account in CIDR format
+         * 
+         * @return builder
+         * 
+         */
+        public Builder networkRange(@Nullable Output<String> networkRange) {
+            $.networkRange = networkRange;
+            return this;
+        }
+
+        /**
+         * @param networkRange Allows to define a custom network range for the account in CIDR format
+         * 
+         * @return builder
+         * 
+         */
+        public Builder networkRange(String networkRange) {
+            return networkRange(Output.of(networkRange));
+        }
+
+        /**
          * @param networkTrafficLogsEnabled Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
          * 
          * @return builder
@@ -362,6 +574,37 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
          */
         public Builder networkTrafficLogsEnabled(Boolean networkTrafficLogsEnabled) {
             return networkTrafficLogsEnabled(Output.of(networkTrafficLogsEnabled));
+        }
+
+        /**
+         * @param networkTrafficLogsGroups Limits traffic logging to these groups. If unset all peers are enabled.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder networkTrafficLogsGroups(@Nullable Output<List<String>> networkTrafficLogsGroups) {
+            $.networkTrafficLogsGroups = networkTrafficLogsGroups;
+            return this;
+        }
+
+        /**
+         * @param networkTrafficLogsGroups Limits traffic logging to these groups. If unset all peers are enabled.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder networkTrafficLogsGroups(List<String> networkTrafficLogsGroups) {
+            return networkTrafficLogsGroups(Output.of(networkTrafficLogsGroups));
+        }
+
+        /**
+         * @param networkTrafficLogsGroups Limits traffic logging to these groups. If unset all peers are enabled.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder networkTrafficLogsGroups(String... networkTrafficLogsGroups) {
+            return networkTrafficLogsGroups(List.of(networkTrafficLogsGroups));
         }
 
         /**
@@ -404,6 +647,58 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
          */
         public Builder peerApprovalEnabled(Boolean peerApprovalEnabled) {
             return peerApprovalEnabled(Output.of(peerApprovalEnabled));
+        }
+
+        /**
+         * @param peerExposeEnabled Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder peerExposeEnabled(@Nullable Output<Boolean> peerExposeEnabled) {
+            $.peerExposeEnabled = peerExposeEnabled;
+            return this;
+        }
+
+        /**
+         * @param peerExposeEnabled Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder peerExposeEnabled(Boolean peerExposeEnabled) {
+            return peerExposeEnabled(Output.of(peerExposeEnabled));
+        }
+
+        /**
+         * @param peerExposeGroups Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder peerExposeGroups(@Nullable Output<List<String>> peerExposeGroups) {
+            $.peerExposeGroups = peerExposeGroups;
+            return this;
+        }
+
+        /**
+         * @param peerExposeGroups Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder peerExposeGroups(List<String> peerExposeGroups) {
+            return peerExposeGroups(Output.of(peerExposeGroups));
+        }
+
+        /**
+         * @param peerExposeGroups Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder peerExposeGroups(String... peerExposeGroups) {
+            return peerExposeGroups(List.of(peerExposeGroups));
         }
 
         /**
@@ -530,6 +825,27 @@ public final class AccountSettingsState extends com.pulumi.resources.ResourceArg
          */
         public Builder routingPeerDnsResolutionEnabled(Boolean routingPeerDnsResolutionEnabled) {
             return routingPeerDnsResolutionEnabled(Output.of(routingPeerDnsResolutionEnabled));
+        }
+
+        /**
+         * @param userApprovalRequired Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder userApprovalRequired(@Nullable Output<Boolean> userApprovalRequired) {
+            $.userApprovalRequired = userApprovalRequired;
+            return this;
+        }
+
+        /**
+         * @param userApprovalRequired Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder userApprovalRequired(Boolean userApprovalRequired) {
+            return userApprovalRequired(Output.of(userApprovalRequired));
         }
 
         public AccountSettingsState build() {

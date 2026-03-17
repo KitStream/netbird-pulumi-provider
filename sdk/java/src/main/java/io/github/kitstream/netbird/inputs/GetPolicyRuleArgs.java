@@ -12,6 +12,7 @@ import io.github.kitstream.netbird.inputs.GetPolicyRuleSourceResourceArgs;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -32,6 +33,21 @@ public final class GetPolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
      */
     public Output<String> action() {
         return this.action;
+    }
+
+    /**
+     * Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    @Import(name="authorizedGroups", required=true)
+    private Output<Map<String,List<String>>> authorizedGroups;
+
+    /**
+     * @return Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    public Output<Map<String,List<String>>> authorizedGroups() {
+        return this.authorizedGroups;
     }
 
     /**
@@ -170,14 +186,14 @@ public final class GetPolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Policy Rule Protocol (tcp|udp|icmp|all)
+     * Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     @Import(name="protocol", required=true)
     private Output<String> protocol;
 
     /**
-     * @return Policy Rule Protocol (tcp|udp|icmp|all)
+     * @return Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     public Output<String> protocol() {
@@ -218,6 +234,7 @@ public final class GetPolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
 
     private GetPolicyRuleArgs(GetPolicyRuleArgs $) {
         this.action = $.action;
+        this.authorizedGroups = $.authorizedGroups;
         this.bidirectional = $.bidirectional;
         this.description = $.description;
         this.destinationResource = $.destinationResource;
@@ -269,6 +286,27 @@ public final class GetPolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
          */
         public Builder action(String action) {
             return action(Output.of(action));
+        }
+
+        /**
+         * @param authorizedGroups Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder authorizedGroups(Output<Map<String,List<String>>> authorizedGroups) {
+            $.authorizedGroups = authorizedGroups;
+            return this;
+        }
+
+        /**
+         * @param authorizedGroups Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder authorizedGroups(Map<String,List<String>> authorizedGroups) {
+            return authorizedGroups(Output.of(authorizedGroups));
         }
 
         /**
@@ -491,7 +529,7 @@ public final class GetPolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all)
+         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
          * 
          * @return builder
          * 
@@ -502,7 +540,7 @@ public final class GetPolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all)
+         * @param protocol Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
          * 
          * @return builder
          * 
@@ -566,6 +604,9 @@ public final class GetPolicyRuleArgs extends com.pulumi.resources.ResourceArgs {
         public GetPolicyRuleArgs build() {
             if ($.action == null) {
                 throw new MissingRequiredPropertyException("GetPolicyRuleArgs", "action");
+            }
+            if ($.authorizedGroups == null) {
+                throw new MissingRequiredPropertyException("GetPolicyRuleArgs", "authorizedGroups");
             }
             if ($.bidirectional == null) {
                 throw new MissingRequiredPropertyException("GetPolicyRuleArgs", "bidirectional");

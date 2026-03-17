@@ -27,6 +27,7 @@ public final class GetRouteResult {
     private String networkType;
     private String peer;
     private List<String> peerGroups;
+    private Boolean skipAutoApply;
 
     private GetRouteResult() {}
     public List<String> accessControlGroups() {
@@ -71,6 +72,9 @@ public final class GetRouteResult {
     public List<String> peerGroups() {
         return this.peerGroups;
     }
+    public Boolean skipAutoApply() {
+        return this.skipAutoApply;
+    }
 
     public static Builder builder() {
         return new Builder();
@@ -95,6 +99,7 @@ public final class GetRouteResult {
         private String networkType;
         private String peer;
         private List<String> peerGroups;
+        private Boolean skipAutoApply;
         public Builder() {}
         public Builder(GetRouteResult defaults) {
     	      Objects.requireNonNull(defaults);
@@ -112,6 +117,7 @@ public final class GetRouteResult {
     	      this.networkType = defaults.networkType;
     	      this.peer = defaults.peer;
     	      this.peerGroups = defaults.peerGroups;
+    	      this.skipAutoApply = defaults.skipAutoApply;
         }
 
         @CustomType.Setter
@@ -238,6 +244,14 @@ public final class GetRouteResult {
         public Builder peerGroups(String... peerGroups) {
             return peerGroups(List.of(peerGroups));
         }
+        @CustomType.Setter
+        public Builder skipAutoApply(Boolean skipAutoApply) {
+            if (skipAutoApply == null) {
+              throw new MissingRequiredPropertyException("GetRouteResult", "skipAutoApply");
+            }
+            this.skipAutoApply = skipAutoApply;
+            return this;
+        }
         public GetRouteResult build() {
             final var _resultValue = new GetRouteResult();
             _resultValue.accessControlGroups = accessControlGroups;
@@ -254,6 +268,7 @@ public final class GetRouteResult {
             _resultValue.networkType = networkType;
             _resultValue.peer = peer;
             _resultValue.peerGroups = peerGroups;
+            _resultValue.skipAutoApply = skipAutoApply;
             return _resultValue;
         }
     }

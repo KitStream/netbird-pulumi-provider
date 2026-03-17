@@ -11,6 +11,7 @@ import io.github.kitstream.netbird.outputs.GetPolicyRuleSourceResource;
 import java.lang.Boolean;
 import java.lang.String;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @CustomType
@@ -20,6 +21,11 @@ public final class GetPolicyRule {
      * 
      */
     private String action;
+    /**
+     * @return Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    private Map<String,List<String>> authorizedGroups;
     /**
      * @return Policy Rule Bidirectional
      * 
@@ -66,7 +72,7 @@ public final class GetPolicyRule {
      */
     private List<String> ports;
     /**
-     * @return Policy Rule Protocol (tcp|udp|icmp|all)
+     * @return Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     private String protocol;
@@ -88,6 +94,13 @@ public final class GetPolicyRule {
      */
     public String action() {
         return this.action;
+    }
+    /**
+     * @return Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     * 
+     */
+    public Map<String,List<String>> authorizedGroups() {
+        return this.authorizedGroups;
     }
     /**
      * @return Policy Rule Bidirectional
@@ -153,7 +166,7 @@ public final class GetPolicyRule {
         return this.ports;
     }
     /**
-     * @return Policy Rule Protocol (tcp|udp|icmp|all)
+     * @return Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      * 
      */
     public String protocol() {
@@ -184,6 +197,7 @@ public final class GetPolicyRule {
     @CustomType.Builder
     public static final class Builder {
         private String action;
+        private Map<String,List<String>> authorizedGroups;
         private Boolean bidirectional;
         private String description;
         private GetPolicyRuleDestinationResource destinationResource;
@@ -200,6 +214,7 @@ public final class GetPolicyRule {
         public Builder(GetPolicyRule defaults) {
     	      Objects.requireNonNull(defaults);
     	      this.action = defaults.action;
+    	      this.authorizedGroups = defaults.authorizedGroups;
     	      this.bidirectional = defaults.bidirectional;
     	      this.description = defaults.description;
     	      this.destinationResource = defaults.destinationResource;
@@ -220,6 +235,14 @@ public final class GetPolicyRule {
               throw new MissingRequiredPropertyException("GetPolicyRule", "action");
             }
             this.action = action;
+            return this;
+        }
+        @CustomType.Setter
+        public Builder authorizedGroups(Map<String,List<String>> authorizedGroups) {
+            if (authorizedGroups == null) {
+              throw new MissingRequiredPropertyException("GetPolicyRule", "authorizedGroups");
+            }
+            this.authorizedGroups = authorizedGroups;
             return this;
         }
         @CustomType.Setter
@@ -333,6 +356,7 @@ public final class GetPolicyRule {
         public GetPolicyRule build() {
             final var _resultValue = new GetPolicyRule();
             _resultValue.action = action;
+            _resultValue.authorizedGroups = authorizedGroups;
             _resultValue.bidirectional = bidirectional;
             _resultValue.description = description;
             _resultValue.destinationResource = destinationResource;

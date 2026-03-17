@@ -37,6 +37,18 @@ __all__ = [
     'PostureCheckPeerNetworkRangeCheckArgsDict',
     'PostureCheckProcessCheckArgs',
     'PostureCheckProcessCheckArgsDict',
+    'ReverseProxyServiceAuthArgs',
+    'ReverseProxyServiceAuthArgsDict',
+    'ReverseProxyServiceAuthBearerAuthArgs',
+    'ReverseProxyServiceAuthBearerAuthArgsDict',
+    'ReverseProxyServiceAuthLinkAuthArgs',
+    'ReverseProxyServiceAuthLinkAuthArgsDict',
+    'ReverseProxyServiceAuthPasswordAuthArgs',
+    'ReverseProxyServiceAuthPasswordAuthArgsDict',
+    'ReverseProxyServiceAuthPinAuthArgs',
+    'ReverseProxyServiceAuthPinAuthArgsDict',
+    'ReverseProxyServiceTargetArgs',
+    'ReverseProxyServiceTargetArgsDict',
     'GetPolicyRuleArgs',
     'GetPolicyRuleArgsDict',
     'GetPolicyRuleDestinationResourceArgs',
@@ -124,6 +136,10 @@ class PolicyRuleArgsDict(TypedDict):
     """
     Policy Rule Action (accept|drop)
     """
+    authorized_groups: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]]]
+    """
+    Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+    """
     bidirectional: NotRequired[pulumi.Input[_builtins.bool]]
     """
     Policy Rule Bidirectional
@@ -158,7 +174,7 @@ class PolicyRuleArgsDict(TypedDict):
     """
     protocol: NotRequired[pulumi.Input[_builtins.str]]
     """
-    Policy Rule Protocol (tcp|udp|icmp|all)
+    Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
     """
     source_resource: NotRequired[pulumi.Input['PolicyRuleSourceResourceArgsDict']]
     """
@@ -174,6 +190,7 @@ class PolicyRuleArgs:
     def __init__(__self__, *,
                  name: pulumi.Input[_builtins.str],
                  action: Optional[pulumi.Input[_builtins.str]] = None,
+                 authorized_groups: Optional[pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]]] = None,
                  bidirectional: Optional[pulumi.Input[_builtins.bool]] = None,
                  description: Optional[pulumi.Input[_builtins.str]] = None,
                  destination_resource: Optional[pulumi.Input['PolicyRuleDestinationResourceArgs']] = None,
@@ -188,6 +205,7 @@ class PolicyRuleArgs:
         """
         :param pulumi.Input[_builtins.str] name: Policy Name
         :param pulumi.Input[_builtins.str] action: Policy Rule Action (accept|drop)
+        :param pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]] authorized_groups: Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
         :param pulumi.Input[_builtins.bool] bidirectional: Policy Rule Bidirectional
         :param pulumi.Input[_builtins.str] description: Policy description
         :param pulumi.Input['PolicyRuleDestinationResourceArgs'] destination_resource: Policy Rule Destination Resource (mutually exclusive with destinations)
@@ -196,13 +214,15 @@ class PolicyRuleArgs:
         :param pulumi.Input[_builtins.str] id: Policy ID
         :param pulumi.Input[Sequence[pulumi.Input['PolicyRulePortRangeArgs']]] port_ranges: Policy Rule Port Ranges (mutually exclusive with ports)
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] ports: Policy Rule Ports (mutually exclusive with port_ranges)
-        :param pulumi.Input[_builtins.str] protocol: Policy Rule Protocol (tcp|udp|icmp|all)
+        :param pulumi.Input[_builtins.str] protocol: Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
         :param pulumi.Input['PolicyRuleSourceResourceArgs'] source_resource: Policy Rule Source Resource (mutually exclusive with sources)
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] sources: Policy Rule Source Groups (mutually exclusive with source_resource)
         """
         pulumi.set(__self__, "name", name)
         if action is not None:
             pulumi.set(__self__, "action", action)
+        if authorized_groups is not None:
+            pulumi.set(__self__, "authorized_groups", authorized_groups)
         if bidirectional is not None:
             pulumi.set(__self__, "bidirectional", bidirectional)
         if description is not None:
@@ -249,6 +269,18 @@ class PolicyRuleArgs:
     @action.setter
     def action(self, value: Optional[pulumi.Input[_builtins.str]]):
         pulumi.set(self, "action", value)
+
+    @_builtins.property
+    @pulumi.getter(name="authorizedGroups")
+    def authorized_groups(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]]]:
+        """
+        Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+        """
+        return pulumi.get(self, "authorized_groups")
+
+    @authorized_groups.setter
+    def authorized_groups(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]]]):
+        pulumi.set(self, "authorized_groups", value)
 
     @_builtins.property
     @pulumi.getter
@@ -350,7 +382,7 @@ class PolicyRuleArgs:
     @pulumi.getter
     def protocol(self) -> Optional[pulumi.Input[_builtins.str]]:
         """
-        Policy Rule Protocol (tcp|udp|icmp|all)
+        Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
         """
         return pulumi.get(self, "protocol")
 
@@ -712,10 +744,372 @@ class PostureCheckProcessCheckArgs:
         pulumi.set(self, "windows_path", value)
 
 
+class ReverseProxyServiceAuthArgsDict(TypedDict):
+    bearer_auth: NotRequired[pulumi.Input['ReverseProxyServiceAuthBearerAuthArgsDict']]
+    """
+    Bearer token authentication
+    """
+    link_auth: NotRequired[pulumi.Input['ReverseProxyServiceAuthLinkAuthArgsDict']]
+    """
+    Link authentication
+    """
+    password_auth: NotRequired[pulumi.Input['ReverseProxyServiceAuthPasswordAuthArgsDict']]
+    """
+    Password authentication
+    """
+    pin_auth: NotRequired[pulumi.Input['ReverseProxyServiceAuthPinAuthArgsDict']]
+    """
+    PIN authentication
+    """
+
+@pulumi.input_type
+class ReverseProxyServiceAuthArgs:
+    def __init__(__self__, *,
+                 bearer_auth: Optional[pulumi.Input['ReverseProxyServiceAuthBearerAuthArgs']] = None,
+                 link_auth: Optional[pulumi.Input['ReverseProxyServiceAuthLinkAuthArgs']] = None,
+                 password_auth: Optional[pulumi.Input['ReverseProxyServiceAuthPasswordAuthArgs']] = None,
+                 pin_auth: Optional[pulumi.Input['ReverseProxyServiceAuthPinAuthArgs']] = None):
+        """
+        :param pulumi.Input['ReverseProxyServiceAuthBearerAuthArgs'] bearer_auth: Bearer token authentication
+        :param pulumi.Input['ReverseProxyServiceAuthLinkAuthArgs'] link_auth: Link authentication
+        :param pulumi.Input['ReverseProxyServiceAuthPasswordAuthArgs'] password_auth: Password authentication
+        :param pulumi.Input['ReverseProxyServiceAuthPinAuthArgs'] pin_auth: PIN authentication
+        """
+        if bearer_auth is not None:
+            pulumi.set(__self__, "bearer_auth", bearer_auth)
+        if link_auth is not None:
+            pulumi.set(__self__, "link_auth", link_auth)
+        if password_auth is not None:
+            pulumi.set(__self__, "password_auth", password_auth)
+        if pin_auth is not None:
+            pulumi.set(__self__, "pin_auth", pin_auth)
+
+    @_builtins.property
+    @pulumi.getter(name="bearerAuth")
+    def bearer_auth(self) -> Optional[pulumi.Input['ReverseProxyServiceAuthBearerAuthArgs']]:
+        """
+        Bearer token authentication
+        """
+        return pulumi.get(self, "bearer_auth")
+
+    @bearer_auth.setter
+    def bearer_auth(self, value: Optional[pulumi.Input['ReverseProxyServiceAuthBearerAuthArgs']]):
+        pulumi.set(self, "bearer_auth", value)
+
+    @_builtins.property
+    @pulumi.getter(name="linkAuth")
+    def link_auth(self) -> Optional[pulumi.Input['ReverseProxyServiceAuthLinkAuthArgs']]:
+        """
+        Link authentication
+        """
+        return pulumi.get(self, "link_auth")
+
+    @link_auth.setter
+    def link_auth(self, value: Optional[pulumi.Input['ReverseProxyServiceAuthLinkAuthArgs']]):
+        pulumi.set(self, "link_auth", value)
+
+    @_builtins.property
+    @pulumi.getter(name="passwordAuth")
+    def password_auth(self) -> Optional[pulumi.Input['ReverseProxyServiceAuthPasswordAuthArgs']]:
+        """
+        Password authentication
+        """
+        return pulumi.get(self, "password_auth")
+
+    @password_auth.setter
+    def password_auth(self, value: Optional[pulumi.Input['ReverseProxyServiceAuthPasswordAuthArgs']]):
+        pulumi.set(self, "password_auth", value)
+
+    @_builtins.property
+    @pulumi.getter(name="pinAuth")
+    def pin_auth(self) -> Optional[pulumi.Input['ReverseProxyServiceAuthPinAuthArgs']]:
+        """
+        PIN authentication
+        """
+        return pulumi.get(self, "pin_auth")
+
+    @pin_auth.setter
+    def pin_auth(self, value: Optional[pulumi.Input['ReverseProxyServiceAuthPinAuthArgs']]):
+        pulumi.set(self, "pin_auth", value)
+
+
+class ReverseProxyServiceAuthBearerAuthArgsDict(TypedDict):
+    enabled: pulumi.Input[_builtins.bool]
+    distribution_groups: NotRequired[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]
+    """
+    List of group IDs that can use bearer auth
+    """
+
+@pulumi.input_type
+class ReverseProxyServiceAuthBearerAuthArgs:
+    def __init__(__self__, *,
+                 enabled: pulumi.Input[_builtins.bool],
+                 distribution_groups: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
+        """
+        :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] distribution_groups: List of group IDs that can use bearer auth
+        """
+        pulumi.set(__self__, "enabled", enabled)
+        if distribution_groups is not None:
+            pulumi.set(__self__, "distribution_groups", distribution_groups)
+
+    @_builtins.property
+    @pulumi.getter
+    def enabled(self) -> pulumi.Input[_builtins.bool]:
+        return pulumi.get(self, "enabled")
+
+    @enabled.setter
+    def enabled(self, value: pulumi.Input[_builtins.bool]):
+        pulumi.set(self, "enabled", value)
+
+    @_builtins.property
+    @pulumi.getter(name="distributionGroups")
+    def distribution_groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]:
+        """
+        List of group IDs that can use bearer auth
+        """
+        return pulumi.get(self, "distribution_groups")
+
+    @distribution_groups.setter
+    def distribution_groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]]):
+        pulumi.set(self, "distribution_groups", value)
+
+
+class ReverseProxyServiceAuthLinkAuthArgsDict(TypedDict):
+    enabled: pulumi.Input[_builtins.bool]
+
+@pulumi.input_type
+class ReverseProxyServiceAuthLinkAuthArgs:
+    def __init__(__self__, *,
+                 enabled: pulumi.Input[_builtins.bool]):
+        pulumi.set(__self__, "enabled", enabled)
+
+    @_builtins.property
+    @pulumi.getter
+    def enabled(self) -> pulumi.Input[_builtins.bool]:
+        return pulumi.get(self, "enabled")
+
+    @enabled.setter
+    def enabled(self, value: pulumi.Input[_builtins.bool]):
+        pulumi.set(self, "enabled", value)
+
+
+class ReverseProxyServiceAuthPasswordAuthArgsDict(TypedDict):
+    enabled: pulumi.Input[_builtins.bool]
+    password: NotRequired[pulumi.Input[_builtins.str]]
+
+@pulumi.input_type
+class ReverseProxyServiceAuthPasswordAuthArgs:
+    def __init__(__self__, *,
+                 enabled: pulumi.Input[_builtins.bool],
+                 password: Optional[pulumi.Input[_builtins.str]] = None):
+        pulumi.set(__self__, "enabled", enabled)
+        if password is not None:
+            pulumi.set(__self__, "password", password)
+
+    @_builtins.property
+    @pulumi.getter
+    def enabled(self) -> pulumi.Input[_builtins.bool]:
+        return pulumi.get(self, "enabled")
+
+    @enabled.setter
+    def enabled(self, value: pulumi.Input[_builtins.bool]):
+        pulumi.set(self, "enabled", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def password(self) -> Optional[pulumi.Input[_builtins.str]]:
+        return pulumi.get(self, "password")
+
+    @password.setter
+    def password(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "password", value)
+
+
+class ReverseProxyServiceAuthPinAuthArgsDict(TypedDict):
+    enabled: pulumi.Input[_builtins.bool]
+    pin: NotRequired[pulumi.Input[_builtins.str]]
+
+@pulumi.input_type
+class ReverseProxyServiceAuthPinAuthArgs:
+    def __init__(__self__, *,
+                 enabled: pulumi.Input[_builtins.bool],
+                 pin: Optional[pulumi.Input[_builtins.str]] = None):
+        pulumi.set(__self__, "enabled", enabled)
+        if pin is not None:
+            pulumi.set(__self__, "pin", pin)
+
+    @_builtins.property
+    @pulumi.getter
+    def enabled(self) -> pulumi.Input[_builtins.bool]:
+        return pulumi.get(self, "enabled")
+
+    @enabled.setter
+    def enabled(self, value: pulumi.Input[_builtins.bool]):
+        pulumi.set(self, "enabled", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def pin(self) -> Optional[pulumi.Input[_builtins.str]]:
+        return pulumi.get(self, "pin")
+
+    @pin.setter
+    def pin(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "pin", value)
+
+
+class ReverseProxyServiceTargetArgsDict(TypedDict):
+    port: pulumi.Input[_builtins.int]
+    """
+    Backend port for this target (0 for scheme default)
+    """
+    protocol: pulumi.Input[_builtins.str]
+    """
+    Protocol to use when connecting to the backend (http, https)
+    """
+    target_id: pulumi.Input[_builtins.str]
+    """
+    Target ID (resource or peer ID)
+    """
+    target_type: pulumi.Input[_builtins.str]
+    """
+    Target type (peer, host, domain, subnet)
+    """
+    enabled: NotRequired[pulumi.Input[_builtins.bool]]
+    """
+    Whether this target is enabled
+    """
+    host: NotRequired[pulumi.Input[_builtins.str]]
+    """
+    Backend IP or domain for this target. If omitted, the API resolves it from the target peer.
+    """
+    path: NotRequired[pulumi.Input[_builtins.str]]
+    """
+    URL path prefix for this target. Defaults to "/" if omitted.
+    """
+
+@pulumi.input_type
+class ReverseProxyServiceTargetArgs:
+    def __init__(__self__, *,
+                 port: pulumi.Input[_builtins.int],
+                 protocol: pulumi.Input[_builtins.str],
+                 target_id: pulumi.Input[_builtins.str],
+                 target_type: pulumi.Input[_builtins.str],
+                 enabled: Optional[pulumi.Input[_builtins.bool]] = None,
+                 host: Optional[pulumi.Input[_builtins.str]] = None,
+                 path: Optional[pulumi.Input[_builtins.str]] = None):
+        """
+        :param pulumi.Input[_builtins.int] port: Backend port for this target (0 for scheme default)
+        :param pulumi.Input[_builtins.str] protocol: Protocol to use when connecting to the backend (http, https)
+        :param pulumi.Input[_builtins.str] target_id: Target ID (resource or peer ID)
+        :param pulumi.Input[_builtins.str] target_type: Target type (peer, host, domain, subnet)
+        :param pulumi.Input[_builtins.bool] enabled: Whether this target is enabled
+        :param pulumi.Input[_builtins.str] host: Backend IP or domain for this target. If omitted, the API resolves it from the target peer.
+        :param pulumi.Input[_builtins.str] path: URL path prefix for this target. Defaults to "/" if omitted.
+        """
+        pulumi.set(__self__, "port", port)
+        pulumi.set(__self__, "protocol", protocol)
+        pulumi.set(__self__, "target_id", target_id)
+        pulumi.set(__self__, "target_type", target_type)
+        if enabled is not None:
+            pulumi.set(__self__, "enabled", enabled)
+        if host is not None:
+            pulumi.set(__self__, "host", host)
+        if path is not None:
+            pulumi.set(__self__, "path", path)
+
+    @_builtins.property
+    @pulumi.getter
+    def port(self) -> pulumi.Input[_builtins.int]:
+        """
+        Backend port for this target (0 for scheme default)
+        """
+        return pulumi.get(self, "port")
+
+    @port.setter
+    def port(self, value: pulumi.Input[_builtins.int]):
+        pulumi.set(self, "port", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def protocol(self) -> pulumi.Input[_builtins.str]:
+        """
+        Protocol to use when connecting to the backend (http, https)
+        """
+        return pulumi.get(self, "protocol")
+
+    @protocol.setter
+    def protocol(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "protocol", value)
+
+    @_builtins.property
+    @pulumi.getter(name="targetId")
+    def target_id(self) -> pulumi.Input[_builtins.str]:
+        """
+        Target ID (resource or peer ID)
+        """
+        return pulumi.get(self, "target_id")
+
+    @target_id.setter
+    def target_id(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "target_id", value)
+
+    @_builtins.property
+    @pulumi.getter(name="targetType")
+    def target_type(self) -> pulumi.Input[_builtins.str]:
+        """
+        Target type (peer, host, domain, subnet)
+        """
+        return pulumi.get(self, "target_type")
+
+    @target_type.setter
+    def target_type(self, value: pulumi.Input[_builtins.str]):
+        pulumi.set(self, "target_type", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def enabled(self) -> Optional[pulumi.Input[_builtins.bool]]:
+        """
+        Whether this target is enabled
+        """
+        return pulumi.get(self, "enabled")
+
+    @enabled.setter
+    def enabled(self, value: Optional[pulumi.Input[_builtins.bool]]):
+        pulumi.set(self, "enabled", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def host(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        Backend IP or domain for this target. If omitted, the API resolves it from the target peer.
+        """
+        return pulumi.get(self, "host")
+
+    @host.setter
+    def host(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "host", value)
+
+    @_builtins.property
+    @pulumi.getter
+    def path(self) -> Optional[pulumi.Input[_builtins.str]]:
+        """
+        URL path prefix for this target. Defaults to "/" if omitted.
+        """
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: Optional[pulumi.Input[_builtins.str]]):
+        pulumi.set(self, "path", value)
+
+
 class GetPolicyRuleArgsDict(TypedDict):
     action: _builtins.str
     """
     Policy Rule Action (accept|drop)
+    """
+    authorized_groups: Mapping[str, Sequence[_builtins.str]]
+    """
+    Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
     """
     bidirectional: _builtins.bool
     """
@@ -755,7 +1149,7 @@ class GetPolicyRuleArgsDict(TypedDict):
     """
     protocol: _builtins.str
     """
-    Policy Rule Protocol (tcp|udp|icmp|all)
+    Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
     """
     source_resource: 'GetPolicyRuleSourceResourceArgsDict'
     """
@@ -770,6 +1164,7 @@ class GetPolicyRuleArgsDict(TypedDict):
 class GetPolicyRuleArgs:
     def __init__(__self__, *,
                  action: _builtins.str,
+                 authorized_groups: Mapping[str, Sequence[_builtins.str]],
                  bidirectional: _builtins.bool,
                  description: _builtins.str,
                  destination_resource: 'GetPolicyRuleDestinationResourceArgs',
@@ -784,6 +1179,7 @@ class GetPolicyRuleArgs:
                  sources: Sequence[_builtins.str]):
         """
         :param _builtins.str action: Policy Rule Action (accept|drop)
+        :param Mapping[str, Sequence[_builtins.str]] authorized_groups: Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
         :param _builtins.bool bidirectional: Policy Rule Bidirectional
         :param _builtins.str description: Policy description
         :param 'GetPolicyRuleDestinationResourceArgs' destination_resource: Policy Rule Destination Resource (mutually exclusive with destinations)
@@ -793,11 +1189,12 @@ class GetPolicyRuleArgs:
         :param _builtins.str name: Policy Name
         :param Sequence['GetPolicyRulePortRangeArgs'] port_ranges: Policy Rule Port Ranges (mutually exclusive with ports)
         :param Sequence[_builtins.str] ports: Policy Rule Ports (mutually exclusive with port_ranges)
-        :param _builtins.str protocol: Policy Rule Protocol (tcp|udp|icmp|all)
+        :param _builtins.str protocol: Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
         :param 'GetPolicyRuleSourceResourceArgs' source_resource: Policy Rule Source Resource (mutually exclusive with sources)
         :param Sequence[_builtins.str] sources: Policy Rule Source Groups (mutually exclusive with source_resource)
         """
         pulumi.set(__self__, "action", action)
+        pulumi.set(__self__, "authorized_groups", authorized_groups)
         pulumi.set(__self__, "bidirectional", bidirectional)
         pulumi.set(__self__, "description", description)
         pulumi.set(__self__, "destination_resource", destination_resource)
@@ -822,6 +1219,18 @@ class GetPolicyRuleArgs:
     @action.setter
     def action(self, value: _builtins.str):
         pulumi.set(self, "action", value)
+
+    @_builtins.property
+    @pulumi.getter(name="authorizedGroups")
+    def authorized_groups(self) -> Mapping[str, Sequence[_builtins.str]]:
+        """
+        Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+        """
+        return pulumi.get(self, "authorized_groups")
+
+    @authorized_groups.setter
+    def authorized_groups(self, value: Mapping[str, Sequence[_builtins.str]]):
+        pulumi.set(self, "authorized_groups", value)
 
     @_builtins.property
     @pulumi.getter
@@ -935,7 +1344,7 @@ class GetPolicyRuleArgs:
     @pulumi.getter
     def protocol(self) -> _builtins.str:
         """
-        Policy Rule Protocol (tcp|udp|icmp|all)
+        Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
         """
         return pulumi.get(self, "protocol")
 

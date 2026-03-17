@@ -24,7 +24,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 		version = "0.0.1"
 	}
 	// Instantiate the Terraform provider
-	p := pftfbridge.ShimProvider(provider.New("0.0.7")())
+	p := pftfbridge.ShimProvider(provider.New("0.0.9")())
 
 	// Create a Pulumi provider control struct
 	prov := tfbridge.ProviderInfo{
@@ -44,13 +44,16 @@ func Provider(version string) tfbridge.ProviderInfo {
 			// Add any custom config mapping here
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
-			"netbird_account_settings": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "AccountSettings")},
-			"netbird_dns_settings":     {Tok: tfbridge.MakeResource(mainPkg, mainMod, "DnsSettings")},
-			"netbird_group":            {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Group")},
-			"netbird_nameserver_group": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "NameserverGroup")},
-			"netbird_network":          {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Network")},
-			"netbird_network_resource": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "NetworkResource")},
-			"netbird_network_router":   {Tok: tfbridge.MakeResource(mainPkg, mainMod, "NetworkRouter")},
+			"netbird_account_settings":      {Tok: tfbridge.MakeResource(mainPkg, mainMod, "AccountSettings")},
+			"netbird_dns_record":            {Tok: tfbridge.MakeResource(mainPkg, mainMod, "DnsRecord")},
+			"netbird_dns_settings":          {Tok: tfbridge.MakeResource(mainPkg, mainMod, "DnsSettings")},
+			"netbird_dns_zone":              {Tok: tfbridge.MakeResource(mainPkg, mainMod, "DnsZone")},
+			"netbird_group":                 {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Group")},
+			"netbird_identity_provider":     {Tok: tfbridge.MakeResource(mainPkg, mainMod, "IdentityProvider")},
+			"netbird_nameserver_group":      {Tok: tfbridge.MakeResource(mainPkg, mainMod, "NameserverGroup")},
+			"netbird_network":               {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Network")},
+			"netbird_network_resource":      {Tok: tfbridge.MakeResource(mainPkg, mainMod, "NetworkResource")},
+			"netbird_network_router":        {Tok: tfbridge.MakeResource(mainPkg, mainMod, "NetworkRouter")},
 			"netbird_peer": {
 				Tok: tfbridge.MakeResource(mainPkg, mainMod, "Peer"),
 				Fields: map[string]*tfbridge.SchemaInfo{
@@ -60,31 +63,41 @@ func Provider(version string) tfbridge.ProviderInfo {
 				},
 				ComputeID: tfbridge.DelegateIDField(resource.PropertyKey("peerId"), "netbird", "https://github.com/KitStream/netbird-pulumi-provider"),
 			},
-			"netbird_policy":        {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Policy")},
-			"netbird_posture_check": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "PostureCheck")},
-			"netbird_route":         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Route")},
-			"netbird_setup_key":     {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SetupKey")},
+			"netbird_policy":                {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Policy")},
+			"netbird_posture_check":         {Tok: tfbridge.MakeResource(mainPkg, mainMod, "PostureCheck")},
+			"netbird_reverse_proxy_domain":  {Tok: tfbridge.MakeResource(mainPkg, mainMod, "ReverseProxyDomain")},
+			"netbird_reverse_proxy_service": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "ReverseProxyService")},
+			"netbird_route":                 {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Route")},
+			"netbird_scim":                  {Tok: tfbridge.MakeResource(mainPkg, mainMod, "Scim")},
+			"netbird_setup_key":             {Tok: tfbridge.MakeResource(mainPkg, mainMod, "SetupKey")},
 			"netbird_token": {
 				Tok: tfbridge.MakeResource(mainPkg, mainMod, "PersonalAccessToken"),
 			},
 			"netbird_user": {Tok: tfbridge.MakeResource(mainPkg, mainMod, "User")},
 		},
 		DataSources: map[string]*tfbridge.DataSourceInfo{
-			"netbird_account_settings": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getAccountSettings")},
-			"netbird_dns_settings":     {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getDnsSettings")},
-			"netbird_group":            {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getGroup")},
-			"netbird_nameserver_group": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNameserverGroup")},
-			"netbird_network":          {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNetwork")},
-			"netbird_network_resource": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNetworkResource")},
-			"netbird_network_router":   {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNetworkRouter")},
-			"netbird_peer":             {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPeer")},
-			"netbird_peers":            {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPeers")},
-			"netbird_policy":           {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPolicy")},
-			"netbird_posture_check":    {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPostureCheck")},
-			"netbird_route":            {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getRoute")},
-			"netbird_setup_key":        {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSetupKey")},
-			"netbird_token":            {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getToken")},
-			"netbird_user":             {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getUser")},
+			"netbird_account_settings":       {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getAccountSettings")},
+			"netbird_dns_record":             {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getDnsRecord")},
+			"netbird_dns_settings":           {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getDnsSettings")},
+			"netbird_dns_zone":               {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getDnsZone")},
+			"netbird_group":                  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getGroup")},
+			"netbird_identity_provider":      {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getIdentityProvider")},
+			"netbird_nameserver_group":       {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNameserverGroup")},
+			"netbird_network":                {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNetwork")},
+			"netbird_network_resource":       {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNetworkResource")},
+			"netbird_network_router":         {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getNetworkRouter")},
+			"netbird_peer":                   {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPeer")},
+			"netbird_peers":                  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPeers")},
+			"netbird_policy":                 {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPolicy")},
+			"netbird_posture_check":          {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getPostureCheck")},
+			"netbird_reverse_proxy_clusters": {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getReverseProxyClusters")},
+			"netbird_reverse_proxy_domain":   {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getReverseProxyDomain")},
+			"netbird_reverse_proxy_service":  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getReverseProxyService")},
+			"netbird_route":                  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getRoute")},
+			"netbird_scim":                   {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getScim")},
+			"netbird_setup_key":              {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getSetupKey")},
+			"netbird_token":                  {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getToken")},
+			"netbird_user":                   {Tok: tfbridge.MakeDataSource(mainPkg, mainMod, "getUser")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			PackageName: "@kitstream/netbird-pulumi",

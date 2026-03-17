@@ -10,25 +10,50 @@ export type AccountSettings = import("./accountSettings").AccountSettings;
 export const AccountSettings: typeof import("./accountSettings").AccountSettings = null as any;
 utilities.lazyLoad(exports, ["AccountSettings"], () => require("./accountSettings"));
 
+export { DnsRecordArgs, DnsRecordState } from "./dnsRecord";
+export type DnsRecord = import("./dnsRecord").DnsRecord;
+export const DnsRecord: typeof import("./dnsRecord").DnsRecord = null as any;
+utilities.lazyLoad(exports, ["DnsRecord"], () => require("./dnsRecord"));
+
 export { DnsSettingsArgs, DnsSettingsState } from "./dnsSettings";
 export type DnsSettings = import("./dnsSettings").DnsSettings;
 export const DnsSettings: typeof import("./dnsSettings").DnsSettings = null as any;
 utilities.lazyLoad(exports, ["DnsSettings"], () => require("./dnsSettings"));
+
+export { DnsZoneArgs, DnsZoneState } from "./dnsZone";
+export type DnsZone = import("./dnsZone").DnsZone;
+export const DnsZone: typeof import("./dnsZone").DnsZone = null as any;
+utilities.lazyLoad(exports, ["DnsZone"], () => require("./dnsZone"));
 
 export { GetAccountSettingsResult } from "./getAccountSettings";
 export const getAccountSettings: typeof import("./getAccountSettings").getAccountSettings = null as any;
 export const getAccountSettingsOutput: typeof import("./getAccountSettings").getAccountSettingsOutput = null as any;
 utilities.lazyLoad(exports, ["getAccountSettings","getAccountSettingsOutput"], () => require("./getAccountSettings"));
 
+export { GetDnsRecordArgs, GetDnsRecordResult, GetDnsRecordOutputArgs } from "./getDnsRecord";
+export const getDnsRecord: typeof import("./getDnsRecord").getDnsRecord = null as any;
+export const getDnsRecordOutput: typeof import("./getDnsRecord").getDnsRecordOutput = null as any;
+utilities.lazyLoad(exports, ["getDnsRecord","getDnsRecordOutput"], () => require("./getDnsRecord"));
+
 export { GetDnsSettingsResult } from "./getDnsSettings";
 export const getDnsSettings: typeof import("./getDnsSettings").getDnsSettings = null as any;
 export const getDnsSettingsOutput: typeof import("./getDnsSettings").getDnsSettingsOutput = null as any;
 utilities.lazyLoad(exports, ["getDnsSettings","getDnsSettingsOutput"], () => require("./getDnsSettings"));
 
+export { GetDnsZoneArgs, GetDnsZoneResult, GetDnsZoneOutputArgs } from "./getDnsZone";
+export const getDnsZone: typeof import("./getDnsZone").getDnsZone = null as any;
+export const getDnsZoneOutput: typeof import("./getDnsZone").getDnsZoneOutput = null as any;
+utilities.lazyLoad(exports, ["getDnsZone","getDnsZoneOutput"], () => require("./getDnsZone"));
+
 export { GetGroupArgs, GetGroupResult, GetGroupOutputArgs } from "./getGroup";
 export const getGroup: typeof import("./getGroup").getGroup = null as any;
 export const getGroupOutput: typeof import("./getGroup").getGroupOutput = null as any;
 utilities.lazyLoad(exports, ["getGroup","getGroupOutput"], () => require("./getGroup"));
+
+export { GetIdentityProviderArgs, GetIdentityProviderResult, GetIdentityProviderOutputArgs } from "./getIdentityProvider";
+export const getIdentityProvider: typeof import("./getIdentityProvider").getIdentityProvider = null as any;
+export const getIdentityProviderOutput: typeof import("./getIdentityProvider").getIdentityProviderOutput = null as any;
+utilities.lazyLoad(exports, ["getIdentityProvider","getIdentityProviderOutput"], () => require("./getIdentityProvider"));
 
 export { GetNameserverGroupArgs, GetNameserverGroupResult, GetNameserverGroupOutputArgs } from "./getNameserverGroup";
 export const getNameserverGroup: typeof import("./getNameserverGroup").getNameserverGroup = null as any;
@@ -70,10 +95,30 @@ export const getPostureCheck: typeof import("./getPostureCheck").getPostureCheck
 export const getPostureCheckOutput: typeof import("./getPostureCheck").getPostureCheckOutput = null as any;
 utilities.lazyLoad(exports, ["getPostureCheck","getPostureCheckOutput"], () => require("./getPostureCheck"));
 
+export { GetReverseProxyClustersResult } from "./getReverseProxyClusters";
+export const getReverseProxyClusters: typeof import("./getReverseProxyClusters").getReverseProxyClusters = null as any;
+export const getReverseProxyClustersOutput: typeof import("./getReverseProxyClusters").getReverseProxyClustersOutput = null as any;
+utilities.lazyLoad(exports, ["getReverseProxyClusters","getReverseProxyClustersOutput"], () => require("./getReverseProxyClusters"));
+
+export { GetReverseProxyDomainArgs, GetReverseProxyDomainResult, GetReverseProxyDomainOutputArgs } from "./getReverseProxyDomain";
+export const getReverseProxyDomain: typeof import("./getReverseProxyDomain").getReverseProxyDomain = null as any;
+export const getReverseProxyDomainOutput: typeof import("./getReverseProxyDomain").getReverseProxyDomainOutput = null as any;
+utilities.lazyLoad(exports, ["getReverseProxyDomain","getReverseProxyDomainOutput"], () => require("./getReverseProxyDomain"));
+
+export { GetReverseProxyServiceArgs, GetReverseProxyServiceResult, GetReverseProxyServiceOutputArgs } from "./getReverseProxyService";
+export const getReverseProxyService: typeof import("./getReverseProxyService").getReverseProxyService = null as any;
+export const getReverseProxyServiceOutput: typeof import("./getReverseProxyService").getReverseProxyServiceOutput = null as any;
+utilities.lazyLoad(exports, ["getReverseProxyService","getReverseProxyServiceOutput"], () => require("./getReverseProxyService"));
+
 export { GetRouteArgs, GetRouteResult, GetRouteOutputArgs } from "./getRoute";
 export const getRoute: typeof import("./getRoute").getRoute = null as any;
 export const getRouteOutput: typeof import("./getRoute").getRouteOutput = null as any;
 utilities.lazyLoad(exports, ["getRoute","getRouteOutput"], () => require("./getRoute"));
+
+export { GetScimArgs, GetScimResult, GetScimOutputArgs } from "./getScim";
+export const getScim: typeof import("./getScim").getScim = null as any;
+export const getScimOutput: typeof import("./getScim").getScimOutput = null as any;
+utilities.lazyLoad(exports, ["getScim","getScimOutput"], () => require("./getScim"));
 
 export { GetSetupKeyArgs, GetSetupKeyResult, GetSetupKeyOutputArgs } from "./getSetupKey";
 export const getSetupKey: typeof import("./getSetupKey").getSetupKey = null as any;
@@ -94,6 +139,11 @@ export { GroupArgs, GroupState } from "./group";
 export type Group = import("./group").Group;
 export const Group: typeof import("./group").Group = null as any;
 utilities.lazyLoad(exports, ["Group"], () => require("./group"));
+
+export { IdentityProviderArgs, IdentityProviderState } from "./identityProvider";
+export type IdentityProvider = import("./identityProvider").IdentityProvider;
+export const IdentityProvider: typeof import("./identityProvider").IdentityProvider = null as any;
+utilities.lazyLoad(exports, ["IdentityProvider"], () => require("./identityProvider"));
 
 export { NameserverGroupArgs, NameserverGroupState } from "./nameserverGroup";
 export type NameserverGroup = import("./nameserverGroup").NameserverGroup;
@@ -138,10 +188,25 @@ utilities.lazyLoad(exports, ["PostureCheck"], () => require("./postureCheck"));
 export * from "./provider";
 import { Provider } from "./provider";
 
+export { ReverseProxyDomainArgs, ReverseProxyDomainState } from "./reverseProxyDomain";
+export type ReverseProxyDomain = import("./reverseProxyDomain").ReverseProxyDomain;
+export const ReverseProxyDomain: typeof import("./reverseProxyDomain").ReverseProxyDomain = null as any;
+utilities.lazyLoad(exports, ["ReverseProxyDomain"], () => require("./reverseProxyDomain"));
+
+export { ReverseProxyServiceArgs, ReverseProxyServiceState } from "./reverseProxyService";
+export type ReverseProxyService = import("./reverseProxyService").ReverseProxyService;
+export const ReverseProxyService: typeof import("./reverseProxyService").ReverseProxyService = null as any;
+utilities.lazyLoad(exports, ["ReverseProxyService"], () => require("./reverseProxyService"));
+
 export { RouteArgs, RouteState } from "./route";
 export type Route = import("./route").Route;
 export const Route: typeof import("./route").Route = null as any;
 utilities.lazyLoad(exports, ["Route"], () => require("./route"));
+
+export { ScimArgs, ScimState } from "./scim";
+export type Scim = import("./scim").Scim;
+export const Scim: typeof import("./scim").Scim = null as any;
+utilities.lazyLoad(exports, ["Scim"], () => require("./scim"));
 
 export { SetupKeyArgs, SetupKeyState } from "./setupKey";
 export type SetupKey = import("./setupKey").SetupKey;
@@ -169,10 +234,16 @@ const _module = {
         switch (type) {
             case "netbird:index/accountSettings:AccountSettings":
                 return new AccountSettings(name, <any>undefined, { urn })
+            case "netbird:index/dnsRecord:DnsRecord":
+                return new DnsRecord(name, <any>undefined, { urn })
             case "netbird:index/dnsSettings:DnsSettings":
                 return new DnsSettings(name, <any>undefined, { urn })
+            case "netbird:index/dnsZone:DnsZone":
+                return new DnsZone(name, <any>undefined, { urn })
             case "netbird:index/group:Group":
                 return new Group(name, <any>undefined, { urn })
+            case "netbird:index/identityProvider:IdentityProvider":
+                return new IdentityProvider(name, <any>undefined, { urn })
             case "netbird:index/nameserverGroup:NameserverGroup":
                 return new NameserverGroup(name, <any>undefined, { urn })
             case "netbird:index/network:Network":
@@ -189,8 +260,14 @@ const _module = {
                 return new Policy(name, <any>undefined, { urn })
             case "netbird:index/postureCheck:PostureCheck":
                 return new PostureCheck(name, <any>undefined, { urn })
+            case "netbird:index/reverseProxyDomain:ReverseProxyDomain":
+                return new ReverseProxyDomain(name, <any>undefined, { urn })
+            case "netbird:index/reverseProxyService:ReverseProxyService":
+                return new ReverseProxyService(name, <any>undefined, { urn })
             case "netbird:index/route:Route":
                 return new Route(name, <any>undefined, { urn })
+            case "netbird:index/scim:Scim":
+                return new Scim(name, <any>undefined, { urn })
             case "netbird:index/setupKey:SetupKey":
                 return new SetupKey(name, <any>undefined, { urn })
             case "netbird:index/user:User":
@@ -201,8 +278,11 @@ const _module = {
     },
 };
 pulumi.runtime.registerResourceModule("netbird", "index/accountSettings", _module)
+pulumi.runtime.registerResourceModule("netbird", "index/dnsRecord", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/dnsSettings", _module)
+pulumi.runtime.registerResourceModule("netbird", "index/dnsZone", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/group", _module)
+pulumi.runtime.registerResourceModule("netbird", "index/identityProvider", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/nameserverGroup", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/network", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/networkResource", _module)
@@ -211,7 +291,10 @@ pulumi.runtime.registerResourceModule("netbird", "index/peer", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/personalAccessToken", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/policy", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/postureCheck", _module)
+pulumi.runtime.registerResourceModule("netbird", "index/reverseProxyDomain", _module)
+pulumi.runtime.registerResourceModule("netbird", "index/reverseProxyService", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/route", _module)
+pulumi.runtime.registerResourceModule("netbird", "index/scim", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/setupKey", _module)
 pulumi.runtime.registerResourceModule("netbird", "index/user", _module)
 pulumi.runtime.registerResourcePackage("netbird", {

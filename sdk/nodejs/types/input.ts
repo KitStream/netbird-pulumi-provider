@@ -11,6 +11,10 @@ export interface GetPolicyRule {
      */
     action?: string;
     /**
+     * Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     */
+    authorizedGroups?: {[key: string]: string[]};
+    /**
      * Policy Rule Bidirectional
      */
     bidirectional?: boolean;
@@ -47,7 +51,7 @@ export interface GetPolicyRule {
      */
     ports?: string[];
     /**
-     * Policy Rule Protocol (tcp|udp|icmp|all)
+     * Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      */
     protocol?: string;
     /**
@@ -65,6 +69,10 @@ export interface GetPolicyRuleArgs {
      * Policy Rule Action (accept|drop)
      */
     action?: pulumi.Input<string>;
+    /**
+     * Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     */
+    authorizedGroups?: pulumi.Input<{[key: string]: pulumi.Input<pulumi.Input<string>[]>}>;
     /**
      * Policy Rule Bidirectional
      */
@@ -102,7 +110,7 @@ export interface GetPolicyRuleArgs {
      */
     ports?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * Policy Rule Protocol (tcp|udp|icmp|all)
+     * Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      */
     protocol?: pulumi.Input<string>;
     /**
@@ -166,6 +174,10 @@ export interface PolicyRule {
      */
     action?: pulumi.Input<string>;
     /**
+     * Map of source group IDs to a list of local users authorized for SSH access. Keys must be group IDs present in `sources`. If not set, all local users are permitted. Only applicable when protocol is `netbird-ssh`.
+     */
+    authorizedGroups?: pulumi.Input<{[key: string]: pulumi.Input<pulumi.Input<string>[]>}>;
+    /**
      * Policy Rule Bidirectional
      */
     bidirectional?: pulumi.Input<boolean>;
@@ -202,7 +214,7 @@ export interface PolicyRule {
      */
     ports?: pulumi.Input<pulumi.Input<string>[]>;
     /**
-     * Policy Rule Protocol (tcp|udp|icmp|all)
+     * Policy Rule Protocol (tcp|udp|icmp|all|netbird-ssh)
      */
     protocol?: pulumi.Input<string>;
     /**
@@ -261,4 +273,76 @@ export interface PostureCheckProcessCheck {
     linuxPath?: pulumi.Input<string>;
     macPath?: pulumi.Input<string>;
     windowsPath?: pulumi.Input<string>;
+}
+
+export interface ReverseProxyServiceAuth {
+    /**
+     * Bearer token authentication
+     */
+    bearerAuth?: pulumi.Input<inputs.ReverseProxyServiceAuthBearerAuth>;
+    /**
+     * Link authentication
+     */
+    linkAuth?: pulumi.Input<inputs.ReverseProxyServiceAuthLinkAuth>;
+    /**
+     * Password authentication
+     */
+    passwordAuth?: pulumi.Input<inputs.ReverseProxyServiceAuthPasswordAuth>;
+    /**
+     * PIN authentication
+     */
+    pinAuth?: pulumi.Input<inputs.ReverseProxyServiceAuthPinAuth>;
+}
+
+export interface ReverseProxyServiceAuthBearerAuth {
+    /**
+     * List of group IDs that can use bearer auth
+     */
+    distributionGroups?: pulumi.Input<pulumi.Input<string>[]>;
+    enabled: pulumi.Input<boolean>;
+}
+
+export interface ReverseProxyServiceAuthLinkAuth {
+    enabled: pulumi.Input<boolean>;
+}
+
+export interface ReverseProxyServiceAuthPasswordAuth {
+    enabled: pulumi.Input<boolean>;
+    password?: pulumi.Input<string>;
+}
+
+export interface ReverseProxyServiceAuthPinAuth {
+    enabled: pulumi.Input<boolean>;
+    pin?: pulumi.Input<string>;
+}
+
+export interface ReverseProxyServiceTarget {
+    /**
+     * Whether this target is enabled
+     */
+    enabled?: pulumi.Input<boolean>;
+    /**
+     * Backend IP or domain for this target. If omitted, the API resolves it from the target peer.
+     */
+    host?: pulumi.Input<string>;
+    /**
+     * URL path prefix for this target. Defaults to "/" if omitted.
+     */
+    path?: pulumi.Input<string>;
+    /**
+     * Backend port for this target (0 for scheme default)
+     */
+    port: pulumi.Input<number>;
+    /**
+     * Protocol to use when connecting to the backend (http, https)
+     */
+    protocol: pulumi.Input<string>;
+    /**
+     * Target ID (resource or peer ID)
+     */
+    targetId: pulumi.Input<string>;
+    /**
+     * Target type (peer, host, domain, subnet)
+     */
+    targetType: pulumi.Input<string>;
 }

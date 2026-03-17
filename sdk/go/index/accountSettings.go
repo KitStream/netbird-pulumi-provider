@@ -14,6 +14,10 @@ import (
 type AccountSettings struct {
 	pulumi.CustomResourceState
 
+	// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+	AutoUpdateVersion pulumi.StringOutput `pulumi:"autoUpdateVersion"`
+	// Allows to define a custom DNS domain for the account
+	DnsDomain pulumi.StringOutput `pulumi:"dnsDomain"`
 	// Allows propagate the new user auto groups to peers that belongs to the user
 	GroupsPropagationEnabled pulumi.BoolOutput `pulumi:"groupsPropagationEnabled"`
 	// List of groups to which users are allowed access
@@ -22,12 +26,22 @@ type AccountSettings struct {
 	JwtGroupsClaimName pulumi.StringOutput `pulumi:"jwtGroupsClaimName"`
 	// Allows extract groups from JWT claim and add it to account groups.
 	JwtGroupsEnabled pulumi.BoolOutput `pulumi:"jwtGroupsEnabled"`
+	// Enables or disables experimental lazy connection
+	LazyConnectionEnabled pulumi.BoolOutput `pulumi:"lazyConnectionEnabled"`
+	// Allows to define a custom network range for the account in CIDR format
+	NetworkRange pulumi.StringOutput `pulumi:"networkRange"`
 	// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
 	NetworkTrafficLogsEnabled pulumi.BoolOutput `pulumi:"networkTrafficLogsEnabled"`
+	// Limits traffic logging to these groups. If unset all peers are enabled.
+	NetworkTrafficLogsGroups pulumi.StringArrayOutput `pulumi:"networkTrafficLogsGroups"`
 	// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
 	NetworkTrafficPacketCounterEnabled pulumi.BoolOutput `pulumi:"networkTrafficPacketCounterEnabled"`
 	// (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
 	PeerApprovalEnabled pulumi.BoolOutput `pulumi:"peerApprovalEnabled"`
+	// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+	PeerExposeEnabled pulumi.BoolOutput `pulumi:"peerExposeEnabled"`
+	// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+	PeerExposeGroups pulumi.StringArrayOutput `pulumi:"peerExposeGroups"`
 	// Period of time of inactivity after which peer session expires (seconds).
 	PeerInactivityExpiration pulumi.IntOutput `pulumi:"peerInactivityExpiration"`
 	// Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login).
@@ -40,6 +54,8 @@ type AccountSettings struct {
 	RegularUsersViewBlocked pulumi.BoolOutput `pulumi:"regularUsersViewBlocked"`
 	// Enables or disables DNS resolution on the routing peers
 	RoutingPeerDnsResolutionEnabled pulumi.BoolOutput `pulumi:"routingPeerDnsResolutionEnabled"`
+	// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+	UserApprovalRequired pulumi.BoolOutput `pulumi:"userApprovalRequired"`
 }
 
 // NewAccountSettings registers a new resource with the given unique name, arguments, and options.
@@ -72,6 +88,10 @@ func GetAccountSettings(ctx *pulumi.Context,
 
 // Input properties used for looking up and filtering AccountSettings resources.
 type accountSettingsState struct {
+	// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+	AutoUpdateVersion *string `pulumi:"autoUpdateVersion"`
+	// Allows to define a custom DNS domain for the account
+	DnsDomain *string `pulumi:"dnsDomain"`
 	// Allows propagate the new user auto groups to peers that belongs to the user
 	GroupsPropagationEnabled *bool `pulumi:"groupsPropagationEnabled"`
 	// List of groups to which users are allowed access
@@ -80,12 +100,22 @@ type accountSettingsState struct {
 	JwtGroupsClaimName *string `pulumi:"jwtGroupsClaimName"`
 	// Allows extract groups from JWT claim and add it to account groups.
 	JwtGroupsEnabled *bool `pulumi:"jwtGroupsEnabled"`
+	// Enables or disables experimental lazy connection
+	LazyConnectionEnabled *bool `pulumi:"lazyConnectionEnabled"`
+	// Allows to define a custom network range for the account in CIDR format
+	NetworkRange *string `pulumi:"networkRange"`
 	// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
 	NetworkTrafficLogsEnabled *bool `pulumi:"networkTrafficLogsEnabled"`
+	// Limits traffic logging to these groups. If unset all peers are enabled.
+	NetworkTrafficLogsGroups []string `pulumi:"networkTrafficLogsGroups"`
 	// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
 	NetworkTrafficPacketCounterEnabled *bool `pulumi:"networkTrafficPacketCounterEnabled"`
 	// (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
 	PeerApprovalEnabled *bool `pulumi:"peerApprovalEnabled"`
+	// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+	PeerExposeEnabled *bool `pulumi:"peerExposeEnabled"`
+	// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+	PeerExposeGroups []string `pulumi:"peerExposeGroups"`
 	// Period of time of inactivity after which peer session expires (seconds).
 	PeerInactivityExpiration *int `pulumi:"peerInactivityExpiration"`
 	// Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login).
@@ -98,9 +128,15 @@ type accountSettingsState struct {
 	RegularUsersViewBlocked *bool `pulumi:"regularUsersViewBlocked"`
 	// Enables or disables DNS resolution on the routing peers
 	RoutingPeerDnsResolutionEnabled *bool `pulumi:"routingPeerDnsResolutionEnabled"`
+	// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+	UserApprovalRequired *bool `pulumi:"userApprovalRequired"`
 }
 
 type AccountSettingsState struct {
+	// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+	AutoUpdateVersion pulumi.StringPtrInput
+	// Allows to define a custom DNS domain for the account
+	DnsDomain pulumi.StringPtrInput
 	// Allows propagate the new user auto groups to peers that belongs to the user
 	GroupsPropagationEnabled pulumi.BoolPtrInput
 	// List of groups to which users are allowed access
@@ -109,12 +145,22 @@ type AccountSettingsState struct {
 	JwtGroupsClaimName pulumi.StringPtrInput
 	// Allows extract groups from JWT claim and add it to account groups.
 	JwtGroupsEnabled pulumi.BoolPtrInput
+	// Enables or disables experimental lazy connection
+	LazyConnectionEnabled pulumi.BoolPtrInput
+	// Allows to define a custom network range for the account in CIDR format
+	NetworkRange pulumi.StringPtrInput
 	// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
 	NetworkTrafficLogsEnabled pulumi.BoolPtrInput
+	// Limits traffic logging to these groups. If unset all peers are enabled.
+	NetworkTrafficLogsGroups pulumi.StringArrayInput
 	// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
 	NetworkTrafficPacketCounterEnabled pulumi.BoolPtrInput
 	// (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
 	PeerApprovalEnabled pulumi.BoolPtrInput
+	// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+	PeerExposeEnabled pulumi.BoolPtrInput
+	// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+	PeerExposeGroups pulumi.StringArrayInput
 	// Period of time of inactivity after which peer session expires (seconds).
 	PeerInactivityExpiration pulumi.IntPtrInput
 	// Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login).
@@ -127,6 +173,8 @@ type AccountSettingsState struct {
 	RegularUsersViewBlocked pulumi.BoolPtrInput
 	// Enables or disables DNS resolution on the routing peers
 	RoutingPeerDnsResolutionEnabled pulumi.BoolPtrInput
+	// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+	UserApprovalRequired pulumi.BoolPtrInput
 }
 
 func (AccountSettingsState) ElementType() reflect.Type {
@@ -134,6 +182,10 @@ func (AccountSettingsState) ElementType() reflect.Type {
 }
 
 type accountSettingsArgs struct {
+	// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+	AutoUpdateVersion *string `pulumi:"autoUpdateVersion"`
+	// Allows to define a custom DNS domain for the account
+	DnsDomain *string `pulumi:"dnsDomain"`
 	// Allows propagate the new user auto groups to peers that belongs to the user
 	GroupsPropagationEnabled *bool `pulumi:"groupsPropagationEnabled"`
 	// List of groups to which users are allowed access
@@ -142,12 +194,22 @@ type accountSettingsArgs struct {
 	JwtGroupsClaimName *string `pulumi:"jwtGroupsClaimName"`
 	// Allows extract groups from JWT claim and add it to account groups.
 	JwtGroupsEnabled *bool `pulumi:"jwtGroupsEnabled"`
+	// Enables or disables experimental lazy connection
+	LazyConnectionEnabled *bool `pulumi:"lazyConnectionEnabled"`
+	// Allows to define a custom network range for the account in CIDR format
+	NetworkRange *string `pulumi:"networkRange"`
 	// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
 	NetworkTrafficLogsEnabled *bool `pulumi:"networkTrafficLogsEnabled"`
+	// Limits traffic logging to these groups. If unset all peers are enabled.
+	NetworkTrafficLogsGroups []string `pulumi:"networkTrafficLogsGroups"`
 	// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
 	NetworkTrafficPacketCounterEnabled *bool `pulumi:"networkTrafficPacketCounterEnabled"`
 	// (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
 	PeerApprovalEnabled *bool `pulumi:"peerApprovalEnabled"`
+	// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+	PeerExposeEnabled *bool `pulumi:"peerExposeEnabled"`
+	// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+	PeerExposeGroups []string `pulumi:"peerExposeGroups"`
 	// Period of time of inactivity after which peer session expires (seconds).
 	PeerInactivityExpiration *int `pulumi:"peerInactivityExpiration"`
 	// Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login).
@@ -160,10 +222,16 @@ type accountSettingsArgs struct {
 	RegularUsersViewBlocked *bool `pulumi:"regularUsersViewBlocked"`
 	// Enables or disables DNS resolution on the routing peers
 	RoutingPeerDnsResolutionEnabled *bool `pulumi:"routingPeerDnsResolutionEnabled"`
+	// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+	UserApprovalRequired *bool `pulumi:"userApprovalRequired"`
 }
 
 // The set of arguments for constructing a AccountSettings resource.
 type AccountSettingsArgs struct {
+	// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+	AutoUpdateVersion pulumi.StringPtrInput
+	// Allows to define a custom DNS domain for the account
+	DnsDomain pulumi.StringPtrInput
 	// Allows propagate the new user auto groups to peers that belongs to the user
 	GroupsPropagationEnabled pulumi.BoolPtrInput
 	// List of groups to which users are allowed access
@@ -172,12 +240,22 @@ type AccountSettingsArgs struct {
 	JwtGroupsClaimName pulumi.StringPtrInput
 	// Allows extract groups from JWT claim and add it to account groups.
 	JwtGroupsEnabled pulumi.BoolPtrInput
+	// Enables or disables experimental lazy connection
+	LazyConnectionEnabled pulumi.BoolPtrInput
+	// Allows to define a custom network range for the account in CIDR format
+	NetworkRange pulumi.StringPtrInput
 	// Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
 	NetworkTrafficLogsEnabled pulumi.BoolPtrInput
+	// Limits traffic logging to these groups. If unset all peers are enabled.
+	NetworkTrafficLogsGroups pulumi.StringArrayInput
 	// Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
 	NetworkTrafficPacketCounterEnabled pulumi.BoolPtrInput
 	// (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
 	PeerApprovalEnabled pulumi.BoolPtrInput
+	// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+	PeerExposeEnabled pulumi.BoolPtrInput
+	// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+	PeerExposeGroups pulumi.StringArrayInput
 	// Period of time of inactivity after which peer session expires (seconds).
 	PeerInactivityExpiration pulumi.IntPtrInput
 	// Enables or disables peer inactivity expiration globally. After peer's session has expired the user has to log in (authenticate). Applies only to peers that were added by a user (interactive SSO login).
@@ -190,6 +268,8 @@ type AccountSettingsArgs struct {
 	RegularUsersViewBlocked pulumi.BoolPtrInput
 	// Enables or disables DNS resolution on the routing peers
 	RoutingPeerDnsResolutionEnabled pulumi.BoolPtrInput
+	// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+	UserApprovalRequired pulumi.BoolPtrInput
 }
 
 func (AccountSettingsArgs) ElementType() reflect.Type {
@@ -279,6 +359,16 @@ func (o AccountSettingsOutput) ToAccountSettingsOutputWithContext(ctx context.Co
 	return o
 }
 
+// Set Clients auto-update version. "latest", "disabled", or a specific version (e.g "0.64.5")
+func (o AccountSettingsOutput) AutoUpdateVersion() pulumi.StringOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.StringOutput { return v.AutoUpdateVersion }).(pulumi.StringOutput)
+}
+
+// Allows to define a custom DNS domain for the account
+func (o AccountSettingsOutput) DnsDomain() pulumi.StringOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.StringOutput { return v.DnsDomain }).(pulumi.StringOutput)
+}
+
 // Allows propagate the new user auto groups to peers that belongs to the user
 func (o AccountSettingsOutput) GroupsPropagationEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.GroupsPropagationEnabled }).(pulumi.BoolOutput)
@@ -299,9 +389,24 @@ func (o AccountSettingsOutput) JwtGroupsEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.JwtGroupsEnabled }).(pulumi.BoolOutput)
 }
 
+// Enables or disables experimental lazy connection
+func (o AccountSettingsOutput) LazyConnectionEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.LazyConnectionEnabled }).(pulumi.BoolOutput)
+}
+
+// Allows to define a custom network range for the account in CIDR format
+func (o AccountSettingsOutput) NetworkRange() pulumi.StringOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.StringOutput { return v.NetworkRange }).(pulumi.StringOutput)
+}
+
 // Enables or disables network traffic logging. If enabled, all network traffic events from peers will be stored.
 func (o AccountSettingsOutput) NetworkTrafficLogsEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.NetworkTrafficLogsEnabled }).(pulumi.BoolOutput)
+}
+
+// Limits traffic logging to these groups. If unset all peers are enabled.
+func (o AccountSettingsOutput) NetworkTrafficLogsGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.StringArrayOutput { return v.NetworkTrafficLogsGroups }).(pulumi.StringArrayOutput)
 }
 
 // Enables or disables network traffic packet counter. If enabled, network packets and their size will be counted and reported. (This can have an slight impact on performance)
@@ -312,6 +417,16 @@ func (o AccountSettingsOutput) NetworkTrafficPacketCounterEnabled() pulumi.BoolO
 // (Cloud only) Enables or disables peer approval globally. If enabled, all peers added will be in pending state until approved by an admin.
 func (o AccountSettingsOutput) PeerApprovalEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.PeerApprovalEnabled }).(pulumi.BoolOutput)
+}
+
+// Enables or disables peer expose. If enabled, peers can expose local services through the reverse proxy using the CLI.
+func (o AccountSettingsOutput) PeerExposeEnabled() pulumi.BoolOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.PeerExposeEnabled }).(pulumi.BoolOutput)
+}
+
+// Limits which peer groups are allowed to expose services. If empty, all peers are allowed when peer expose is enabled.
+func (o AccountSettingsOutput) PeerExposeGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.StringArrayOutput { return v.PeerExposeGroups }).(pulumi.StringArrayOutput)
 }
 
 // Period of time of inactivity after which peer session expires (seconds).
@@ -342,6 +457,11 @@ func (o AccountSettingsOutput) RegularUsersViewBlocked() pulumi.BoolOutput {
 // Enables or disables DNS resolution on the routing peers
 func (o AccountSettingsOutput) RoutingPeerDnsResolutionEnabled() pulumi.BoolOutput {
 	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.RoutingPeerDnsResolutionEnabled }).(pulumi.BoolOutput)
+}
+
+// Enables manual approval for new users joining via domain matching. When enabled, users are blocked with pending approval status until explicitly approved by an admin.
+func (o AccountSettingsOutput) UserApprovalRequired() pulumi.BoolOutput {
+	return o.ApplyT(func(v *AccountSettings) pulumi.BoolOutput { return v.UserApprovalRequired }).(pulumi.BoolOutput)
 }
 
 type AccountSettingsArrayOutput struct{ *pulumi.OutputState }

@@ -31,6 +31,7 @@ class NameserverGroupArgs:
                  search_domains_enabled: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a NameserverGroup resource.
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] groups: Distribution group IDs that defines group of peers that will use this nameserver group
         :param pulumi.Input[_builtins.str] name: Name of nameserver group
         :param pulumi.Input[Sequence[pulumi.Input['NameserverGroupNameserverArgs']]] nameservers: Nameserver list
@@ -164,6 +165,7 @@ class _NameserverGroupState:
                  search_domains_enabled: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         Input properties used for looking up and filtering NameserverGroup resources.
+
         :param pulumi.Input[_builtins.str] description: Description of the nameserver group
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] domains: Match domain list. It should be empty only if primary is true.
         :param pulumi.Input[_builtins.bool] enabled: Nameserver group status
@@ -304,6 +306,7 @@ class NameserverGroup(pulumi.CustomResource):
                  __props__=None):
         """
         Create a NameserverGroup resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] description: Description of the nameserver group
@@ -323,6 +326,7 @@ class NameserverGroup(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a NameserverGroup resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param NameserverGroupArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

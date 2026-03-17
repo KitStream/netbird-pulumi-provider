@@ -27,6 +27,7 @@ class UserArgs:
                  role: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a User resource.
+
         :param pulumi.Input[_builtins.bool] is_service_user: If set to true, creates a Service Account User
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] auto_groups: Group IDs to auto-assign to peers registered by this user
         :param pulumi.Input[_builtins.str] email: User Email
@@ -134,6 +135,7 @@ class _UserState:
                  status: Optional[pulumi.Input[_builtins.str]] = None):
         """
         Input properties used for looking up and filtering User resources.
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] auto_groups: Group IDs to auto-assign to peers registered by this user
         :param pulumi.Input[_builtins.str] email: User Email
         :param pulumi.Input[_builtins.bool] is_blocked: If set to true then user is blocked and can't use the system
@@ -302,6 +304,7 @@ class User(pulumi.CustomResource):
                  __props__=None):
         """
         Create a User resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] auto_groups: Group IDs to auto-assign to peers registered by this user
@@ -319,6 +322,7 @@ class User(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a User resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param UserArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
