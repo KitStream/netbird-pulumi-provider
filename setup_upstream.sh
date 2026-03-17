@@ -57,13 +57,17 @@ else
 fi
 
 # -- 3. Apply test-data patches (idempotent) --------------------------------
-echo "Applying upstream test patches..."
-cd "$UPSTREAM_DIR"
-if git diff --quiet -- test/seed_database.sql 2>/dev/null; then
-    # Files are unmodified - apply the patch
-    git apply "$SCRIPT_DIR/upstream.patch" 2>/dev/null || true
+PATCH_FILE="$SCRIPT_DIR/upstream.patch"
+if [ -s "$PATCH_FILE" ]; then
+    echo "Applying upstream test patches..."
+    cd "$UPSTREAM_DIR"
+    if git diff --quiet -- test/seed_database.sql 2>/dev/null; then
+        git apply "$PATCH_FILE" 2>/dev/null || true
+    else
+        echo "  (patches already applied)"
+    fi
 else
-    echo "  (patches already applied)"
+    echo "No upstream patches to apply (patch file empty)."
 fi
 
 echo "Upstream ready."

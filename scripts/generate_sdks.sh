@@ -16,3 +16,10 @@ echo "Generating SDKs with version: $VERSION"
 ./bin/pulumi-tfgen-netbird java --out sdk/java
 
 echo "SDK generation complete."
+
+# Apply post-generation fixes
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -x "$SCRIPT_DIR/fix_sdks.sh" ]; then
+    echo "Applying post-generation SDK fixes..."
+    "$SCRIPT_DIR/fix_sdks.sh"
+fi
