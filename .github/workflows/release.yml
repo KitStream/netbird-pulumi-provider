@@ -9,12 +9,71 @@ permissions:
   id-token: write
 
 jobs:
-  publish_sdk:
-    name: Publish SDKs
+  # ── Provider binary (GitHub Release via GoReleaser) ────────────────
+  publish_provider:
+    name: Publish Provider
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: [1.24.x]
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Get Tag Version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Check if GitHub Release exists
+        id: check_release
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "GitHub Release $TAG already exists, skipping"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Go
+        if: steps.check_release.outputs.exists != 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.x
+
+      - name: Prepare upstream submodule
+        if: steps.check_release.outputs.exists != 'true'
+        run: ./setup_upstream.sh
+
+      - name: Run GoReleaser
+        if: steps.check_release.outputs.exists != 'true'
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean -f ../.goreleaser.yml
+          workdir: provider
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── Go module proxy ────────────────────────────────────────────────
+  notify_go_proxy:
+    name: Notify Go Module Proxy
+    needs: publish_provider
+    runs-on: ubuntu-latest
+    steps:
+      - name: Poke Go module proxy
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          MODULE="github.com/KitStream/netbird-pulumi-provider/sdk/go/index"
+          curl -sSf "https://proxy.golang.org/${MODULE}/@v/${VERSION}.info" || echo "Go proxy ping failed (may already be cached)"
+
+  # ── Shared setup for SDK publishing ────────────────────────────────
+  build_sdks:
+    name: Build SDKs
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -24,11 +83,6 @@ jobs:
       - name: Get Tag Version
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ matrix.go-version }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -53,9 +107,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          server-id: ossrh
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
 
       - name: Install Pulumi CLI
         uses: pulumi/actions@v6
@@ -63,14 +114,30 @@ jobs:
       - name: Generate version.txt for .NET SDK
         run: echo "${{ steps.get_version.outputs.VERSION }}" > sdk/dotnet/version.txt
 
+      # ── Node.js ──────────────────────────────────────────────────
+      - name: Check if Node.js SDK already published
+        id: check_npm
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          if npm view "@kitstream/netbird-pulumi@$VERSION" version >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "npm package @kitstream/netbird-pulumi@$VERSION already published"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Publish Node.js SDK
+        if: steps.check_npm.outputs.exists != 'true'
         run: |
           cd sdk/nodejs
           npm ci
           npm run build --if-present
           npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version
           npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      # ── Python ───────────────────────────────────────────────────
       - name: Build Python SDK
         run: |
           cd sdk/python
@@ -82,7 +149,9 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: sdk/python/dist/
+          skip-existing: true
 
+      # ── DotNet ───────────────────────────────────────────────────
       - name: NuGet login (OIDC → temp API key)
         uses: NuGet/login@v1
         id: login
@@ -93,57 +162,34 @@ jobs:
         run: |
           cd sdk/dotnet
           dotnet build -c Release -p:Version=${{ steps.get_version.outputs.VERSION }}
-          dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ steps.login.outputs.NUGET_API_KEY }}
+          dotnet nuget push bin/Release/*.nupkg \
+            -s https://api.nuget.org/v3/index.json \
+            -k ${{ steps.login.outputs.NUGET_API_KEY }} \
+            --skip-duplicate
+
+      # ── Java ─────────────────────────────────────────────────────
+      - name: Check if Java SDK already published
+        id: check_maven
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          GROUP_PATH="io/github/kitstream"
+          ARTIFACT="netbird"
+          URL="https://repo1.maven.org/maven2/${GROUP_PATH}/${ARTIFACT}/${VERSION}/${ARTIFACT}-${VERSION}.pom"
+          if curl -sfI "$URL" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Java SDK $VERSION already on Maven Central"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Publish Java SDK
+        if: steps.check_maven.outputs.exists != 'true'
         run: |
           cd sdk/java
-          gradle publish
+          gradle publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
           PACKAGE_VERSION: ${{ steps.get_version.outputs.VERSION }}
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          PUBLISH_REPO_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          PUBLISH_REPO_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           SIGNING_KEY: ${{ secrets.JAVA_SIGNING_KEY }}
           SIGNING_PASSWORD: ${{ secrets.JAVA_SIGNING_PASSWORD }}
-
-  notify_go_proxy:
-    name: Notify Go Module Proxy
-    needs: publish_provider
-    runs-on: ubuntu-latest
-    steps:
-      - name: Poke Go module proxy
-        run: |
-          VERSION="${GITHUB_REF#refs/tags/}"
-          MODULE="github.com/KitStream/netbird-pulumi-provider/sdk/go/index"
-          curl -sSf "https://proxy.golang.org/${MODULE}/@v/${VERSION}.info"
-
-  publish_provider:
-    name: Publish Provider
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Get Tag Version
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 1.24.x
-
-      - name: Prepare upstream submodule
-        run: ./setup_upstream.sh
-
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
-        with:
-          distribution: goreleaser
-          version: latest
-          args: release --clean -f ../.goreleaser.yml
-          workdir: provider
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
