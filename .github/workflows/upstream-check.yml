@@ -20,6 +20,7 @@ jobs:
         id: pinned
         run: |
           cd upstream
+          git fetch --tags origin
           PINNED=$(git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD)
           echo "version=$PINNED" >> "$GITHUB_OUTPUT"
 
