@@ -93,16 +93,16 @@ publishing {
             artifact javadocJar
 
             pom {
-                inceptionYear = ""
-                name = ""
+                inceptionYear = "2025"
+                name = "NetBird Pulumi Provider"
                 packaging = "jar"
                 description = "A Pulumi package for creating and managing netbird cloud resources."
 
                 url = "https://github.com/KitStream/netbird-pulumi-provider"
 
                 scm {
-                    connection = "git@github.com/KitStream/netbird-pulumi-provider.git"
-                    developerConnection = "git@github.com/KitStream/netbird-pulumi-provider.git"
+                    connection = "scm:git:git://github.com/KitStream/netbird-pulumi-provider.git"
+                    developerConnection = "scm:git:ssh://github.com/KitStream/netbird-pulumi-provider.git"
                     url = "https://github.com/KitStream/netbird-pulumi-provider"
                 }
 
@@ -115,9 +115,9 @@ publishing {
 
                 developers {
                     developer {
-                        id = ""
-                        name = ""
-                        email = ""
+                        id = "kitstream"
+                        name = "KitStream"
+                        email = "info@kitstream.io"
                     }
                 }
             }
