@@ -231,7 +231,7 @@ func applyLanguageOptions(t *testing.T, opts *integration.ProgramTestOptions, la
 	switch lang {
 	case "go":
 		opts.PrePrepareProject = func(proj *engine.Projinfo) error {
-			absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "go", "index"))
+			absSdkPath, err := filepath.Abs(filepath.Join("..", "sdk", "go", "netbird"))
 			if err != nil {
 				return err
 			}
@@ -240,7 +240,7 @@ func applyLanguageOptions(t *testing.T, opts *integration.ProgramTestOptions, la
 			if err != nil {
 				return err
 			}
-			newContent := strings.Replace(string(content), "../../../sdk/go/index", absSdkPath, 1)
+			newContent := strings.Replace(string(content), "../../../sdk/go/netbird", absSdkPath, 1)
 			return os.WriteFile(goModPath, []byte(newContent), 0644)
 		}
 	case "nodejs":

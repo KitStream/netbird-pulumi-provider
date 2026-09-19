@@ -10,7 +10,7 @@ The following SDKs are available and automatically updated:
 
 - **NodeJS** (`@kitstream/netbird-pulumi` on npm)
 - **Python** (`pulumi_netbird` on PyPI)
-- **Go** (`github.com/KitStream/netbird-pulumi-provider/sdk/go/index`)
+- **Go** (`github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird`)
 - **.NET** (`KitStream.Pulumi.Netbird` on NuGet)
 - **Java** (`io.github.kitstream:netbird` on Maven Central)
 
@@ -30,7 +30,7 @@ pip install pulumi_netbird
 
 ### Go
 ```bash
-go get github.com/KitStream/netbird-pulumi-provider/sdk/go/index
+go get github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird
 ```
 
 ### .NET

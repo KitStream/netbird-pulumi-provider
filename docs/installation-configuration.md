@@ -10,7 +10,7 @@ The NetBird provider is available as a package in all Pulumi languages:
 
 * JavaScript/TypeScript: [`@kitstream/netbird-pulumi`](https://www.npmjs.com/package/@kitstream/netbird-pulumi)
 * Python: [`pulumi_netbird`](https://pypi.org/project/pulumi-netbird/)
-* Go: [`github.com/KitStream/netbird-pulumi-provider/sdk/go/index`](https://github.com/KitStream/netbird-pulumi-provider)
+* Go: [`github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird`](https://github.com/KitStream/netbird-pulumi-provider)
 * .NET: [`KitStream.Pulumi.Netbird`](https://www.nuget.org/packages/KitStream.Pulumi.Netbird)
 * Java: [`io.github.kitstream:netbird`](https://central.sonatype.com/artifact/io.github.kitstream/netbird)
 

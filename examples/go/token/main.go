@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/KitStream/netbird-pulumi-provider/sdk/go/index"
+	"github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		group, err := index.NewGroup(ctx, "example-group", &index.GroupArgs{
+		group, err := netbird.NewGroup(ctx, "example-group", &netbird.GroupArgs{
 			Name: pulumi.String("Example Go token Group"),
 		})
 		if err != nil {
@@ -15,7 +15,7 @@ func main() {
 		}
 		_ = group
 
-		user, err := index.NewUser(ctx, "example-user", &index.UserArgs{
+		user, err := netbird.NewUser(ctx, "example-user", &netbird.UserArgs{
 			Email: pulumi.String("pulumi-go-token-test@example.com"),
 			Name:  pulumi.String("Pulumi Token Test User"),
 			IsServiceUser: pulumi.Bool(true),
@@ -24,7 +24,7 @@ func main() {
 			return err
 		}
 
-		res, err := index.NewPersonalAccessToken(ctx, "test-token", &index.PersonalAccessTokenArgs{
+		res, err := netbird.NewPersonalAccessToken(ctx, "test-token", &netbird.PersonalAccessTokenArgs{
 			Name: pulumi.String("Pulumi Go Token"),
 			ExpirationDays: pulumi.Int(30),
 			UserId: user.ID(),

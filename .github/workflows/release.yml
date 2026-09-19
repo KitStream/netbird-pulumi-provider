@@ -3,10 +3,20 @@ on:
   push:
     tags:
       - 'v*'
+  # Manually (re-)release an existing tag, e.g. to repair a release that is missing assets.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to release (e.g. v1.1.0)'
+        required: true
+        type: string
 
 permissions:
   contents: write
   id-token: write
+
+env:
+  RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
 jobs:
   # ── Provider binary (GitHub Release via GoReleaser) ────────────────
@@ -17,20 +27,22 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
+          ref: ${{ env.RELEASE_TAG }}
           submodules: true
           fetch-depth: 0
 
       - name: Get Tag Version
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        run: echo "VERSION=${RELEASE_TAG#v}" >> $GITHUB_OUTPUT
 
-      - name: Check if GitHub Release exists
+      # A release may exist without assets (e.g. created manually), so check for
+      # the checksums file, which GoReleaser uploads last, rather than the release itself.
+      - name: Check if GitHub Release assets exist
         id: check_release
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          if gh release view "$TAG" >/dev/null 2>&1; then
+          if gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name' 2>/dev/null | grep -qx 'checksums.txt'; then
             echo "exists=true" >> $GITHUB_OUTPUT
-            echo "GitHub Release $TAG already exists, skipping"
+            echo "GitHub Release $RELEASE_TAG already has its assets, skipping"
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
@@ -57,6 +69,7 @@ jobs:
           workdir: provider
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GORELEASER_CURRENT_TAG: ${{ env.RELEASE_TAG }}
 
   # ── Go module proxy ────────────────────────────────────────────────
   notify_go_proxy:
@@ -66,8 +79,8 @@ jobs:
     steps:
       - name: Poke Go module proxy
         run: |
-          VERSION="${GITHUB_REF#refs/tags/}"
-          MODULE="github.com/KitStream/netbird-pulumi-provider/sdk/go/index"
+          VERSION="${RELEASE_TAG}"
+          MODULE="github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird"
           curl -sSf "https://proxy.golang.org/${MODULE}/@v/${VERSION}.info" || echo "Go proxy ping failed (may already be cached)"
 
   # ── Shared setup for SDK publishing ────────────────────────────────
@@ -78,11 +91,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
+          ref: ${{ env.RELEASE_TAG }}
           submodules: true
 
       - name: Get Tag Version
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        run: echo "VERSION=${RELEASE_TAG#v}" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

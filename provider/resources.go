@@ -118,7 +118,7 @@ func Provider(version string) tfbridge.ProviderInfo {
 			ImportBasePath: filepath.Join(
 				fmt.Sprintf("github.com/KitStream/%[1]s-pulumi-provider/sdk/", mainPkg),
 				"go",
-				mainMod,
+				mainPkg,
 			),
 			GenerateResourceContainerTypes: true,
 		},

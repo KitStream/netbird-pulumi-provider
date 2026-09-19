@@ -48,3 +48,5 @@ release:
     owner: KitStream
     name: netbird-pulumi-provider
   prerelease: auto
+  # Allow re-runs to finish a release whose asset upload was interrupted.
+  replace_existing_artifacts: true
