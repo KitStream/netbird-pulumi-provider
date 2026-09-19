@@ -427,11 +427,11 @@ func generateGo(dir string, res Resource, lang string) {
 		case "string_array":
 			args += "\t\t\t" + arg.Name + ": pulumi.StringArray{pulumi.String(" + val + ")},\n"
 		case "nameserver_array":
-			args += "\t\t\t" + arg.Name + ": index.NameserverGroupNameserverArray{index.NameserverGroupNameserverArgs{Ip: pulumi.String(\"1.1.1.1\"), Port: pulumi.Int(53)}},\n"
+			args += "\t\t\t" + arg.Name + ": netbird.NameserverGroupNameserverArray{netbird.NameserverGroupNameserverArgs{Ip: pulumi.String(\"1.1.1.1\"), Port: pulumi.Int(53)}},\n"
 		case "policy_rule":
-			args += "\t\t\t" + arg.Name + ": &index.PolicyRuleArgs{Action: pulumi.String(\"accept\"), Enabled: pulumi.Bool(true), Name: pulumi.String(\"rule1\"), Sources: pulumi.StringArray{group.ID()}, Destinations: pulumi.StringArray{group.ID()}},\n"
+			args += "\t\t\t" + arg.Name + ": &netbird.PolicyRuleArgs{Action: pulumi.String(\"accept\"), Enabled: pulumi.Bool(true), Name: pulumi.String(\"rule1\"), Sources: pulumi.StringArray{group.ID()}, Destinations: pulumi.StringArray{group.ID()}},\n"
 		case "os_version_check":
-			args += "\t\t\t" + arg.Name + ": &index.PostureCheckOsVersionCheckArgs{DarwinMinVersion: pulumi.String(\"1.0.0\")},\n"
+			args += "\t\t\t" + arg.Name + ": &netbird.PostureCheckOsVersionCheckArgs{DarwinMinVersion: pulumi.String(\"1.0.0\")},\n"
 		case "dependency":
 			goVal := strings.Replace(val, ".id", ".ID()", 1)
 			args += "\t\t\t" + arg.Name + ": " + goVal + ",\n"
@@ -449,7 +449,7 @@ func generateGo(dir string, res Resource, lang string) {
 		if !groupUsed {
 			groupSuffix = "		_ = group\n\n"
 		}
-		prefix = fmt.Sprintf(`		group, err := index.NewGroup(ctx, "example-group", &index.GroupArgs{
+		prefix = fmt.Sprintf(`		group, err := netbird.NewGroup(ctx, "example-group", &netbird.GroupArgs{
 			Name: pulumi.String("%s"),
 		})
 		if err != nil {
@@ -458,7 +458,7 @@ func generateGo(dir string, res Resource, lang string) {
 `, groupName) + groupSuffix
 
 		if strings.Contains(args, "network.") {
-			prefix += fmt.Sprintf(`		network, err := index.NewNetwork(ctx, "example-network", &index.NetworkArgs{
+			prefix += fmt.Sprintf(`		network, err := netbird.NewNetwork(ctx, "example-network", &netbird.NetworkArgs{
 			Name: pulumi.String("%s"),
 		})
 		if err != nil {
@@ -469,7 +469,7 @@ func generateGo(dir string, res Resource, lang string) {
 		}
 
 		if strings.Contains(args, "user.") {
-			prefix += fmt.Sprintf(`		user, err := index.NewUser(ctx, "example-user", &index.UserArgs{
+			prefix += fmt.Sprintf(`		user, err := netbird.NewUser(ctx, "example-user", &netbird.UserArgs{
 			Email: pulumi.String("%s"),
 			Name:  pulumi.String("Pulumi Token Test User"),
 			IsServiceUser: pulumi.Bool(true),
@@ -485,13 +485,13 @@ func generateGo(dir string, res Resource, lang string) {
 	content := fmt.Sprintf(`package main
 
 import (
-	"github.com/KitStream/netbird-pulumi-provider/sdk/go/index"
+	"github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-%s		res, err := index.New%s(ctx, "test-%s", &index.%sArgs{
+%s		res, err := netbird.New%s(ctx, "test-%s", &netbird.%sArgs{
 %s		})
 		if err != nil {
 			return err

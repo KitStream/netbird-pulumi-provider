@@ -23,7 +23,7 @@
             "rootNamespace": "KitStream.Pulumi"
         },
         "go": {
-            "importBasePath": "github.com/KitStream/netbird-pulumi-provider/sdk/go/index",
+            "importBasePath": "github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird",
             "generateResourceContainerTypes": true,
             "generateExtraInputTypes": true
         },

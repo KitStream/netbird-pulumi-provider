@@ -2,10 +2,10 @@ module github.com/KitStream/netbird-pulumi-provider/examples/go/token
 
 go 1.24.7
 
-replace github.com/KitStream/netbird-pulumi-provider/sdk/go/index => ../../../sdk/go/index
+replace github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird => ../../../sdk/go/netbird
 
 require (
-	github.com/KitStream/netbird-pulumi-provider/sdk/go/index v0.0.0-00010101000000-000000000000
+	github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird v0.0.0-00010101000000-000000000000
 	github.com/pulumi/pulumi/sdk/v3 v3.223.0
 )
 

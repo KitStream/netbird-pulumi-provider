@@ -76,4 +76,4 @@ jobs:
           # Java
           (cd sdk/java && gradle build)
           # Go
-          (cd sdk/go/index && go build ./...)
+          (cd sdk/go/netbird && go build ./...)
